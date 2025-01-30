@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import CustomButton from "./CustomButton"; // Importa el CustomButton
+import ExperienceItem from "./ExperienceItem"; // Importa el componente ExperienceItem
 
 const App = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -84,15 +85,36 @@ const App = () => {
             nuevos lugares viajando, leer algo interesante o simplemente
             disfrutar de un buen día de playa.
           </p>
+
+          {/* Experience Items */}
+          <div className="mt-8">
+            <ExperienceItem
+              title="Frontend Developer"
+              company="Web Coders"
+              dateRange="Jan 2020 - Present"
+              description="Desarrollo y diseño de interfaces web modernas y accesibles, utilizando tecnologías como React y Tailwind CSS."
+            />
+            <ExperienceItem
+              title="Web Designer"
+              company="Freelance"
+              dateRange="Jul 2016 - Dec 2019"
+              description="Diseño sitios web responsivos y optimizados, trabajando de manera colaborativa con clientes para crear experiencias únicas."
+            />
+            <ExperienceItem
+              title="QA Tester"
+              company="Tech Solutions"
+              dateRange="Mar 2014 - Jun 2016"
+              description="Realización de pruebas de calidad y rendimiento para aplicaciones web, asegurando la excelencia del producto final."
+            />
+          </div>
         </div>
       </div>
-
       {/* Custom cursor */}
       <div
         className="cursor-light"
         style={{
-          left: `${cursorPosition.x}px`,
-          top: `${cursorPosition.y}px`,
+          left: `${cursorPosition.x - 330}px`, // Ajustamos correctamente con el tamaño del cursor
+          top: `${cursorPosition.y - 10}px`, // Ajustamos correctamente con el tamaño del cursor
         }}
       ></div>
     </div>

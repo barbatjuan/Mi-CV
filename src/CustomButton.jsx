@@ -29,7 +29,7 @@ const StyledWrapper = styled.div`
   .button {
     --border-right: 6px;
     --text-stroke-color: rgba(255, 255, 255, 0.6);
-    --animation-color: #37ff8b;
+    --animation-color: #37ffe1;
     --fs-size: 2em;
     letter-spacing: 3px;
     text-decoration: none;

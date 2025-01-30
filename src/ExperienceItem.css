@@ -1,0 +1,27 @@
+/* Tailwind classes are already used in the components */
+.text-gray-300 {
+  color: #d1d5db;
+}
+.text-gray-500 {
+  color: #6b7280;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.text-lg {
+  font-size: 1.125rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+}
+.text-base {
+  font-size: 1rem;
+}
+
+.ExpContainer:hover {
+  background-color: #5f84ea21;
+}
+
+.ExpContainer:hover h3 {
+  color: #37ffe1; /* El color que deseas para el hover */
+}
