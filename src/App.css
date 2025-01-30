@@ -11,7 +11,7 @@ body {
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
-    rgba(30, 58, 138, 0.1) 5%,
+    rgba(30, 58, 138, 0.1) 15%,
     /* Azul con 10% de opacidad */ rgba(30, 58, 138, 0.05) 40%,
     /* Suaviza la transición */ rgba(30, 58, 138, 0) 85%
       /* Se desvanece gradualmente */
