@@ -23,8 +23,11 @@ const App = () => {
       style={{ width: "70%", paddingTop: "70px", margin: "0 auto" }}
     >
       <div className="flex w-full justify-between">
-        {/* Columna de la izquierda */}
-        <div className="flex flex-col justify-start w-1/2 pl-10">
+        {/* Columna de la izquierda fija */}
+        <div
+          className="flex flex-col justify-start w-1/2 pl-10 fixed top-20"
+          style={{ maxWidth: "50%", zIndex: 10 }}
+        >
           <h1 className="text-6xl font-bold mb-4 text-gray-200">
             Juan I. Barbat
           </h1>
@@ -48,7 +51,7 @@ const App = () => {
         </div>
 
         {/* Columna de la derecha */}
-        <div className="flex flex-col justify-start w-1/2 pl-10">
+        <div className="flex flex-col justify-start w-1/2 pl-10 ml-auto">
           <p
             className="text-[14px] text-gray-300 mt-4 font-light"
             style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
