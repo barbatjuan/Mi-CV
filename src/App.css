@@ -1,17 +1,21 @@
+body {
+  background-color: #0a192f; /* Azul oscuro profundo */
+}
+
 .cursor-light {
   position: absolute;
   pointer-events: none;
-  width: 800px; /* Aumentado un 20% */
-  height: 800px; /* Aumentado un 20% */
+  width: 780px; /* 30% más grande que 600px */
+  height: 780px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.1) 2%,
-    /* Centro con 10% de opacidad */ rgba(255, 255, 255, 0.03),
-    /* Se difumina progresivamente */ rgba(255, 255, 255, 0) 70%
-      /* Se desvanece antes de los bordes */
+    rgba(30, 58, 138, 0.1) 5%,
+    /* Azul con 10% de opacidad */ rgba(30, 58, 138, 0.05) 40%,
+    /* Suaviza la transición */ rgba(30, 58, 138, 0) 85%
+      /* Se desvanece gradualmente */
   );
-  mix-blend-mode: screen; /* Hace que se mezcle con el fondo */
+  mix-blend-mode: screen; /* Mantiene el efecto de luz */
   transition: transform 0.1s ease-out;
 }

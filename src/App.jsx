@@ -17,7 +17,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="bg-gray-900 text-white h-screen flex items-center justify-center">
+    <div className="text-white h-screen flex items-center justify-center">
       <h1 className="text-5xl font-bold mb-4">Juan Barbat</h1>
       <p className="text-xl">Frontend Developer | Web Designer</p>
       <div className="mt-6">
