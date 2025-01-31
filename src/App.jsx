@@ -3,6 +3,10 @@ import "./App.css";
 import CustomButton from "./CustomButton"; // Importa el CustomButton
 import ExperienceItem from "./ExperienceItem"; // Importa el componente ExperienceItem
 import CertificateJS from "./CertificateJS"; // Importa el CertificateCard
+import { Link } from "react-scroll"; // Usamos react-scroll para smooth scrolling
+import BtnExperience from "./BtnExperience"; // Ajusta la ruta según corresponda
+import BtnCertificates from "./BtnCertificates";
+import BtnProyects from "./BtnProyects";
 
 const App = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -50,6 +54,27 @@ const App = () => {
           <div className="mt-6">
             <CustomButton />
           </div>
+
+          {/* Lista de botones de navegación */}
+          <div className="mt-8">
+            <ul>
+              <li>
+                <Link to="experience" smooth={true} duration={500}>
+                  <BtnExperience />
+                </Link>
+              </li>
+              <li>
+                <Link to="pre" smooth={true} duration={500}>
+                  <BtnCertificates />
+                </Link>
+              </li>
+              <li>
+                <Link to="projects" smooth={true} duration={500}>
+                  <BtnProyects />
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* Columna de la derecha */}
@@ -88,8 +113,7 @@ const App = () => {
           </p>
 
           {/* Experience Items */}
-
-          <div className="mt-8">
+          <div id="experience" className="mt-8">
             <ExperienceItem
               title="Analista Desarrollador Genexus"
               company="KBI Global - ISP Chile"
@@ -138,7 +162,7 @@ const App = () => {
           </div>
 
           {/* Agregar el CertificateCard debajo de la experiencia */}
-          <div className="mt-8">
+          <div id="certificates" className="mt-8">
             <CertificateJS />
           </div>
         </div>
