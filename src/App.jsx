@@ -87,24 +87,52 @@ const App = () => {
           </p>
 
           {/* Experience Items */}
+
           <div className="mt-8">
             <ExperienceItem
-              title="Frontend Developer"
+              title="Analista Desarrollador Genexus"
+              company="KBI Global - ISP Chile"
+              dateRange="Jul 2012 - Jul 2013"
+              description="Desarrollo de sistema PEC para gestión y control interno del Instituto de Salud Pública de Chile."
+              skills={["Genexus", "Gestión de Proyectos"]}
+            />
+            <ExperienceItem
+              title="Web Designer & Social Media Manager"
+              company="One Solutions"
+              dateRange="Jul 2019 - Dec 2024"
+              description="Diseño sitios web responsivos y optimizados, trabajando de manera colaborativa con clientes para crear experiencias únicas. Diseño y creación de banners y campañas publicitarias en Meta Ads y Google Ads."
+              skills={[
+                "CSS",
+                "JavaScript",
+                "WordPress",
+                "Divi",
+                "SEO",
+                "Tailwind CSS",
+                "Photoshop",
+                "Illustrator",
+                "Google Ads",
+                "Meta Ads",
+              ]}
+            />
+            <ExperienceItem
+              title="Frontend Developer & Web Designer"
               company="Web Coders"
-              dateRange="Jan 2020 - Present"
-              description="Desarrollo y diseño de interfaces web modernas y accesibles, utilizando tecnologías como React y Tailwind CSS."
-            />
-            <ExperienceItem
-              title="Web Designer"
-              company="Freelance"
-              dateRange="Jul 2016 - Dec 2019"
-              description="Diseño sitios web responsivos y optimizados, trabajando de manera colaborativa con clientes para crear experiencias únicas."
-            />
-            <ExperienceItem
-              title="QA Tester"
-              company="Tech Solutions"
-              dateRange="Mar 2014 - Jun 2016"
-              description="Realización de pruebas de calidad y rendimiento para aplicaciones web, asegurando la excelencia del producto final."
+              dateRange="Ene 2024 - Presente"
+              description="Desarrollo y diseño de interfaces web modernas y accesibles, utilizando WordPress, tecnologías como Javascript, React y Tailwind CSS."
+              skills={[
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "React",
+                "WordPress",
+                "Divi",
+                "SEO",
+                "Tailwind CSS",
+                "Photoshop",
+                "Illustrator",
+                "Google Ads",
+                "Meta Ads",
+              ]}
             />
           </div>
         </div>

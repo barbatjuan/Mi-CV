@@ -25,3 +25,8 @@
 .ExpContainer:hover h3 {
   color: #37ffe1; /* El color que deseas para el hover */
 }
+
+.skillsBtn {
+  background-color: #37ffe11a;
+  color: #37ffe1;
+}
