@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const BtnProyects = () => {
   return (
@@ -12,14 +12,10 @@ const BtnProyects = () => {
 const StyledWrapper = styled.div`
   button {
     font-size: 18px;
-    color: rgba(
-      55,
-      255,
-      225,
-      0.29
-    ); /* Cambié aquí para evitar el uso de !important */
-    font-family: inherit;
-    font-weight: 800;
+    color: rgba(55, 255, 225, 0.29);
+    font-family: "Poppins", sans-serif; /* Aplicando Poppins Light */
+    font-weight: 300; /* Este es el peso Light */
+    letter-spacing: 1px;
     cursor: pointer;
     position: relative;
     border: none;

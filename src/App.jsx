@@ -7,6 +7,7 @@ import { Link } from "react-scroll"; // Usamos react-scroll para smooth scrollin
 import BtnExperience from "./BtnExperience"; // Ajusta la ruta según corresponda
 import BtnCertificates from "./BtnCertificates";
 import BtnProyects from "./BtnProyects";
+// import CertificateReact from "./CertificateReact";
 
 const App = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -37,9 +38,17 @@ const App = () => {
           <h1 className="text-6xl font-bold mb-4 text-gray-200">
             Juan I. Barbat
           </h1>
-          <h2 className="text-2xl font-medium text-gray-400">
+          <h2
+            className="text-2xl font-light"
+            style={{
+              fontFamily: "'Poppins', sans-serif",
+              fontWeight: "200",
+              color: "#37ffe1",
+            }}
+          >
             Frontend Developer | Web Designer
           </h2>
+
           <p
             className="text-[16px] max-w-lg text-left text-gray-300 mt-4 font-light"
             style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
@@ -64,7 +73,7 @@ const App = () => {
                 </Link>
               </li>
               <li>
-                <Link to="pre" smooth={true} duration={500}>
+                <Link to="certificates-1" smooth={true} duration={500}>
                   <BtnCertificates />
                 </Link>
               </li>
@@ -162,9 +171,12 @@ const App = () => {
           </div>
 
           {/* Agregar el CertificateCard debajo de la experiencia */}
-          <div id="certificates" className="mt-8">
+          <div id="certificates-1" className="mt-8">
             <CertificateJS />
           </div>
+          {/* <div className="mt-8">
+            <CertificateReact />
+          </div> */}
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./CertificateJS.css"; // Importa el archivo CSS
+import "./CertificateReact.css"; // Importa el archivo CSS
 
 const CertificateCard = () => {
   const [message, setMessage] = useState("");
@@ -85,4 +85,4 @@ const CertificateCard = () => {
   );
 };
 
-export default CertificateCard;
+export default CertificateReact;
