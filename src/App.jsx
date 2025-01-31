@@ -148,8 +148,11 @@ const App = () => {
       <div
         className="cursor-light"
         style={{
-          left: `${cursorPosition.x - 330}px`, // Ajustamos correctamente con el tamaño del cursor
-          top: `${cursorPosition.y - 10}px`, // Ajustamos correctamente con el tamaño del cursor
+          position: "fixed", // Cambiado de absolute a fixed
+          left: `${cursorPosition.x - 0}px`, // Ajustamos correctamente con el tamaño del cursor
+          top: `${cursorPosition.y + 0}px`, // Ajustamos correctamente con el tamaño del cursor
+          pointerEvents: "none", // Evita que el cursor interfiera con otros elementos
+          zIndex: 10000, // Asegúrate de que el cursor esté por encima de otros elementos
         }}
       ></div>
     </div>
