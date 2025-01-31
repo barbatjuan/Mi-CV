@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import CustomButton from "./CustomButton"; // Importa el CustomButton
 import ExperienceItem from "./ExperienceItem"; // Importa el componente ExperienceItem
+import CertificateJS from "./CertificateJS"; // Importa el CertificateCard
 
 const App = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -135,8 +136,14 @@ const App = () => {
               ]}
             />
           </div>
+
+          {/* Agregar el CertificateCard debajo de la experiencia */}
+          <div className="mt-8">
+            <CertificateJS />
+          </div>
         </div>
       </div>
+
       {/* Custom cursor */}
       <div
         className="cursor-light"
