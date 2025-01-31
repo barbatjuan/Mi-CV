@@ -12,8 +12,8 @@ body {
   background: radial-gradient(
     circle,
     rgba(30, 58, 138, 0.1) 15%,
-    /* Azul con 10% de opacidad */ rgba(30, 58, 138, 0.05) 40%,
-    /* Suaviza la transición */ rgba(30, 58, 138, 0) 85%
+    /* Azul con 10% de opacidad */ rgba(43, 72, 153, 0.05) 40%,
+    /* Suaviza la transición */ rgba(30, 58, 138, 0.1%) 75%
       /* Se desvanece gradualmente */
   );
   mix-blend-mode: screen; /* Mantiene el efecto de luz */

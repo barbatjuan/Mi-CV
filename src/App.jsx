@@ -12,6 +12,7 @@ import BtnCertificates from "./BtnCertificates";
 import BtnProyects from "./BtnProyects";
 import ProfileImage from "./ProfileImage";
 import ProjectItem from "./ProjectItem"; // Asegúrate de que la ruta sea la correcta
+import SocialIcon from "./SocialIcons";
 
 const App = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -129,6 +130,7 @@ const App = () => {
                 </Link>
               </li>
             </ul>
+            <SocialIcon />
           </div>
         </div>
 
