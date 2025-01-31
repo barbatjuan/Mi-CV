@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import "./CertificateReact.css"; // Importa el archivo CSS
+import "./CertificateHTML.css"; // Importa el archivo CSS
 
-const CertificateCard = () => {
+const CertificateHTML = () => {
   const [message, setMessage] = useState("");
 
-  // Ruta de la imagen del certificado
-  const certificateUrl = "/src/Certificado-React-Top-10.jpg";
+  // Ruta corregida de la imagen del certificado (debe estar en /public)
+  const certificateUrl2 = "/src/desarrollo-web.jpg";
 
   useEffect(() => {
     setMessage(
-      "¡Felicidades, Juan Barbat! Has completado con éxito el curso de React en Coderhouse."
+      "¡Felicidades, Juan Barbat! Has completado con éxito el curso de Maquetador Web en Coderhouse."
     );
   }, []);
 
@@ -39,7 +39,7 @@ const CertificateCard = () => {
         <pre id="pre">
           <code>
             <span className="s1">Certificate</span>{" "}
-            <span className="s2">&lt;#React&gt;</span>
+            <span className="s2">&lt;#Maquetador Web&gt;</span>
             {"\n"}using<span className="s3"> namespace </span>Coder_House
             <span className="sc">;</span>
             {"\n"}
@@ -55,7 +55,7 @@ const CertificateCard = () => {
             {"  "}
             <span className="s4">div</span> <span className="s5">&lt;&lt;</span>{" "}
             <span className="s1">
-              " Felicidades por completar React en Coderhouse!"
+              " Felicidades por completar Maquetador Web en Coderhouse!"
             </span>
             <span className="s5">&lt;&lt;</span> <span className="sc">;</span>
             {"\n"}
@@ -74,7 +74,7 @@ const CertificateCard = () => {
 
       {/* Botón para ver el certificado */}
       <div className="s3">
-        <a href={certificateUrl} target="_blank" rel="noopener noreferrer">
+        <a href={certificateUrl2} target="_blank" rel="noopener noreferrer">
           console.
           <span className="s2">{"log"}</span>
           <span className="s1">{"(Ver Certificado)"}</span>{" "}
@@ -84,4 +84,4 @@ const CertificateCard = () => {
   );
 };
 
-export default CertificateCard;
+export default CertificateHTML;

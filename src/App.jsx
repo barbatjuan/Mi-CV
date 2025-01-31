@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import CustomButton from "./CustomButton"; // Importa el CustomButton
-import ExperienceItem from "./ExperienceItem"; // Importa el componente ExperienceItem
-import CertificateJS from "./CertificateJS"; // Importa el CertificateCard
-import { Link } from "react-scroll"; // Usamos react-scroll para smooth scrolling
-import BtnExperience from "./BtnExperience"; // Ajusta la ruta según corresponda
+import CustomButton from "./CustomButton";
+import ExperienceItem from "./ExperienceItem";
+import CertificateJS from "./CertificateJS";
+import CertificateReact from "./CertificateReact";
+import CertificateHTML from "./CertificateHTML"; // Importa el nuevo certificado HTML
+import CertificateFrontend from "./CertificateFrontend";
+import { Link } from "react-scroll";
+import BtnExperience from "./BtnExperience";
 import BtnCertificates from "./BtnCertificates";
 import BtnProyects from "./BtnProyects";
-// import CertificateReact from "./CertificateReact";
+import ProfileImage from "./ProfileImage";
 
 const App = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -35,6 +38,8 @@ const App = () => {
           className="flex flex-col justify-start w-1/2 pl-10 fixed top-20"
           style={{ maxWidth: "50%", zIndex: 10 }}
         >
+          <ProfileImage />
+
           <h1 className="text-6xl font-bold mb-4 text-gray-200">
             Juan I. Barbat
           </h1>
@@ -88,11 +93,8 @@ const App = () => {
 
         {/* Columna de la derecha */}
         <div className="flex flex-col justify-start w-1/2 pl-10 ml-auto">
-          <p
-            className="text-[14px] text-gray-300 mt-4 font-light"
-            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
-          >
-            Actualmente soy CEO y Diseñador en Web Coders. io, donde lidero el
+          <p className="text-[14px] text-gray-300 mt-4 font-light">
+            Actualmente soy CEO y Diseñador en Web Coders.io, donde lidero el
             diseño y desarrollo de soluciones web, trabajando estrechamente con
             nuestros clientes para entregar productos que superen sus
             expectativas.
@@ -103,19 +105,13 @@ const App = () => {
             perfeccionar mi enfoque en la calidad y el rendimiento de las
             aplicaciones.
           </p>
-          <p
-            className="text-[14px] text-gray-300 mt-4 font-light"
-            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
-          >
+          <p className="text-[14px] text-gray-300 mt-4 font-light">
             He trabajado con herramientas de diseño como Photoshop, Illustrator
             y Premiere, y en los últimos años me he enfocado en gestionar redes
             sociales para clientes, siempre buscando la manera de mejorar la
             presencia digital de las marcas.
           </p>
-          <p
-            className="text-[14px] text-gray-300 mt-4 font-light"
-            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
-          >
+          <p className="text-[14px] text-gray-300 mt-4 font-light">
             En mi tiempo libre, me encanta estar con mi familia, descubrir
             nuevos lugares viajando, leer algo interesante o simplemente
             disfrutar de un buen día de playa.
@@ -170,13 +166,12 @@ const App = () => {
             />
           </div>
 
-          {/* Agregar el CertificateCard debajo de la experiencia */}
           <div id="certificates-1" className="mt-8">
+            <CertificateHTML />
             <CertificateJS />
-          </div>
-          {/* <div className="mt-8">
             <CertificateReact />
-          </div> */}
+            <CertificateFrontend />
+          </div>
         </div>
       </div>
 
