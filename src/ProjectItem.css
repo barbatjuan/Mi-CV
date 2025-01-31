@@ -1,0 +1,32 @@
+/* Colores y tipografía */
+.text-gray-300 {
+  color: #d1d5db;
+}
+.text-gray-500 {
+  color: #6b7280;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.text-lg {
+  font-size: 1.125rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+}
+.text-base {
+  font-size: 1rem;
+}
+
+/* Estilo de hover para el contenedor de cada proyecto */
+.ProjectItem:hover {
+  background-color: #5f84ea21; /* Fondo al pasar el mouse */
+}
+
+.ProjectItem:hover h3 {
+  color: #37ffe1; /* Color para el título en hover */
+}
+
+.h3Projects:hover {
+  color: #37ffe1;
+}

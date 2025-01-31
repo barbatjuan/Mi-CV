@@ -11,9 +11,11 @@ import BtnExperience from "./BtnExperience";
 import BtnCertificates from "./BtnCertificates";
 import BtnProyects from "./BtnProyects";
 import ProfileImage from "./ProfileImage";
+import ProjectItem from "./ProjectItem"; // Asegúrate de que la ruta sea la correcta
 
 const App = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [activeSection, setActiveSection] = useState(""); // Estado para el seguimiento de la sección activa
 
   useEffect(() => {
     const handleMouseMove = (event) => {
@@ -24,6 +26,30 @@ const App = () => {
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5, // 50% de la sección debe estar en vista
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id); // Actualiza la sección activa
+        }
+      });
+    }, observerOptions);
+
+    // Observar las secciones
+    const sections = document.querySelectorAll(".section");
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
     };
   }, []);
 
@@ -73,17 +99,32 @@ const App = () => {
           <div className="mt-8">
             <ul>
               <li>
-                <Link to="experience" smooth={true} duration={500}>
+                <Link
+                  to="experience"
+                  smooth={true}
+                  duration={500}
+                  className={activeSection === "experience" ? "active" : ""}
+                >
                   <BtnExperience />
                 </Link>
               </li>
               <li>
-                <Link to="certificates-1" smooth={true} duration={500}>
+                <Link
+                  to="certificates-1"
+                  smooth={true}
+                  duration={500}
+                  className={activeSection === "certificates-1" ? "active" : ""}
+                >
                   <BtnCertificates />
                 </Link>
               </li>
               <li>
-                <Link to="projects" smooth={true} duration={500}>
+                <Link
+                  to="projects"
+                  smooth={true}
+                  duration={500}
+                  className={activeSection === "projects" ? "active" : ""}
+                >
                   <BtnProyects />
                 </Link>
               </li>
@@ -118,7 +159,11 @@ const App = () => {
           </p>
 
           {/* Experience Items */}
-          <div id="experience" className="mt-8">
+          <div
+            id="experience"
+            className="mt-8 section"
+            style={{ paddingTop: "60px" }}
+          >
             <ExperienceItem
               title="Analista Desarrollador Genexus"
               company="KBI Global - ISP Chile"
@@ -166,11 +211,190 @@ const App = () => {
             />
           </div>
 
-          <div id="certificates-1" className="mt-8">
+          <div id="certificates-1" className="mt-8 section">
             <CertificateHTML />
             <CertificateJS />
             <CertificateReact />
             <CertificateFrontend />
+          </div>
+
+          {/* Sección de Proyectos */}
+          <div id="projects" className="mt-8 section">
+            <ProjectItem
+              title="Mi Casa Construcciones"
+              description="Empresa de construcción"
+              technologies={["HTML", "CSS", "JavaScript"]}
+              link="https://www.micasaconstrucciones.uy"
+              skills={["HTML", "CSS", "JavaScript"]} // Asegúrate de incluir 'skills' aquí
+            />
+            <ProjectItem
+              title="Emigrar con Ana"
+              description="Migration Consulting para Anastasia Leonova - Youtuber"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+                "Diseño de Logo",
+              ]}
+              link="https://www.emigrarconana.com"
+            />
+            <ProjectItem
+              title="Web Coders"
+              description="Proyecto personal para mi Agencia"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+                "Illustrator",
+                "Redes Sociales",
+              ]}
+              link="https://www.webcoders.io"
+            />
+            <ProjectItem
+              title="Camila Verdún"
+              description="Un sitio web creado en colaboración para Camila Verdún - Youtuber"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+                "Diseño de Logo",
+              ]}
+              link="https://www.camilaverdun.com"
+            />
+            <ProjectItem
+              title="Sublimat"
+              description="E-Shop sin pasarela de pagos para Mathias de Sublimat"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+                "WooCommerce",
+              ]}
+              link="https://www.sublimat.uy"
+            />
+            <ProjectItem
+              title="Casor.io"
+              description="Una Web novedosa y muy estilizada para una empresa de creación de tarjetas digitales para Bodas"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+                "Diseño de Logo",
+                "Redes Sociales",
+              ]}
+              link="https://www.casor.io"
+            />
+            <ProjectItem
+              title="Laguna Garzón"
+              description="Un sitio web precioso con excelentes fotografías proporcionadas por Ana Amorin"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+              ]}
+              link="https://www.lagunagarzon.uy"
+            />
+            <ProjectItem
+              title="Raciones Caninas"
+              description="E-Commerce para una empresa de importación y distribución de articulos para mascotas"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+                "Diseño de Logo",
+                "WooCommerce",
+                "Pasarela de pagos",
+                "Redes Sociales",
+              ]}
+              link="https://www.racionescaninas.com.uy"
+            />
+            <ProjectItem
+              title="Oro Azul"
+              description="E-Commerce para una empresa de importación y distribución de Filtros Stéfani"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Photoshop",
+                "Hosting",
+                "Diseño de Logo",
+                "WooCommerce",
+                "Pasarela de pagos",
+              ]}
+              link="https://www.oroazuluy.com"
+            />
+            <ProjectItem
+              title="Depilación MC"
+              description="Sitio web para Mariela Carballo, tratamientos de estética y depilación definitiva"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Photoshop",
+                "Hosting",
+                "Meta Ads",
+                "Google Ads",
+                "Redes Sociales",
+              ]}
+              link="https://www.depilacionmc.com"
+            />
+            <ProjectItem
+              title="Rayos del Sol"
+              description="Rayos del Sol es un complejo de cabañas con mas de 15 años en La Paloma, Rocha"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Photoshop",
+                "Hosting",
+                "Meta Ads",
+                "Google Ads",
+                "Redes Sociales",
+              ]}
+              link="https://www.rayosdelsol.uy"
+            />
+            <ProjectItem
+              title="E-Raciones"
+              description="E-Shop para empresa de importación y distribución de alimentos para mascotas"
+              technologies={[
+                "Shopify",
+                "Photoshop",
+                "Hosting",
+                "Meta Ads",
+                "Google Ads",
+                "Redes Sociales",
+              ]}
+              link="https://www.eraciones.com"
+            />
+            <ProjectItem
+              title="Juano Cocina"
+              description="E-Commerce para emprendimiento local de alimentos gourmet"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "WooCommerce",
+                "Pasarelas de Pago",
+                "Photoshop",
+                "Hosting",
+                "Meta Ads",
+                "Google Ads",
+                "Redes Sociales",
+              ]}
+              link="https://www.rayosdelsol.uy"
+            />
+
+            {/* Agrega más ProjectItem según sea necesario */}
           </div>
         </div>
       </div>
