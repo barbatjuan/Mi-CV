@@ -9,7 +9,9 @@ const ExperienceItem = ({ title, company, dateRange, description, skills }) => {
       </h3>
       <h4 className="text-lg font-medium text-gray-500">{company}</h4>
       <p className="text-sm text-gray-400">{dateRange}</p>
-      <p className="text-base text-gray-300 mt-2">{description}</p>
+      <p className="text-xs sm:text-sm md:text-base text-gray-300 mt-4 font-light">
+        {description}
+      </p>
 
       {/* Botones de habilidades */}
       {skills && skills.length > 0 && (
@@ -17,7 +19,7 @@ const ExperienceItem = ({ title, company, dateRange, description, skills }) => {
           {skills.map((skill, index) => (
             <span
               key={index}
-              className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full skillsBtn"
+              className="bg-blue-600 text-white text-[10px] sm:text-xs px-3 py-1 rounded-full skillsBtn"
             >
               {skill}
             </span>

@@ -1,7 +1,9 @@
+/* Estilos generales */
 body {
   background-color: #0a192f; /* Azul oscuro profundo */
 }
 
+/* Cursor personalizado */
 .cursor-light {
   position: absolute;
   pointer-events: none;
@@ -20,10 +22,88 @@ body {
   transition: transform 0.1s ease-out;
 }
 
+/* Contenedor de certificados */
 .certificates-container {
   display: flex;
   flex-direction: column;
   align-items: center; /* Centra horizontalmente */
   text-align: center; /* Asegura que el título esté centrado */
   gap: 20px; /* Espaciado entre elementos */
+}
+
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 1024px) {
+  .cursor-light {
+    width: 500px; /* Ajustamos el tamaño para pantallas más pequeñas */
+    height: 500px;
+  }
+
+  .certificates-container {
+    gap: 15px; /* Reducimos el espacio entre los elementos */
+  }
+}
+
+/* Media Queries para móviles */
+@media (max-width: 768px) {
+  .cursor-light {
+    width: 400px; /* Ajustamos aún más el tamaño para móviles */
+    height: 400px;
+  }
+
+  .certificates-container {
+    gap: 10px; /* Menos espacio en móviles */
+  }
+}
+
+/* Agrega estas media queries al final de tu archivo CSS */
+
+/* Media Queries para móviles (pantallas de hasta 768px) */
+@media (max-width: 768px) {
+  /* Título principal */
+  h1 {
+    margin-top: 10px;
+    font-size: 2rem; /* Reducimos el tamaño del título */
+  }
+
+  /* Subtítulo */
+  h2 {
+    font-size: 1rem; /* Reducimos el tamaño del subtítulo */
+  }
+
+  /* Párrafos */
+  p {
+    font-size: 0.8; /* Reducimos el tamaño de los párrafos */
+  }
+
+  /* Texto de los botones de navegación */
+  .btn-text {
+    font-size: 12px; /* Reducimos el tamaño del texto de los botones */
+  }
+
+  /* Texto de los elementos de experiencia */
+  .experience-item h3 {
+    font-size: 1.2rem; /* Reducimos el tamaño del título de experiencia */
+  }
+
+  .experience-item p {
+    font-size: 12px; /* Reducimos el tamaño del texto de experiencia */
+  }
+
+  /* Texto de los certificados */
+  .certificate-title {
+    font-size: 1.2rem; /* Reducimos el tamaño del título de certificados */
+  }
+
+  .certificate-description {
+    font-size: 12px; /* Reducimos el tamaño del texto de certificados */
+  }
+
+  /* Texto de los proyectos */
+  .project-item h3 {
+    font-size: 1.2rem; /* Reducimos el tamaño del título de proyectos */
+  }
+
+  .project-item p {
+    font-size: 12px; /* Reducimos el tamaño del texto de proyectos */
+  }
 }

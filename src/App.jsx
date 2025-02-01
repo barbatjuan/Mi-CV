@@ -56,14 +56,14 @@ const App = () => {
 
   return (
     <div
-      className="text-white flex justify-center items-start bg-[#0a192f] relative"
-      style={{ width: "70%", paddingTop: "70px", margin: "0 auto" }}
+      className="text-white flex justify-center items-start bg-[#0a192f] relative w-full lg:w-[70%] mx-auto px-4 lg:px-0"
+      style={{ paddingTop: "70px" }}
     >
-      <div className="flex w-full justify-between">
+      <div className="flex flex-col lg:flex-row w-full justify-between">
         {/* Columna de la izquierda fija */}
         <div
-          className="flex flex-col justify-start w-1/2 pl-10 fixed top-20"
-          style={{ maxWidth: "50%", zIndex: 10 }}
+          className="flex flex-col justify-start w-full lg:w-1/2 pl-4 lg:pl-10 lg:fixed lg:top-20"
+          style={{ maxWidth: "100%", zIndex: 10 }}
         >
           <ProfileImage />
 
@@ -135,26 +135,42 @@ const App = () => {
         </div>
 
         {/* Columna de la derecha */}
-        <div className="flex flex-col justify-start w-1/2 pl-10 ml-auto">
-          <p className="text-[14px] text-gray-300 mt-4 font-light">
+        <div className="flex flex-col justify-start w-full lg:w-1/2 pl-4 lg:pl-10 lg:ml-auto mt-8 lg:mt-0">
+          <p
+            className="text-[14px] max-w-lg text-left text-gray-300 mt-4 font-light"
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
+          >
+            {" "}
             Actualmente soy CEO y Diseñador en Web Coders.io, donde lidero el
             diseño y desarrollo de soluciones web, trabajando estrechamente con
             nuestros clientes para entregar productos que superen sus
             expectativas.
           </p>
-          <p className="text-[14px] text-gray-300 mt-4 font-semibold">
+          <p
+            className="text-[14px] max-w-lg text-left text-gray-300 mt-4 font-light"
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
+          >
+            {" "}
             Me apasiona crear soluciones accesibles y visualmente atractivas.
             Además, tengo un recorrido como QA tester, lo que me ha permitido
             perfeccionar mi enfoque en la calidad y el rendimiento de las
             aplicaciones.
           </p>
-          <p className="text-[14px] text-gray-300 mt-4 font-light">
+          <p
+            className="text-[14px] max-w-lg text-left text-gray-300 mt-4 font-light"
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
+          >
+            {" "}
             He trabajado con herramientas de diseño como Photoshop, Illustrator
             y Premiere, y en los últimos años me he enfocado en gestionar redes
             sociales para clientes, siempre buscando la manera de mejorar la
             presencia digital de las marcas.
           </p>
-          <p className="text-[14px] text-gray-300 mt-4 font-light">
+          <p
+            className="text-[14px] max-w-lg text-left text-gray-300 mt-4 font-light"
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "200" }}
+          >
+            {" "}
             En mi tiempo libre, me encanta estar con mi familia, descubrir
             nuevos lugares viajando, leer algo interesante o simplemente
             disfrutar de un buen día de playa.
