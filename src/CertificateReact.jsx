@@ -7,12 +7,6 @@ const CertificateCard = () => {
   // Ruta de la imagen del certificado
   const certificateUrl = "/src/Certificado-React-Top-10.jpg";
 
-  useEffect(() => {
-    setMessage(
-      "¡Felicidades, Juan Barbat! Has completado con éxito el curso de React en Coderhouse."
-    );
-  }, []);
-
   return (
     <div className="card">
       <div className="titlebar">
@@ -40,6 +34,7 @@ const CertificateCard = () => {
           <code>
             <span className="s1">Certificate</span>{" "}
             <span className="s2">&lt;#React&gt;</span>
+            {"\n"}
             {"\n"}using<span className="s3"> namespace </span>Coder_House
             <span className="sc">;</span>
             {"\n"}
@@ -61,7 +56,6 @@ const CertificateCard = () => {
             {"\n"}
             {"  "}
             <span className="s6">return</span> 1<span className="sc">;</span>
-            {"\n"}
             {"\n"}
           </code>
         </pre>

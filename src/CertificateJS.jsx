@@ -8,11 +8,7 @@ const CertificateCard = () => {
   const certificateUrl = "/src/JavaScript Juan Barbat.png";
 
   // Usamos useEffect para simular una acción cuando el componente se monta
-  useEffect(() => {
-    setMessage(
-      " ¡Felicidades, Juan Barbat! Has completado con éxito el curso de JavaScript en Coderhouse."
-    );
-  }, []); // Solo se ejecuta una vez cuando el componente se monta
+  // Solo se ejecuta una vez cuando el componente se monta
 
   return (
     <div className="card">
@@ -41,6 +37,7 @@ const CertificateCard = () => {
           <code>
             <span className="s1">Certificate</span>{" "}
             <span className="s2">&lt;#JavaScript&gt;</span>
+            {"\n"}
             {"\n"}using<span className="s3"> namespace </span>Coder_House
             <span className="sc">;</span>
             {"\n"}
@@ -62,7 +59,6 @@ const CertificateCard = () => {
             {"\n"}
             {"  "}
             <span className="s6">return</span> 1<span className="sc">;</span>
-            {"\n"}
             {"\n"}
           </code>
         </pre>

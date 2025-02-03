@@ -7,12 +7,6 @@ const CertificateHTML = () => {
   // Ruta corregida de la imagen del certificado (debe estar en /public)
   const certificateUrl2 = "/src/desarrollo-web.jpg";
 
-  useEffect(() => {
-    setMessage(
-      "¡Felicidades, Juan Barbat! Has completado con éxito el curso de Maquetador Web en Coderhouse."
-    );
-  }, []);
-
   return (
     <div className="card">
       <div className="titlebar">
@@ -40,6 +34,7 @@ const CertificateHTML = () => {
           <code>
             <span className="s1">Certificate</span>{" "}
             <span className="s2">&lt;#Maquetador Web&gt;</span>
+            {"\n"}
             {"\n"}using<span className="s3"> namespace </span>Coder_House
             <span className="sc">;</span>
             {"\n"}
@@ -62,14 +57,8 @@ const CertificateHTML = () => {
             {"  "}
             <span className="s6">return</span> 1<span className="sc">;</span>
             {"\n"}
-            {"\n"}
           </code>
         </pre>
-      </div>
-
-      {/* Mensaje de logro */}
-      <div className="logro-message">
-        <h3>{message}</h3>
       </div>
 
       {/* Botón para ver el certificado */}

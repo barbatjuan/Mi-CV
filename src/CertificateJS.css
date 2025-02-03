@@ -3,15 +3,13 @@
 .card {
   width: 100%; /* Hacer que ocupe todo el ancho disponible */
   max-width: 600px; /* Limitar el ancho máximo de la tarjeta si es necesario */
-  height: auto; /* Dejamos que la altura se ajuste según el contenido */
-  height: 300px;
+  height: auto; /* La altura se ajusta según el contenido */
   background: #37ffe124;
   border: 1px solid #37ffe1;
   font-size: 14px;
   font-family: monospace;
-  overflow: auto;
+  overflow: hidden; /* Eliminamos el scroll */
   margin-bottom: 30px;
-  padding-bottom: 10px;
 }
 
 .titlebar {
@@ -22,6 +20,7 @@
   background-color: #37ffe11a;
   width: 100%;
   text-align: right;
+  padding: 5px 10px; /* Padding específico para la titlebar */
 }
 
 .card button {
@@ -46,11 +45,11 @@ button svg {
 }
 
 #pre {
-  overflow: auto;
   width: 100%;
   padding: 10px;
-  height: auto;
   color: #bafff8;
+  white-space: pre-wrap; /* Asegura que el texto se ajuste */
+  word-wrap: break-word; /* Evita que el texto desborde */
 }
 
 .curlies {
@@ -91,4 +90,47 @@ button svg {
 
 .s6 {
   color: #ffff00;
+}
+
+.logro-message {
+  padding: 10px; /* Añadimos padding para mejor espaciado */
+  font-size: 14px; /* Tamaño de fuente para el mensaje */
+  color: #ffffff; /* Color del texto */
+  text-align: center; /* Centramos el texto */
+}
+
+.s3 {
+  padding: 10px; /* Añadimos padding para mejor espaciado */
+  text-align: center; /* Centramos el texto */
+}
+
+.s3 a {
+  color: #4281ff; /* Color del enlace */
+  text-decoration: none; /* Eliminamos el subrayado */
+}
+
+.s3 a:hover {
+  text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
+/* Media queries para móviles */
+@media (max-width: 768px) {
+  .card {
+    padding: 0; /* Eliminamos el padding general en móviles */
+  }
+
+  #pre {
+    padding: 5px; /* Reducimos el padding en móviles */
+    font-size: 12px; /* Reducimos el tamaño de la fuente en móviles */
+  }
+
+  .logro-message {
+    padding: 5px; /* Reducimos el padding en móviles */
+    font-size: 12px; /* Reducimos el tamaño de la fuente en móviles */
+  }
+
+  .s3 {
+    padding: 5px; /* Reducimos el padding en móviles */
+    font-size: 12px; /* Reducimos el tamaño de la fuente en móviles */
+  }
 }

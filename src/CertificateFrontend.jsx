@@ -7,12 +7,6 @@ const CertificateFrontend = () => {
   // Ruta de la imagen del certificado
   const certificateUrl = "/src/frontend juan barbat.png";
 
-  useEffect(() => {
-    setMessage(
-      "¡Felicidades, Juan Barbat! Has completado con éxito la Carrera de FrontEnd Developer en Coderhouse."
-    );
-  }, []);
-
   return (
     <div className="card">
       <div className="titlebar">
@@ -40,6 +34,7 @@ const CertificateFrontend = () => {
           <code>
             <span className="s1">Certificate</span>{" "}
             <span className="s2">&lt;#FrontEnd&gt;</span>
+            {"\n"}
             {"\n"}using<span className="s3"> namespace </span>Coder_House
             <span className="sc">;</span>
             {"\n"}
@@ -61,7 +56,6 @@ const CertificateFrontend = () => {
             {"\n"}
             {"  "}
             <span className="s6">return</span> 1<span className="sc">;</span>
-            {"\n"}
             {"\n"}
           </code>
         </pre>

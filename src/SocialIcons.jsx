@@ -7,7 +7,7 @@ const SocialIcon = () => {
       <div className="SocialIcon">
         <a
           className="social-link1"
-          href="https://github.com/barbatjuan "
+          href="https://github.com/barbatjuan"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -43,10 +43,7 @@ const SocialIcon = () => {
 const StyledWrapper = styled.div`
   position: fixed;
   bottom: 20px;
-  left: 20px; /* Cambiado de 50% a 20px para moverlo a la izquierda */
-  transform: translateX(
-    0
-  ); /* Se elimina la traducción horizontal para mantenerlo alineado */
+  left: 20px;
   display: flex;
   gap: 20px;
   z-index: 1000;
@@ -54,6 +51,14 @@ const StyledWrapper = styled.div`
   width: 270px;
   justify-content: space-between;
   align-items: center;
+
+  /* Estilos para móviles */
+  @media (max-width: 768px) {
+    top: 20px; /* Mover los iconos a la parte superior */
+    bottom: auto; /* Desactivar la posición inferior */
+    left: 90%; /* Centrar horizontalmente */
+    transform: translateX(-50%); /* Ajustar la posición horizontal */
+  }
 
   .SocialIcon {
     display: flex;
@@ -67,7 +72,7 @@ const StyledWrapper = styled.div`
     font-size: 24px;
     font-weight: 700;
     opacity: 1;
-    transition: fill 0.25s; /* Cambié esta propiedad a 'fill' en lugar de 'opacity' */
+    transition: fill 0.25s;
     z-index: 2;
     cursor: pointer;
   }
@@ -92,7 +97,7 @@ const StyledWrapper = styled.div`
 
   .SocialIcon .social-link1:hover svg,
   .SocialIcon .social-link2:hover svg {
-    fill: #37ffe1; /* Cambié el color del SVG al hacer hover */
+    fill: #37ffe1;
   }
 
   .SocialIcon .social-link1:hover {
