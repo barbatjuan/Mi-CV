@@ -6,6 +6,8 @@ import CertificateJS from "./CertificateJS";
 import CertificateReact from "./CertificateReact";
 import CertificateHTML from "./CertificateHTML"; // Importa el nuevo certificado HTML
 import CertificateFrontend from "./CertificateFrontend";
+import CertificateQA from "./CertificateQA";
+import CertificateBackI from "./CertificateBackI";
 import { Link } from "react-scroll";
 import BtnExperience from "./BtnExperience";
 import BtnCertificates from "./BtnCertificates";
@@ -231,9 +233,11 @@ const App = () => {
 
           <div id="certificates-1" className="mt-8 section">
             <CertificateHTML />
+            <CertificateQA />
             <CertificateJS />
             <CertificateReact />
             <CertificateFrontend />
+            <CertificateBackI />
           </div>
 
           {/* Sección de Proyectos */}
