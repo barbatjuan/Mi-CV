@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import CustomButton from "./CustomButton";
+import WhatsAppButton from "./WhatsAppButton";
 import ExperienceItem from "./ExperienceItem";
 import CertificateJS from "./CertificateJS";
 import CertificateReact from "./CertificateReact";
@@ -97,8 +98,9 @@ const App = () => {
           </p>
 
           {/* Custom Button with margin */}
-          <div className="mt-6">
+          <div className="mt-6 flex gap-4">
             <CustomButton />
+            <WhatsAppButton />
           </div>
 
           {/* Lista de botones de navegación */}
@@ -235,15 +237,68 @@ const App = () => {
           </div>
 
           <div id="certificates-1" className="mt-8 section">
-            <CertificateHTML />
-            <CertificateQA />
-            <CertificateJS />
-            <CertificateReact />
-            <CertificateFrontend />
-            <CertificateBackI />
-            <CertificateBackII />
-            <CertificateBackIII />
-            <CertificateFullStack />
+            {/* Full Stack Developer */}
+            <div className="certificate-group mb-12">
+              <h3 className="text-2xl font-semibold text-gray-300 mb-6 certificate-group-title">
+                <span className="text-[#37ffe1]">Full Stack</span> Developer
+              </h3>
+              <div className="certificate-grid">
+                <div className="certificate-item" style={{animationDelay: '0.1s'}}>
+                  <CertificateFullStack />
+                </div>
+              </div>
+            </div>
+
+            {/* Certificaciones Backend */}
+            <div className="certificate-group mb-12">
+              <h3 className="text-2xl font-semibold text-gray-300 mb-6 certificate-group-title">
+                <span className="text-[#37ffe1]">Backend</span> Development
+              </h3>
+              <div className="certificate-grid">
+                <div className="certificate-item" style={{animationDelay: '0.2s'}}>
+                  <CertificateBackI />
+                </div>
+                <div className="certificate-item" style={{animationDelay: '0.3s'}}>
+                  <CertificateBackII />
+                </div>
+                <div className="certificate-item" style={{animationDelay: '0.4s'}}>
+                  <CertificateBackIII />
+                </div>
+              </div>
+            </div>
+
+            {/* Certificaciones Frontend */}
+            <div className="certificate-group mb-12">
+              <h3 className="text-2xl font-semibold text-gray-300 mb-6 certificate-group-title">
+                <span className="text-[#37ffe1]">Frontend</span> Development
+              </h3>
+              <div className="certificate-grid">
+                <div className="certificate-item" style={{animationDelay: '0.5s'}}>
+                  <CertificateHTML />
+                </div>
+                <div className="certificate-item" style={{animationDelay: '0.6s'}}>
+                  <CertificateJS />
+                </div>
+                <div className="certificate-item" style={{animationDelay: '0.7s'}}>
+                  <CertificateReact />
+                </div>
+                <div className="certificate-item" style={{animationDelay: '0.8s'}}>
+                  <CertificateFrontend />
+                </div>
+              </div>
+            </div>
+
+            {/* Quality Assurance */}
+            <div className="certificate-group mb-12">
+              <h3 className="text-2xl font-semibold text-gray-300 mb-6 certificate-group-title">
+                <span className="text-[#37ffe1]">Quality</span> Assurance
+              </h3>
+              <div className="certificate-grid">
+                <div className="certificate-item" style={{animationDelay: '0.9s'}}>
+                  <CertificateQA />
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Sección de Proyectos */}
@@ -281,6 +336,21 @@ const App = () => {
                 "Redes Sociales",
               ]}
               link="https://www.webcoders.io"
+            />
+            <ProjectItem
+              title="Brilla Bonito Podcast"
+              description="Sitio web para podcast de Ana María Henao con integración a YouTube e Instagram"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+                "Redes Sociales",
+                "YouTube Integration",
+                "Branding",
+              ]}
+              link="https://brillabonito.com"
             />
             <ProjectItem
               title="Camila Verdún"

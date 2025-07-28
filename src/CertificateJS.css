@@ -1,5 +1,32 @@
 /* CertificateCard.css */
 
+/* Contenedor del certificado con funcionalidad minimizar/maximizar */
+.certificate-container {
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.certificate-container.minimized {
+  height: 45px;
+  overflow: hidden;
+}
+
+.certificate-container.minimized .card {
+  height: 45px;
+  overflow: hidden;
+}
+
+.certificate-container.minimized .cppcode,
+.certificate-container.minimized .logro-message,
+.certificate-container.minimized .s3 {
+  display: none;
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: default;
+}
+
 .card {
   width: 100%; /* Hacer que ocupe todo el ancho disponible */
   max-width: 600px; /* Limitar el ancho máximo de la tarjeta si es necesario */
@@ -31,6 +58,23 @@
   outline: 0;
   background: transparent;
   transition: 0.2s;
+  cursor: pointer;
+}
+
+.card button:hover:not(:disabled) {
+  background: rgba(55, 255, 225, 0.2);
+  border-radius: 3px;
+}
+
+.card button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.card button:disabled svg path,
+.card button:disabled svg rect,
+.card button:disabled svg polygon {
+  fill: #666;
 }
 
 button svg path,

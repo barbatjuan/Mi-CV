@@ -1,0 +1,145 @@
+/* MinimizableCertificate.css */
+
+.minimizable-certificate {
+  width: 600px; /* Ancho fijo para todas las ventanas */
+  background: #37ffe124;
+  border: 1px solid #37ffe1;
+  font-size: 14px;
+  font-family: monospace;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Efecto hover neón en todo el certificado */
+.minimizable-certificate:hover {
+  border-color: #37ffe1;
+  box-shadow: 0 0 10px rgba(55, 255, 225, 0.3), 0 0 20px rgba(55, 255, 225, 0.1);
+  background: #37ffe130;
+}
+
+/* Barra de título */
+.certificate-titlebar {
+  background-color: #37ffe11a;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  border-bottom: 1px solid #37ffe133;
+}
+
+.window-title {
+  color: #37ffe1;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.window-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.control-btn {
+  width: 40px;
+  height: 35px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Removido - se usan los estilos específicos de cada botón */
+
+/* Botones siempre visibles pero con opacidad reducida cuando no están activos */
+.minimize-btn {
+  opacity: 1;
+}
+
+.minimizable-certificate.minimized .minimize-btn {
+  opacity: 0.4;
+}
+
+.maximize-btn {
+  opacity: 0.4;
+}
+
+.minimizable-certificate.minimized .maximize-btn {
+  opacity: 1;
+}
+
+.close-btn {
+  opacity: 1;
+}
+
+.control-btn svg {
+  width: 10px;
+  height: 10px;
+}
+
+.control-btn svg rect,
+.control-btn svg path,
+.control-btn svg polygon {
+  fill: #ffffff;
+}
+
+/* Botón de maximizar - solo borde sin relleno */
+.maximize-btn svg rect {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1;
+}
+
+/* Estilos específicos para cada botón */
+.close-btn:hover:not(:disabled) {
+  background: rgba(255, 95, 87, 0.2);
+  border-radius: 3px;
+}
+
+.minimize-btn:hover:not(:disabled) {
+  background: rgba(255, 189, 68, 0.2);
+  border-radius: 3px;
+}
+
+.maximize-btn:hover:not(:disabled) {
+  background: rgba(40, 201, 64, 0.2);
+  border-radius: 3px;
+}
+
+/* Contenido del certificado */
+.certificate-body {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Asegurar que todos los certificados dentro tengan el mismo fondo */
+.minimizable-certificate .card {
+  background: transparent !important;
+  border: none !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.certificate-body:hover {
+  background: rgba(55, 255, 225, 0.02);
+}
+
+/* Estados minimizado/maximizado */
+.minimizable-certificate.minimized {
+  height: 40px;
+  overflow: hidden;
+}
+
+.minimizable-certificate.minimized .certificate-titlebar {
+  border-bottom: none;
+}
+
+.minimizable-certificate.maximized {
+  height: auto;
+}
