@@ -8,6 +8,9 @@ import CertificateHTML from "./CertificateHTML"; // Importa el nuevo certificado
 import CertificateFrontend from "./CertificateFrontend";
 import CertificateQA from "./CertificateQA";
 import CertificateBackI from "./CertificateBackI";
+import CertificateBackII from "./CertificateBackII";
+import CertificateBackIII from "./CertificateBackIII";
+import CertificateFullStack from "./CertificateFullStack";
 import { Link } from "react-scroll";
 import BtnExperience from "./BtnExperience";
 import BtnCertificates from "./BtnCertificates";
@@ -80,7 +83,7 @@ const App = () => {
               color: "#37ffe1",
             }}
           >
-            Frontend Developer | Web Designer
+            Full Stack Developer | Web Designer
           </h2>
 
           <p
@@ -238,6 +241,9 @@ const App = () => {
             <CertificateReact />
             <CertificateFrontend />
             <CertificateBackI />
+            <CertificateBackII />
+            <CertificateBackIII />
+            <CertificateFullStack />
           </div>
 
           {/* Sección de Proyectos */}

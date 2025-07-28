@@ -3,8 +3,7 @@ import "./ExperienceItem.css";
 
 const ExperienceItem = ({ title, company, dateRange, description, skills }) => {
   return (
-    <a href="">
-      <div className="mb-8 p-4 rounded-lg transition duration-300 ease-in-out hover:shadow-lg ExpContainer">
+    <div className="mb-8 p-4 rounded-lg transition duration-300 ease-in-out hover:shadow-lg ExpContainer">
         <h3 className="text-xl font-semibold text-gray-300 h3Experience">
           {title}
         </h3>
@@ -27,8 +26,7 @@ const ExperienceItem = ({ title, company, dateRange, description, skills }) => {
             ))}
           </div>
         )}
-      </div>
-    </a>
+    </div>
   );
 };
 
