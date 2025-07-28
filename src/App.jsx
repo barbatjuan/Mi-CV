@@ -238,63 +238,79 @@ const App = () => {
 
           <div id="certificates-1" className="mt-8 section">
             {/* Full Stack Developer */}
-            <div className="certificate-group mb-12">
-              <h3 className="text-2xl font-semibold text-gray-300 mb-6 certificate-group-title">
-                <span className="text-[#37ffe1]">Full Stack</span> Developer
-              </h3>
-              <div className="certificate-grid">
-                <div className="certificate-item" style={{animationDelay: '0.1s'}}>
+            <div className="certificate-category mb-16">
+              <div className="category-header">
+                <h3 className="category-title">
+                  <span className="glow-text">Full Stack</span> 
+                  <span className="title-secondary">Developer</span>
+                </h3>
+                <div className="category-divider"></div>
+              </div>
+              <div className="certificate-column">
+                <div className="certificate-wrapper mb-8">
                   <CertificateFullStack />
                 </div>
               </div>
             </div>
 
             {/* Certificaciones Backend */}
-            <div className="certificate-group mb-12">
-              <h3 className="text-2xl font-semibold text-gray-300 mb-6 certificate-group-title">
-                <span className="text-[#37ffe1]">Backend</span> Development
-              </h3>
-              <div className="certificate-grid">
-                <div className="certificate-item" style={{animationDelay: '0.2s'}}>
+            <div className="certificate-category mb-16">
+              <div className="category-header">
+                <h3 className="category-title">
+                  <span className="glow-text">Backend</span> 
+                  <span className="title-secondary">Development</span>
+                </h3>
+                <div className="category-divider"></div>
+              </div>
+              <div className="certificate-column">
+                <div className="certificate-wrapper mb-8">
                   <CertificateBackI />
                 </div>
-                <div className="certificate-item" style={{animationDelay: '0.3s'}}>
+                <div className="certificate-wrapper mb-8">
                   <CertificateBackII />
                 </div>
-                <div className="certificate-item" style={{animationDelay: '0.4s'}}>
+                <div className="certificate-wrapper mb-8">
                   <CertificateBackIII />
                 </div>
               </div>
             </div>
 
             {/* Certificaciones Frontend */}
-            <div className="certificate-group mb-12">
-              <h3 className="text-2xl font-semibold text-gray-300 mb-6 certificate-group-title">
-                <span className="text-[#37ffe1]">Frontend</span> Development
-              </h3>
-              <div className="certificate-grid">
-                <div className="certificate-item" style={{animationDelay: '0.5s'}}>
+            <div className="certificate-category mb-16">
+              <div className="category-header">
+                <h3 className="category-title">
+                  <span className="glow-text">Frontend</span> 
+                  <span className="title-secondary">Development</span>
+                </h3>
+                <div className="category-divider"></div>
+              </div>
+              <div className="certificate-column">
+                <div className="certificate-wrapper mb-8">
                   <CertificateHTML />
                 </div>
-                <div className="certificate-item" style={{animationDelay: '0.6s'}}>
+                <div className="certificate-wrapper mb-8">
                   <CertificateJS />
                 </div>
-                <div className="certificate-item" style={{animationDelay: '0.7s'}}>
+                <div className="certificate-wrapper mb-8">
                   <CertificateReact />
                 </div>
-                <div className="certificate-item" style={{animationDelay: '0.8s'}}>
+                <div className="certificate-wrapper mb-8">
                   <CertificateFrontend />
                 </div>
               </div>
             </div>
 
             {/* Quality Assurance */}
-            <div className="certificate-group mb-12">
-              <h3 className="text-2xl font-semibold text-gray-300 mb-6 certificate-group-title">
-                <span className="text-[#37ffe1]">Quality</span> Assurance
-              </h3>
-              <div className="certificate-grid">
-                <div className="certificate-item" style={{animationDelay: '0.9s'}}>
+            <div className="certificate-category mb-16">
+              <div className="category-header">
+                <h3 className="category-title">
+                  <span className="glow-text">Quality</span> 
+                  <span className="title-secondary">Assurance</span>
+                </h3>
+                <div className="category-divider"></div>
+              </div>
+              <div className="certificate-column">
+                <div className="certificate-wrapper mb-8">
                   <CertificateQA />
                 </div>
               </div>

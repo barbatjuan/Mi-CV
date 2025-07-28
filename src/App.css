@@ -31,6 +31,75 @@ body {
   gap: 20px; /* Espaciado entre elementos */
 }
 
+/* Estilos para categorías de certificados */
+.certificate-category {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.category-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.category-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #f8f9fa;
+}
+
+.title-secondary {
+  color: #9ca3af;
+}
+
+.glow-text {
+  color: #37ffe1;
+  text-shadow: none;
+  transition: text-shadow 0.3s ease;
+}
+
+.category-title:hover .glow-text {
+  text-shadow: 0 0 5px #37ffe1, 0 0 10px #37ffe1, 0 0 15px #37ffe1;
+  animation: glow-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+  from {
+    text-shadow: 0 0 5px #37ffe1, 0 0 10px #37ffe1, 0 0 15px #37ffe1;
+  }
+  to {
+    text-shadow: 0 0 8px #37ffe1, 0 0 12px #37ffe1, 0 0 18px #37ffe1;
+  }
+}
+
+.category-divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(156, 163, 175, 0.3), transparent);
+  margin: 1rem auto;
+  border-radius: 1px;
+}
+
+.certificate-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.certificate-wrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem 0;
+  position: relative;
+}
+
 /* Media Queries para pantallas más pequeñas */
 @media (max-width: 1024px) {
   .cursor-light {
@@ -113,51 +182,7 @@ body {
   margin-bottom: 3rem;
 }
 
-.certificate-group-title {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 2rem;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.6s ease-out forwards;
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.certificate-group-title:hover {
-  transform: translateY(0) scale(1.02);
-  text-shadow: 
-    0 0 3px #37ffe1,
-    0 0 6px #37ffe1,
-    0 0 9px #37ffe1,
-    0 0 12px #37ffe1;
-}
-
-.certificate-group-title:hover span {
-  color: #37ffe1;
-}
-
-.certificate-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  justify-items: center;
-}
-
-.certificate-item {
-  opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  animation: certificateSlideIn 0.8s ease-out forwards;
-  transition: transform 0.3s ease;
-}
-
-.certificate-item:hover {
-  transform: translateY(-5px) scale(1.02);
-}
+/* Estilos obsoletos eliminados - ahora se usan .category-title y .glow-text */
 
 /* Animaciones */
 @keyframes fadeInUp {

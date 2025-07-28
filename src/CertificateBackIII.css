@@ -1,53 +1,7 @@
-/* Estilos para el certificado Backend III - copiado de CertificateBackI.css */
-.card {
-  background: #1e1e1e;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  width: 100%;
-  max-width: 500px;
-  margin: 20px auto;
-  font-family: "Courier New", monospace;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+/* Estilos específicos para CertificateBackIII - Los estilos principales están en MinimizableCertificate.css */
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-}
-
-.titlebar {
-  background: #333;
-  padding: 8px 12px;
-  display: flex;
-  justify-content: flex-end;
-  border-bottom: 1px solid #555;
-}
-
-.buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.buttons button {
-  width: 12px;
-  height: 12px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.buttons button:hover {
-  opacity: 0.8;
-}
-
-.minimize {
-  background: #ffbd2e;
-}
-
-.maximize {
-  background: #28ca42;
+/* Solo estilos específicos del contenido del certificado Backend III */
+.certificate-backiii .cppcode {
 }
 
 .close {
