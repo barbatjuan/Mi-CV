@@ -98,7 +98,7 @@ const App = () => {
           </p>
 
           {/* Custom Button with margin */}
-          <div className="mt-6 flex gap-4">
+          <div className="mt-6 flex flex-col sm:flex-row gap-4">
             <CustomButton />
             <WhatsAppButton />
           </div>

@@ -1,7 +1,8 @@
 /* MinimizableCertificate.css */
 
 .minimizable-certificate {
-  width: 600px; /* Ancho fijo para todas las ventanas */
+  width: 100%; /* Ancho fluido para móviles */
+  max-width: 600px; /* Límite máximo para pantallas grandes */
   background: #37ffe124;
   border: 1px solid #37ffe1;
   font-size: 14px;
@@ -142,4 +143,29 @@
 
 .minimizable-certificate.maximized {
   height: auto;
+}
+
+/* Responsividad: optimizar para pantallas pequeñas */
+@media (max-width: 640px) {
+  .minimizable-certificate {
+    font-size: 13px;
+  }
+
+  .certificate-titlebar {
+    padding: 6px 10px;
+    min-height: 36px;
+  }
+
+  .window-title {
+    font-size: 12px;
+  }
+
+  .control-btn {
+    width: 32px;
+    height: 30px;
+  }
+
+  .certificate-body {
+    overflow-x: auto; /* Garantiza scroll si algún contenido se desborda */
+  }
 }
