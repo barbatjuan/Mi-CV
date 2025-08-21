@@ -199,17 +199,13 @@ const App = () => {
                 "E2E Testing",
                 "Test Automation",
                 "Cypress",
-                "Playwright",
                 "API Testing",
                 "Postman",
-                "Jest/Vitest",
-                "Selenium",
                 "Accessibility",
                 "Performance",
                 "Test Management",
-                "Jira",
-                "CI/CD",
-                "GitHub Actions"
+                "Notion",
+                "K6"
               ]}
             />
             <ExperienceItem
