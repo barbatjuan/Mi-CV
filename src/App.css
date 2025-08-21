@@ -45,11 +45,16 @@ body {
 }
 
 .category-title {
-  font-size: 2.5rem;
+  /* Tamaño fluido: mínimo 1.5rem, escala con viewport, máximo 2.5rem */
+  font-size: clamp(1.5rem, 6vw, 2.5rem);
   font-weight: bold;
   text-align: center;
   margin-bottom: 1rem;
   color: #f8f9fa;
+  line-height: 1.2;
+  /* Evitar scroll horizontal por títulos largos */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .title-secondary {
@@ -141,7 +146,7 @@ body {
 
   /* Párrafos */
   p {
-    font-size: 0.8; /* Reducimos el tamaño de los párrafos */
+    font-size: 0.8rem; /* Reducimos el tamaño de los párrafos (agregada unidad) */
   }
 
   /* Texto de los botones de navegación */
@@ -174,6 +179,11 @@ body {
 
   .project-item p {
     font-size: 12px; /* Reducimos el tamaño del texto de proyectos */
+  }
+  
+  /* En móviles ocultamos el cursor luminoso para evitar solapamientos/performance */
+  .cursor-light {
+    display: none;
   }
 }
 

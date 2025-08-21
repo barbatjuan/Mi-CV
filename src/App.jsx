@@ -190,6 +190,29 @@ const App = () => {
             style={{ paddingTop: "60px" }}
           >
             <ExperienceItem
+              title="QA Tester Leader"
+              company="FactuPro España"
+              dateRange="May 2025 - Ago 2025"
+              description="Lideré las actividades de QA, definiendo estrategia de pruebas (funcionales, E2E y regresión), priorizando bugs y coordinando con desarrollo para asegurar la calidad y la entrega a tiempo. Implementé prácticas de testing continuo y reportes de calidad."
+              skills={[
+                "QA",
+                "E2E Testing",
+                "Test Automation",
+                "Cypress",
+                "Playwright",
+                "API Testing",
+                "Postman",
+                "Jest/Vitest",
+                "Selenium",
+                "Accessibility",
+                "Performance",
+                "Test Management",
+                "Jira",
+                "CI/CD",
+                "GitHub Actions"
+              ]}
+            />
+            <ExperienceItem
               title="Analista Desarrollador Genexus"
               company="KBI Global - ISP Chile"
               dateRange="Jul 2012 - Jul 2013"
@@ -241,7 +264,8 @@ const App = () => {
             <div className="certificate-category mb-16">
               <div className="category-header">
                 <h3 className="category-title">
-                  <span className="glow-text">Full Stack</span> 
+                  <span className="glow-text">Full Stack</span>
+                  {" "}
                   <span className="title-secondary">Developer</span>
                 </h3>
                 <div className="category-divider"></div>
@@ -257,8 +281,9 @@ const App = () => {
             <div className="certificate-category mb-16">
               <div className="category-header">
                 <h3 className="category-title">
-                  <span className="glow-text">Backend</span> 
-                  <span className="title-secondary">Development</span>
+                  <span className="glow-text">Backend</span>
+                  {" "}
+                  <span className="title-secondary">Developer</span>
                 </h3>
                 <div className="category-divider"></div>
               </div>
@@ -279,8 +304,9 @@ const App = () => {
             <div className="certificate-category mb-16">
               <div className="category-header">
                 <h3 className="category-title">
-                  <span className="glow-text">Frontend</span> 
-                  <span className="title-secondary">Development</span>
+                  <span className="glow-text">Frontend</span>
+                  {" "}
+                  <span className="title-secondary">Developer</span>
                 </h3>
                 <div className="category-divider"></div>
               </div>
@@ -304,7 +330,8 @@ const App = () => {
             <div className="certificate-category mb-16">
               <div className="category-header">
                 <h3 className="category-title">
-                  <span className="glow-text">Quality</span> 
+                  <span className="glow-text">Quality</span>
+                  {" "}
                   <span className="title-secondary">Assurance</span>
                 </h3>
                 <div className="category-divider"></div>
