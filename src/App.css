@@ -69,15 +69,16 @@ body {
 
 .category-title:hover .glow-text {
   text-shadow: 0 0 5px #37ffe1, 0 0 10px #37ffe1, 0 0 15px #37ffe1;
-  animation: glow-pulse 2s ease-in-out infinite alternate;
+  animation: glow-in-out 1.5s ease-in-out infinite alternate;
+  animation-delay: 0.3s;
 }
 
-@keyframes glow-pulse {
+@keyframes glow-in-out {
   from {
-    text-shadow: 0 0 5px #37ffe1, 0 0 10px #37ffe1, 0 0 15px #37ffe1;
+    text-shadow: 0 0 2px #37ffe1, 0 0 4px #37ffe1, 0 0 6px #37ffe1;
   }
   to {
-    text-shadow: 0 0 8px #37ffe1, 0 0 12px #37ffe1, 0 0 18px #37ffe1;
+    text-shadow: 0 0 5px #37ffe1, 0 0 10px #37ffe1, 0 0 15px #37ffe1;
   }
 }
 

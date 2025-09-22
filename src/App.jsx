@@ -342,6 +342,19 @@ const App = () => {
 
           {/* Sección de Proyectos */}
           <div id="projects" className="mt-8 section">
+          <ProjectItem
+              title="Ensildent"
+              description="Clinica Dental"
+              technologies={[
+                "WordPress",
+                "Divi",
+                "Yoast SEO",
+                "Photoshop",
+                "Hosting",
+                "Adobe Premiere",
+              ]}
+              link="https://www.ensildent.com"
+            />
             <ProjectItem
               title="Mi Casa Construcciones"
               description="Empresa de construcción"
