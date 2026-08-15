@@ -30,7 +30,10 @@ una CDN externa, que la CSP bloquearía.
   el hero y se retira al entrar en el contenido, para que el texto siempre gane.
 - **Cursor propio**: punto en `mix-blend-mode: difference` más un anillo con
   inercia que se expande y etiqueta la acción sobre cada elemento.
-- **Título partido en letras**, con entrada escalonada en desenfoque.
+- **Título partido en letras**, con entrada escalonada en desenfoque. El apellido
+  se ajusta midiendo: JS compara el ancho real de las dos líneas y escala la
+  segunda para que cierre exactamente donde termina el punto, en cualquier ancho
+  de pantalla y aunque la tipografía incrustada no llegue a cargar.
 - **Tarjetas de proyecto** con halo que sigue al puntero, borde iridiscente que
   se enciende y una inclinación 3D sutil.
 - **Botón magnético** en el contacto, que se acerca al cursor.
@@ -40,6 +43,12 @@ una CDN externa, que la CSP bloquearía.
   al pasar el puntero.
 - Preloader con contador, revelados por máscara, barrido de brillo en los
   certificados y barra de progreso de lectura.
+
+## Retícula
+
+Una sola separación vertical (`--rhythm`) entre todos los bloques: hero,
+marquesinas y las cinco secciones quedan a 104 px en escritorio, sin huecos
+sueltos.
 
 ## Navegación y accesibilidad
 

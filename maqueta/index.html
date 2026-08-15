@@ -43,6 +43,7 @@
     --f-ser:  "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
     --f-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 
+    --rhythm: clamp(3.5rem, 8vw, 6.5rem);
     --gut: clamp(1.15rem, 4vw, 5rem);
     --max: 1300px;
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -382,11 +383,10 @@
 
   /* ═══════════ HERO ═══════════ */
   .hero {
-    min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-block: 6.5rem 2rem;
+    padding-block: clamp(7rem, 15vh, 9.5rem) var(--rhythm);
     position: relative;
   }
 
@@ -415,10 +415,13 @@
   }
 
   .hero__name .l1, .hero__name .l2 { display: block; }
+  .hero__name .ch--pt { color: var(--gold); }
+
+  .hero__name.measuring .ch { transform: none; filter: none; transition: none; }
   .hero__name .l2 {
     font-family: "Display", "Arial Black", "Helvetica Neue", sans-serif;
     font-weight: 900;
-    font-size: 0.477em;
+    font-size: 0.5em;
     letter-spacing: -0.012em;
     margin-right: 0.012em;
     color: var(--gold);
@@ -587,7 +590,7 @@
   /* ═══════════ SECCIONES ═══════════ */
   section[id] { scroll-margin-top: 90px; }
 
-  .band { padding-block: clamp(4.5rem, 11vw, 9rem); position: relative; }
+  .band { padding-block: var(--rhythm) 0; position: relative; }
 
   .band__head {
     display: grid;
@@ -648,7 +651,7 @@
 
   .prose strong { color: var(--white); font-weight: 500; }
 
-  .caps { margin-top: clamp(2.5rem, 6vw, 4rem); }
+  .caps { margin-top: var(--rhythm); }
 
   .caps__head { margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--hair); }
 
@@ -989,7 +992,7 @@
   .track li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex: none; transform: translateY(-2px); }
 
   /* ── contacto ── */
-  .cta { text-align: center; padding-block: clamp(4rem, 12vw, 9rem); }
+  .cta { text-align: center; padding-block: var(--rhythm); }
 
   .cta__claim {
     font-size: clamp(2.1rem, 7.5vw, 6rem);
@@ -1061,7 +1064,7 @@
   .link:hover .k { color: rgba(7, 7, 11, 0.66); }
   .link:hover .v { font-weight: 600; }
 
-  footer { border-top: 1px solid var(--hair); padding: 1.6rem 0 2.4rem; }
+  footer { border-top: 1px solid var(--hair); margin-top: var(--rhythm); padding: 1.6rem 0 2.4rem; }
   .footer__in { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 
   /* ═══════════ ⌘K ═══════════ */
@@ -1643,7 +1646,7 @@
 
       text.split("").forEach(function (c) {
         var s = document.createElement("span");
-        s.className = "ch";
+        s.className = c === "." ? "ch ch--pt" : "ch";
         s.style.setProperty("--i", n++);
         s.textContent = c === " " ? " " : c;
         line.appendChild(s);
@@ -1656,6 +1659,45 @@
     sr.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;";
     host.appendChild(sr);
   })();
+
+  /* ══════════════════════════════════════════════════════
+     3b · EL APELLIDO CIERRA CON EL PUNTO
+     ══════════════════════════════════════════════════════ */
+  var fitName = (function () {
+    var l1 = $(".hero__name .l1"), l2 = $(".hero__name .l2");
+    if (!l1 || !l2) { return function () {}; }
+
+    var host = $(".hero__name");
+
+    // la rotacion de entrada infla el rectangulo, y no por igual en cada linea:
+    // se neutraliza dentro del mismo cuadro, sin llegar a pintarse
+    function ink(el) {
+      host.classList.add("measuring");
+      var r = document.createRange();
+      r.selectNodeContents(el);
+      var w = r.getBoundingClientRect().width;
+      host.classList.remove("measuring");
+      return w;
+    }
+
+    return function fit() {
+      l2.style.fontSize = "";                     // volver a la base antes de medir
+      var w1 = ink(l1);
+      if (!w1) { return; }
+
+      // dos pasadas: el redondeo de avances de los glifos deja un resto
+      // de ~1% en la primera, y la segunda lo cierra
+      for (var i = 0; i < 2; i++) {
+        var w2 = ink(l2);
+        if (!w2) { return; }
+        var base = parseFloat(getComputedStyle(l2).fontSize);
+        l2.style.fontSize = (base * (w1 / w2)).toFixed(2) + "px";
+      }
+    };
+  })();
+
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitName); }
+  window.addEventListener("resize", fitName, { passive: true });
 
   /* ══════════════════════════════════════════════════════
      4 · MARQUEE
@@ -2001,6 +2043,7 @@
       pre.classList.add("done");
       document.body.classList.remove("loading");
       document.body.classList.add("ready");
+      fitName();
       runCounters();
       onScroll();
     }
