@@ -66,20 +66,44 @@
   .wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gut); }
 
   /* ── capas de fondo ───────────────────────────────────── */
-  #aurora {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    opacity: 1;
-    transition: opacity 0.25s linear;
-    /* respaldo si no hay WebGL */
+  .bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+
+  /* campo de luz: deriva lentísima, sin textura de humo */
+  .bg__glow {
+    position: absolute;
+    inset: -22%;
     background:
-      radial-gradient(120% 80% at 18% 8%, rgba(91, 91, 255, 0.42), transparent 60%),
-      radial-gradient(95% 70% at 88% 24%, rgba(47, 226, 240, 0.24), transparent 62%),
-      radial-gradient(90% 70% at 62% 96%, rgba(255, 73, 195, 0.22), transparent 60%),
-      var(--void);
+      radial-gradient(42% 36% at 20% 16%, rgba(91, 91, 255, 0.34), transparent 64%),
+      radial-gradient(38% 32% at 80% 28%, rgba(47, 226, 240, 0.17), transparent 66%),
+      radial-gradient(42% 38% at 56% 84%, rgba(255, 73, 195, 0.15), transparent 64%);
+    filter: blur(26px);
+    transition: opacity 0.25s linear;
+    animation: drift 52s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    0%   { transform: translate3d(-2%, -1%, 0) scale(1); }
+    50%  { transform: translate3d(2%, 1.5%, 0) scale(1.07); }
+    100% { transform: translate3d(-1%, 2.5%, 0) scale(1.02); }
+  }
+
+  /* retícula fina: da estructura y escala */
+  .bg__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 78px 78px;
+    mask-image: radial-gradient(125% 95% at 50% -5%, #000 0%, rgba(0, 0, 0, 0.35) 55%, transparent 78%);
+    -webkit-mask-image: radial-gradient(125% 95% at 50% -5%, #000 0%, rgba(0, 0, 0, 0.35) 55%, transparent 78%);
+  }
+
+  /* luz que sigue al puntero */
+  .bg__spot {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(560px circle at var(--px, 50%) var(--py, 18%), rgba(91, 91, 255, 0.15), transparent 66%);
   }
 
   .veil {
@@ -88,8 +112,8 @@
     z-index: 1;
     pointer-events: none;
     background:
-      radial-gradient(125% 88% at 50% -5%, transparent 0%, rgba(7, 7, 11, 0.34) 42%, rgba(7, 7, 11, 0.8) 76%, var(--void) 100%),
-      linear-gradient(180deg, transparent 0%, rgba(7, 7, 11, 0.4) 52%, rgba(7, 7, 11, 0.92) 88%, var(--void) 100%);
+      radial-gradient(130% 92% at 50% -8%, transparent 0%, rgba(7, 7, 11, 0.22) 46%, rgba(7, 7, 11, 0.72) 78%, var(--void) 100%),
+      linear-gradient(180deg, transparent 0%, rgba(7, 7, 11, 0.3) 55%, rgba(7, 7, 11, 0.88) 90%, var(--void) 100%);
   }
 
   .grain {
@@ -328,11 +352,17 @@
 
   .rv.in { opacity: 1; transform: none; filter: none; }
 
-  .mask { display: block; overflow: hidden; }
+  /* el padding deja sitio a las colas de g/y/q; el margen negativo lo compensa */
+  .mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
 
   .mask > span {
     display: block;
-    transform: translateY(105%);
+    transform: translateY(128%);
     transition: transform 1.05s var(--ease);
     transition-delay: calc(var(--i, 0) * 85ms);
   }
@@ -345,7 +375,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 6.5rem 0 2rem;
+    padding-block: 6.5rem 2rem;
     position: relative;
   }
 
@@ -456,6 +486,7 @@
   }
 
   .stat--live dd { color: var(--cyan); }
+  .stat--ai dd { color: #949AFF; }
 
   .scrollcue {
     display: flex;
@@ -529,7 +560,7 @@
   /* ═══════════ SECCIONES ═══════════ */
   section[id] { scroll-margin-top: 90px; }
 
-  .band { padding: clamp(4.5rem, 11vw, 9rem) 0; position: relative; }
+  .band { padding-block: clamp(4.5rem, 11vw, 9rem); position: relative; }
 
   .band__head {
     display: grid;
@@ -551,7 +582,7 @@
     font-size: clamp(2rem, 5.5vw, 4.2rem);
     font-weight: 800;
     letter-spacing: -0.055em;
-    line-height: 0.95;
+    line-height: 1.04;
   }
 
   .band__head .right { grid-column: 2; justify-self: end; padding-bottom: 0.35rem; }
@@ -921,7 +952,7 @@
     font-size: clamp(2.1rem, 7.5vw, 6rem);
     font-weight: 800;
     letter-spacing: -0.055em;
-    line-height: 0.95;
+    line-height: 1.04;
     margin: 0 auto clamp(2rem, 5vw, 3rem);
     max-width: 15ch;
     text-wrap: balance;
@@ -1096,7 +1127,11 @@
 </div>
 
 <!-- ══════ FONDO ══════ -->
-<canvas id="aurora" aria-hidden="true"></canvas>
+<div class="bg" aria-hidden="true">
+  <div class="bg__glow" id="glow"></div>
+  <div class="bg__grid"></div>
+  <div class="bg__spot" id="spot"></div>
+</div>
 <div class="veil" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 
@@ -1150,19 +1185,19 @@
 
     <dl class="stats rv" style="--i: 4;">
       <div class="stat" data-spot>
-        <dt class="mono">Proyectos publicados</dt>
-        <dd><span data-count="15">0</span></dd>
-        <small>Webs, e-commerce y marcas en producción</small>
+        <dt class="mono">Cómo trabajo</dt>
+        <dd>A medida</dd>
+        <small>Sin plantillas: cada web se arma para su caso</small>
+      </div>
+      <div class="stat stat--ai" data-spot>
+        <dt class="mono">Con IA dentro</dt>
+        <dd>Claude</dd>
+        <small>Asistentes, agentes y automatización de procesos</small>
       </div>
       <div class="stat" data-spot>
         <dt class="mono">En el rubro desde</dt>
         <dd><span data-count="2012" data-from="1988">0</span></dd>
         <small>Primer rol como desarrollador</small>
-      </div>
-      <div class="stat" data-spot>
-        <dt class="mono">Certificaciones</dt>
-        <dd><span data-count="9">0</span></dd>
-        <small>Front, back, full stack y QA</small>
       </div>
       <div class="stat stat--live" data-spot>
         <dt class="mono">Estado</dt>
@@ -1209,6 +1244,12 @@
           accesibilidad antes de escribir la primera línea, no después del reporte de bugs.
         </p>
         <p class="rv" style="--i: 3;">
+          Hoy el foco está en <strong>desarrollo web a medida</strong> — sin plantillas, cada
+          proyecto armado para su caso — y en <strong>meter IA adentro del producto</strong>:
+          asistentes con <strong>Claude</strong>, agentes que se ocupan de lo repetitivo y
+          automatizaciones que le devuelven horas al cliente.
+        </p>
+        <p class="rv" style="--i: 4;">
           Del lado visual manejo <strong>Photoshop, Illustrator y Premiere</strong>, y en los
           últimos años sumé la gestión de redes y campañas para clientes. Fuera de la
           pantalla: familia, viajes, un buen libro y un día de playa.
@@ -1224,6 +1265,8 @@
           </figcaption>
         </figure>
         <div class="skills rv" style="--i: 2;">
+          <div class="skill"><b>Desarrollo a medida</b><span>React · JavaScript · APIs · integraciones</span></div>
+          <div class="skill"><b>IA aplicada</b><span>Claude · agentes · asistentes · automatización</span></div>
           <div class="skill"><b>Frontend</b><span>React · JavaScript · Tailwind · HTML/CSS</span></div>
           <div class="skill"><b>CMS &amp; E-commerce</b><span>WordPress · Divi · WooCommerce · Shopify</span></div>
           <div class="skill"><b>Calidad</b><span>Cypress · Postman · K6 · E2E · Accesibilidad</span></div>
@@ -1238,7 +1281,7 @@
   <section id="trayectoria" class="band wrap">
     <div class="band__head">
       <span class="mono rv">02 — Trayectoria</span>
-      <h2 class="mask"><span>Doce años<br />construyendo</span></h2>
+      <h2 class="mask"><span>De Genexus<br />a React</span></h2>
       <span class="mono right rv">4 roles · 2012 → hoy</span>
     </div>
 
@@ -1319,12 +1362,12 @@
   <section id="proyectos" class="band wrap">
     <div class="band__head">
       <span class="mono rv">03 — Proyectos</span>
-      <h2 class="mask"><span>Quince sitios<br />en producción</span></h2>
-      <span class="mono right rv" id="grid-count">15 de 15</span>
+      <h2 class="mask"><span>Trabajo<br />en producción</span></h2>
+      <span class="mono right rv" id="grid-count">Una selección</span>
     </div>
 
     <div class="filters rv" role="group" aria-label="Filtrar proyectos por tipo de trabajo">
-      <button class="filter" data-filter="all" aria-pressed="true">Todos <b>15</b></button>
+      <button class="filter" data-filter="all" aria-pressed="true">Todos</button>
       <button class="filter" data-filter="ecommerce" aria-pressed="false">E-commerce <b>5</b></button>
       <button class="filter" data-filter="wordpress" aria-pressed="false">WordPress <b>13</b></button>
       <button class="filter" data-filter="codigo" aria-pressed="false">Código a medida <b>1</b></button>
@@ -1339,8 +1382,8 @@
   <section id="certificaciones" class="band wrap">
     <div class="band__head">
       <span class="mono rv">04 — Certificaciones</span>
-      <h2 class="mask"><span>Nueve certificados</span></h2>
-      <span class="mono right rv">CoderHouse</span>
+      <h2 class="mask"><span>La ruta completa<br />en CoderHouse</span></h2>
+      <span class="mono right rv">Full stack · front · back · QA</span>
     </div>
 
     <div class="certs">
@@ -1490,182 +1533,35 @@
     { t: "Certificaciones", h: "#certificaciones" }, { t: "Contacto", h: "#contacto" }
   ];
 
-  var STACK = ["React", "JavaScript", "Tailwind CSS", "WordPress", "WooCommerce", "Shopify",
+  var STACK = ["Desarrollo a medida", "Claude", "Agentes IA", "Automatización", "APIs",
+               "React", "JavaScript", "Tailwind CSS", "WordPress", "WooCommerce", "Shopify",
                "Cypress", "Postman", "K6", "Accesibilidad", "Performance", "SEO",
                "Photoshop", "Illustrator", "Premiere", "Meta Ads", "Google Ads", "Branding"];
 
   /* ══════════════════════════════════════════════════════
-     2 · AURORA (WebGL)
+     2 · FONDO: luz que sigue al puntero
      ══════════════════════════════════════════════════════ */
-  var VERT = [
-    "attribute vec2 p;",
-    "void main(){ gl_Position = vec4(p, 0.0, 1.0); }"
-  ].join("\n");
+  (function ambient() {
+    var spot = document.getElementById("spot");
+    if (!spot || COARSE || REDUCED) { return; }
 
-  var FRAG = [
-    "precision highp float;",
-    "uniform vec2 u_res;",
-    "uniform float u_t;",
-    "uniform vec2 u_m;",
+    var tx = 50, ty = 18, cx = 50, cy = 18, raf = 0;
 
-    "vec3 mod289(vec3 x){ return x - floor(x * (1.0/289.0)) * 289.0; }",
-    "vec2 mod289(vec2 x){ return x - floor(x * (1.0/289.0)) * 289.0; }",
-    "vec3 permute(vec3 x){ return mod289(((x*34.0)+1.0)*x); }",
+    window.addEventListener("mousemove", function (e) {
+      tx = (e.clientX / window.innerWidth) * 100;
+      ty = (e.clientY / window.innerHeight) * 100;
+      if (!raf) { raf = requestAnimationFrame(follow); }
+    }, { passive: true });
 
-    "float snoise(vec2 v){",
-    "  const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);",
-    "  vec2 i  = floor(v + dot(v, C.yy));",
-    "  vec2 x0 = v - i + dot(i, C.xx);",
-    "  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);",
-    "  vec4 x12 = x0.xyxy + C.xxzz; x12.xy -= i1;",
-    "  i = mod289(i);",
-    "  vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));",
-    "  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);",
-    "  m = m*m; m = m*m;",
-    "  vec3 x = 2.0 * fract(p * C.www) - 1.0;",
-    "  vec3 h = abs(x) - 0.5;",
-    "  vec3 ox = floor(x + 0.5);",
-    "  vec3 a0 = x - ox;",
-    "  m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);",
-    "  vec3 g;",
-    "  g.x  = a0.x * x0.x + h.x * x0.y;",
-    "  g.yz = a0.yz * x12.xz + h.yz * x12.yw;",
-    "  return 130.0 * dot(m, g);",
-    "}",
-
-    "float fbm(vec2 p){",
-    "  float v = 0.0; float a = 0.5;",
-    "  for(int i = 0; i < 4; i++){ v += a * snoise(p); p *= 2.06; a *= 0.46; }",
-    "  return v;",
-    "}",
-
-    "void main(){",
-    "  vec2 p = (gl_FragCoord.xy - 0.5 * u_res) / min(u_res.x, u_res.y);",
-    "  float t = u_t * 0.055;",
-
-    /* deformación del dominio: da el flujo de aurora */
-    "  vec2 q = vec2(fbm(p * 0.60 + vec2(t, -t * 0.8)),",
-    "                fbm(p * 0.60 + vec2(4.7 - t * 0.6, 2.3 + t)));",
-    "  float f = fbm(p * 0.85 + q * 1.05 + t * 0.4);",
-    "  float band = smoothstep(-0.55, 1.05, f);",
-
-    "  vec3 VOID    = vec3(0.027, 0.027, 0.043);",
-    "  vec3 INDIGO  = vec3(0.357, 0.357, 1.000);",
-    "  vec3 CYAN    = vec3(0.184, 0.886, 0.941);",
-    "  vec3 MAGENTA = vec3(1.000, 0.286, 0.765);",
-
-    "  vec3 col = mix(VOID, INDIGO, smoothstep(0.02, 0.92, band) * 0.95);",
-    "  col = mix(col, CYAN, smoothstep(0.5, 1.2, band + q.y * 0.32) * 0.5);",
-    "  col = mix(col, MAGENTA, smoothstep(0.66, 1.3, f + q.x * 0.52) * 0.45);",
-
-    /* halo suave siguiendo el puntero */
-    "  float d = length(p - u_m);",
-    "  col += INDIGO * 0.11 * exp(-d * 2.6);",
-
-    /* viñeta */
-    "  col *= 1.0 - 0.6 * smoothstep(0.24, 1.25, length(p * vec2(0.72, 0.95)));",
-
-    /* dither: mata el banding en degradados oscuros */
-    "  col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;",
-
-    "  gl_FragColor = vec4(col, 1.0);",
-    "}"
-  ].join("\n");
-
-  function aurora() {
-    var cv = $("#aurora");
-    var gl = null;
-
-    try {
-      gl = cv.getContext("webgl", { antialias: false, alpha: false, powerPreference: "low-power" })
-        || cv.getContext("experimental-webgl");
-    } catch (e) { gl = null; }
-
-    if (!gl) { return; }   // se queda el respaldo CSS
-
-    function shader(type, src) {
-      var s = gl.createShader(type);
-      gl.shaderSource(s, src);
-      gl.compileShader(s);
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { return null; }
-      return s;
-    }
-
-    var vs = shader(gl.VERTEX_SHADER, VERT);
-    var fs = shader(gl.FRAGMENT_SHADER, FRAG);
-    if (!vs || !fs) { return; }
-
-    var prog = gl.createProgram();
-    gl.attachShader(prog, vs);
-    gl.attachShader(prog, fs);
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { return; }
-    gl.useProgram(prog);
-
-    var buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    var loc = gl.getAttribLocation(prog, "p");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-    var uRes = gl.getUniformLocation(prog, "u_res");
-    var uT   = gl.getUniformLocation(prog, "u_t");
-    var uM   = gl.getUniformLocation(prog, "u_m");
-
-    var mouse = { x: 0, y: 0 }, target = { x: 0, y: 0 };
-    var visible = true, raf = 0;
-
-    function resize() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      var w = Math.floor(cv.clientWidth * dpr);
-      var h = Math.floor(cv.clientHeight * dpr);
-      if (cv.width !== w || cv.height !== h) {
-        cv.width = w; cv.height = h;
-        gl.viewport(0, 0, w, h);
-      }
-      gl.uniform2f(uRes, cv.width, cv.height);
-    }
-
-    function frame(ms) {
+    function follow() {
       raf = 0;
-      if (!visible) { return; }
-      resize();
-      mouse.x += (target.x - mouse.x) * 0.045;
-      mouse.y += (target.y - mouse.y) * 0.045;
-      gl.uniform2f(uM, mouse.x, mouse.y);
-      gl.uniform1f(uT, ms * 0.001);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      raf = requestAnimationFrame(frame);
+      cx += (tx - cx) * 0.07;
+      cy += (ty - cy) * 0.07;
+      spot.style.setProperty("--px", cx.toFixed(2) + "%");
+      spot.style.setProperty("--py", cy.toFixed(2) + "%");
+      if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) { raf = requestAnimationFrame(follow); }
     }
-
-    if (!COARSE) {
-      window.addEventListener("mousemove", function (e) {
-        var m = Math.min(window.innerWidth, window.innerHeight);
-        target.x = (e.clientX - window.innerWidth / 2) / m;
-        target.y = (window.innerHeight / 2 - e.clientY) / m;
-      }, { passive: true });
-    }
-
-    document.addEventListener("visibilitychange", function () {
-      visible = !document.hidden;
-      if (visible && !raf) { raf = requestAnimationFrame(frame); }
-    });
-
-    window.addEventListener("resize", resize, { passive: true });
-
-    if (REDUCED) {
-      // un solo fotograma: sin movimiento
-      resize();
-      gl.uniform2f(uM, 0, 0);
-      gl.uniform1f(uT, 12.0);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-    } else {
-      raf = requestAnimationFrame(frame);
-    }
-  }
-
-  aurora();
+  })();
 
   /* ══════════════════════════════════════════════════════
      3 · TÍTULO PARTIDO EN LETRAS
@@ -1754,7 +1650,7 @@
       });
 
       empty.hidden = shown !== 0;
-      gridCount.textContent = shown + " de " + PROYECTOS.length;
+      gridCount.textContent = f === "all" ? "Una selección" : "Mostrando " + shown;
     });
   });
 
@@ -1837,7 +1733,7 @@
      8 · SCROLL: progreso, revelados, línea de tiempo, nav
      ══════════════════════════════════════════════════════ */
   var bar = $("#scrollbar");
-  var sky = $("#aurora");
+  var sky = $("#glow");
   var tl = $("#timeline");
   var ticking = false;
 
@@ -1849,9 +1745,11 @@
       var h = document.documentElement.scrollHeight - window.innerHeight;
       bar.style.transform = "scaleX(" + (h > 0 ? Math.min(1, window.scrollY / h) : 0) + ")";
 
-      // la aurora pertenece al hero: se retira al entrar en el contenido
-      var fade = Math.min(1, window.scrollY / Math.max(1, window.innerHeight * 0.85));
-      sky.style.opacity = (1 - fade * 0.68).toFixed(3);
+      // el campo de luz pertenece al hero: se retira al entrar en el contenido
+      if (sky) {
+        var fade = Math.min(1, window.scrollY / Math.max(1, window.innerHeight * 0.9));
+        sky.style.opacity = (1 - fade * 0.6).toFixed(3);
+      }
 
       if (tl) {
         var r = tl.getBoundingClientRect();

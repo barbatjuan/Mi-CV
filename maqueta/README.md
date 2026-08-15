@@ -10,18 +10,19 @@ No necesita `npm install` ni servidor: CSS, JS y foto van embebidos.
 
 ## Dirección visual
 
-Obsidiana con una aurora iridiscente (índigo → cian → magenta). Es un mundo
-visual único y deliberado, sin tema claro: todos los colores se pintan de forma
-explícita para que la página no dependa del fondo del navegador.
+Obsidiana con una retícula fina y un campo de luz iridiscente (índigo → cian →
+magenta). Es un mundo visual único y deliberado, sin tema claro: todos los
+colores se pintan de forma explícita para que la página no dependa del fondo del
+navegador.
 
 Tipografía en tres roles: grotesca para los títulos, serif para el texto de
 apertura y monoespaciada para etiquetas y datos.
 
 ## Efectos
 
-- **Aurora en WebGL**: shader propio con ruido simplex y deformación de dominio.
-  Domina el hero y se retira al entrar en el contenido, para que el texto siempre
-  gane. Si no hay WebGL, cae a un degradado CSS equivalente.
+- **Fondo tranquilo**: retícula fina que da estructura, más un campo de luz que
+  deriva muy lento y una luz que sigue al puntero con inercia. Tiene presencia en
+  el hero y se retira al entrar en el contenido, para que el texto siempre gane.
 - **Cursor propio**: punto en `mix-blend-mode: difference` más un anillo con
   inercia que se expande y etiqueta la acción sobre cada elemento.
 - **Título partido en letras**, con entrada escalonada en desenfoque.
@@ -44,12 +45,16 @@ apertura y monoespaciada para etiquetas y datos.
 
 ## Verificado
 
-Renderizado en Chromium: WebGL activo, consola limpia, sin desbordamiento
-horizontal a 390 px de ancho.
+Renderizado en Chromium: consola limpia, sin desbordamiento horizontal a 390 px
+y descendentes (g, y, q, p) completas en todos los títulos enmascarados.
 
 ## Pendiente de confirmar
 
+- **El texto sobre desarrollo a medida, IA, Claude y agentes lo redacté yo** a
+  partir de tu indicación: revisalo y ajustalo a lo que realmente ofrecés.
 - `Juano Cocina` apunta a `rayosdelsol.uy`; en el sitio actual (`src/App.jsx`)
   tiene el mismo enlace. Falta la URL real.
 - El estado "Disponible / Abierto" del encabezado es un supuesto: cambiarlo si
   no aplica.
+- Los proyectos se presentan como "una selección", sin total cerrado, para que
+  no envejezca al sumar trabajos nuevos.
