@@ -17,11 +17,11 @@ colores se pintan de forma explícita para que la página no dependa del fondo d
 navegador.
 
 Tipografía en cuatro roles: grotesca para los títulos, serif para el texto de
-apertura, monoespaciada para etiquetas y datos, y **Bodoni Moda** (didona, de
-contraste extremo entre trazo grueso y fino) para el apellido del encabezado.
-Va incrustada como `@font-face` recortada a las letras de "BARBAT": 1,7 kB, así
-no depende de lo que tenga instalado el visitante ni de una CDN externa, que la
-CSP bloquearía.
+apertura, monoespaciada para etiquetas y datos, y **Anybody** (grotesca ancha y
+negra, de formas cuadradas: brutalista sin caer en lo barato) para el apellido
+del encabezado. Va incrustada como `@font-face` recortada a las letras de
+"BARBAT": 924 bytes, así no depende de lo que tenga instalado el visitante ni de
+una CDN externa, que la CSP bloquearía.
 
 ## Efectos
 
