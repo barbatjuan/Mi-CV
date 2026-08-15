@@ -10,8 +10,8 @@ No necesita `npm install` ni servidor: CSS, JS y foto van embebidos.
 
 ## Dirección visual
 
-Obsidiana con una retícula fina y un campo de luz iridiscente (índigo → cian →
-magenta). Es un mundo visual único y deliberado, sin tema claro: todos los
+Obsidiana con una retícula fina y un campo de luz que barre de violeta a magenta
+y ámbar. Es un mundo visual único y deliberado, sin tema claro: todos los
 colores se pintan de forma explícita para que la página no dependa del fondo del
 navegador.
 
@@ -39,19 +39,26 @@ apertura y monoespaciada para etiquetas y datos.
   proyecto desde el teclado, filtrando también por tecnología.
 - **Proyectos filtrables** por tipo de trabajo (e-commerce, WordPress, código a
   medida, marca, ads) con contador en vivo.
+- Texto secundario a 11:1 de contraste y etiquetas a 5,8:1, ambos por encima del
+  mínimo AA.
 - `prefers-reduced-motion` desactiva animación, cursor propio e inclinaciones.
 - El título partido conserva el texto real para lectores de pantalla; el foco de
   teclado tiene estado visible.
 
 ## Verificado
 
-Renderizado en Chromium: consola limpia, sin desbordamiento horizontal a 390 px
-y descendentes (g, y, q, p) completas en todos los títulos enmascarados.
+Renderizado en Chromium: consola limpia, sin desbordamiento horizontal a 390 px,
+descendentes (g, y, q, p) completas en todos los títulos enmascarados y el
+contador del preloader sin recorte en el último dígito.
 
 ## Pendiente de confirmar
 
 - **El texto sobre desarrollo a medida, IA, Claude y agentes lo redacté yo** a
   partir de tu indicación: revisalo y ajustalo a lo que realmente ofrecés.
+- **La fila "Backend" (Node · Express · APIs REST · bases de datos) es un
+  supuesto** a partir de tus certificados de CoderHouse: confirmá el stack real.
+- Saqué "Leader" del encabezado, pero el rol en FactuPro sigue como
+  "QA Tester Leader" porque es el cargo que figura en tu CV.
 - `Juano Cocina` apunta a `rayosdelsol.uy`; en el sitio actual (`src/App.jsx`)
   tiene el mismo enlace. Falta la URL real.
 - El estado "Disponible / Abierto" del encabezado es un supuesto: cambiarlo si

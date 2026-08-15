@@ -22,13 +22,13 @@
     --hair-2:    rgba(255, 255, 255, 0.16);
 
     --white:     #F4F3F8;
-    --grey:      #9C9AAC;
-    --grey-2:    #63616F;
+    --grey:      #BFBDCC;
+    --grey-2:    #8B8899;
 
     --indigo:    #5B5BFF;
-    --cyan:      #2FE2F0;
+    --gold:      #FFC24B;
     --magenta:   #FF49C3;
-    --iris:      linear-gradient(96deg, #5B5BFF 0%, #2FE2F0 48%, #FF49C3 100%);
+    --iris:      linear-gradient(96deg, #5B5BFF 0%, #FF49C3 52%, #FFC24B 100%);
 
     --f-disp: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
     --f-ser:  "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
@@ -61,7 +61,7 @@
 
   a { color: inherit; text-decoration: none; }
 
-  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; border-radius: 3px; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 3px; }
 
   .wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gut); }
 
@@ -74,7 +74,7 @@
     inset: -22%;
     background:
       radial-gradient(42% 36% at 20% 16%, rgba(91, 91, 255, 0.34), transparent 64%),
-      radial-gradient(38% 32% at 80% 28%, rgba(47, 226, 240, 0.17), transparent 66%),
+      radial-gradient(38% 32% at 80% 28%, rgba(255, 194, 75, 0.16), transparent 66%),
       radial-gradient(42% 38% at 56% 84%, rgba(255, 73, 195, 0.15), transparent 64%);
     filter: blur(26px);
     transition: opacity 0.25s linear;
@@ -207,6 +207,7 @@
     font-size: clamp(4rem, 18vw, 13rem);
     font-weight: 800;
     letter-spacing: -0.06em;
+    padding-inline: 0.09em;
     line-height: 1;
     font-variant-numeric: tabular-nums;
     background: var(--iris);
@@ -265,8 +266,8 @@
   .dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: var(--cyan);
-    box-shadow: 0 0 10px var(--cyan);
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
     animation: breathe 2.6s ease-in-out infinite;
   }
 
@@ -432,7 +433,7 @@
   }
 
   .hero__meta b { font-weight: 400; color: var(--white); }
-  .hero__meta .slash { color: var(--cyan); font-weight: 400; }
+  .hero__meta .slash { color: var(--gold); font-weight: 400; }
 
   .stats {
     display: grid;
@@ -485,7 +486,7 @@
     line-height: 1.4;
   }
 
-  .stat--live dd { color: var(--cyan); }
+  .stat--live dd { color: var(--gold); }
   .stat--ai dd { color: #949AFF; }
 
   .scrollcue {
@@ -506,7 +507,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: var(--cyan);
+    background: var(--gold);
     animation: sweep 2.4s var(--ease) infinite;
   }
 
@@ -619,7 +620,19 @@
 
   .prose strong { color: var(--white); font-weight: 500; }
 
-  .skills { display: grid; gap: 1px; background: var(--hair); border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; }
+  .caps { margin-top: clamp(2.5rem, 6vw, 4rem); }
+
+  .caps__head { margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--hair); }
+
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--hair);
+    border: 1px solid var(--hair);
+    border-radius: 14px;
+    overflow: hidden;
+  }
 
   .skill {
     background: rgba(9, 9, 14, 0.55);
@@ -633,7 +646,7 @@
   .skill b { font-weight: 500; font-size: 0.82rem; letter-spacing: -0.01em; }
   .skill span { font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.05em; color: var(--grey-2); line-height: 1.5; }
 
-  .rail { position: sticky; top: 100px; display: grid; gap: 1.4rem; }
+  .rail { position: sticky; top: 100px; }
 
   .portrait {
     margin: 0;
@@ -723,7 +736,7 @@
     transition: background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
   }
 
-  .job.in::before { background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 14px var(--cyan); }
+  .job.in::before { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 14px var(--gold); }
 
   .job__when { font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--grey-2); text-transform: uppercase; }
 
@@ -757,9 +770,9 @@
     font-size: 0.58rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--cyan);
-    border: 1px solid rgba(47, 226, 240, 0.35);
-    background: rgba(47, 226, 240, 0.08);
+    color: var(--gold);
+    border: 1px solid rgba(255, 194, 75, 0.4);
+    background: rgba(255, 194, 75, 0.1);
     border-radius: 999px;
     padding: 0.15rem 0.55rem;
     margin-left: 0.6rem;
@@ -839,7 +852,7 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
-                rgba(91, 91, 255, 0.20), rgba(47, 226, 240, 0.07) 38%, transparent 62%);
+                rgba(91, 91, 255, 0.20), rgba(255, 194, 75, 0.07) 38%, transparent 62%);
     opacity: 0;
     transition: opacity 0.45s ease;
     pointer-events: none;
@@ -924,9 +937,9 @@
 
   .track__bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--iris); }
   .track--fs .track__bar { background: linear-gradient(90deg, #5B5BFF, #8B7CFF); }
-  .track--fe .track__bar { background: linear-gradient(90deg, #2FE2F0, #5B5BFF); }
-  .track--be .track__bar { background: linear-gradient(90deg, #8B7CFF, #FF49C3); }
-  .track--qa .track__bar { background: linear-gradient(90deg, #FF49C3, #FF9A5B); }
+  .track--fe .track__bar { background: linear-gradient(90deg, #8B7CFF, #FF49C3); }
+  .track--be .track__bar { background: linear-gradient(90deg, #FF49C3, #FFC24B); }
+  .track--qa .track__bar { background: linear-gradient(90deg, #FFC24B, #FF8A3D); }
 
   .track h3 { margin: 0 0 1rem; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.03em; }
   .track ul { list-style: none; margin: 0; padding: 0; }
@@ -942,7 +955,7 @@
     color: var(--grey);
   }
 
-  .track li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); flex: none; transform: translateY(-2px); }
+  .track li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex: none; transform: translateY(-2px); }
   .track li span { margin-left: auto; font-family: var(--f-mono); font-size: 0.58rem; letter-spacing: 0.12em; color: var(--grey-2); text-transform: uppercase; }
 
   /* ── contacto ── */
@@ -1099,12 +1112,14 @@
   @media (max-width: 940px) {
     .perfil { grid-template-columns: 1fr; }
     .rail { position: relative; top: 0; max-width: 340px; }
+    .skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .topbar nav { display: none; }
     .job { grid-template-columns: 1fr; gap: 0.9rem; }
   }
 
   @media (max-width: 560px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
+    .skills { grid-template-columns: minmax(0, 1fr); }
     .topbar__brand span.long { display: none; }
     .cta__claim { max-width: 12ch; }
   }
@@ -1179,8 +1194,8 @@
       <span class="slash">/</span>
       <b>Diseñador Web</b>
       <span class="slash">/</span>
-      <b>QA Tester Leader</b>
-      <span>— Montevideo ↔ España</span>
+      <b>QA Tester</b>
+      <span>— Uruguay ↔ España</span>
     </p>
 
     <dl class="stats rv" style="--i: 4;">
@@ -1264,15 +1279,20 @@
             <span class="mono">UY / ES</span>
           </figcaption>
         </figure>
-        <div class="skills rv" style="--i: 2;">
-          <div class="skill"><b>Desarrollo a medida</b><span>React · JavaScript · APIs · integraciones</span></div>
-          <div class="skill"><b>IA aplicada</b><span>Claude · agentes · asistentes · automatización</span></div>
-          <div class="skill"><b>Frontend</b><span>React · JavaScript · Tailwind · HTML/CSS</span></div>
-          <div class="skill"><b>CMS &amp; E-commerce</b><span>WordPress · Divi · WooCommerce · Shopify</span></div>
-          <div class="skill"><b>Calidad</b><span>Cypress · Postman · K6 · E2E · Accesibilidad</span></div>
-          <div class="skill"><b>Diseño</b><span>Photoshop · Illustrator · Premiere · Branding</span></div>
-          <div class="skill"><b>Crecimiento</b><span>SEO · Yoast · Google Ads · Meta Ads</span></div>
-        </div>
+      </div>
+    </div>
+
+    <div class="caps">
+      <div class="caps__head rv"><span class="mono">Capacidades</span></div>
+      <div class="skills rv">
+        <div class="skill"><b>Desarrollo a medida</b><span>React · JavaScript · APIs · integraciones</span></div>
+        <div class="skill"><b>IA aplicada</b><span>Claude · agentes · asistentes · automatización</span></div>
+        <div class="skill"><b>Frontend</b><span>React · JavaScript · Tailwind · HTML/CSS</span></div>
+        <div class="skill"><b>Backend</b><span>Node · Express · APIs REST · bases de datos</span></div>
+        <div class="skill"><b>CMS &amp; E-commerce</b><span>WordPress · Divi · WooCommerce · Shopify</span></div>
+        <div class="skill"><b>Calidad</b><span>Cypress · Postman · K6 · E2E · Accesibilidad</span></div>
+        <div class="skill"><b>Diseño</b><span>Photoshop · Illustrator · Premiere · Branding</span></div>
+        <div class="skill"><b>Crecimiento</b><span>SEO · Yoast · Google Ads · Meta Ads</span></div>
       </div>
     </div>
   </section>
