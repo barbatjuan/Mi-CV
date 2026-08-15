@@ -26,9 +26,9 @@
     --grey-2:    #8B8899;
 
     --indigo:    #5B5BFF;
-    --gold:      #FFC24B;
+    --gold:      #FFE500;
     --magenta:   #FF49C3;
-    --iris:      linear-gradient(96deg, #5B5BFF 0%, #FF49C3 52%, #FFC24B 100%);
+    --iris:      linear-gradient(96deg, #5B5BFF 0%, #FF49C3 50%, #FFE500 100%);
 
     --f-disp: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
     --f-ser:  "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
@@ -74,7 +74,7 @@
     inset: -22%;
     background:
       radial-gradient(42% 36% at 20% 16%, rgba(91, 91, 255, 0.34), transparent 64%),
-      radial-gradient(38% 32% at 80% 28%, rgba(255, 194, 75, 0.16), transparent 66%),
+      radial-gradient(38% 32% at 80% 28%, rgba(255, 229, 0, 0.14), transparent 66%),
       radial-gradient(42% 38% at 56% 84%, rgba(255, 73, 195, 0.15), transparent 64%);
     filter: blur(26px);
     transition: opacity 0.25s linear;
@@ -103,7 +103,7 @@
   .bg__spot {
     position: absolute;
     inset: 0;
-    background: radial-gradient(560px circle at var(--px, 50%) var(--py, 18%), rgba(91, 91, 255, 0.15), transparent 66%);
+    background: radial-gradient(560px circle at var(--px, 50%) var(--py, 18%), rgba(255, 229, 0, 0.1), transparent 66%);
   }
 
   .veil {
@@ -181,7 +181,7 @@
   body.cur-hot .cur-ring {
     width: 74px; height: 74px;
     margin: -37px 0 0 -37px;
-    background: var(--white);
+    background: var(--gold);
     border-color: transparent;
   }
 
@@ -405,7 +405,7 @@
   }
 
   .hero__name .l1, .hero__name .l2 { display: block; }
-  .hero__name .l2 { font-weight: 100; letter-spacing: -0.035em; }
+  .hero__name .l2 { font-weight: 100; letter-spacing: -0.035em; color: var(--gold); }
 
   .hero__name .ch {
     display: inline-block;
@@ -458,7 +458,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(91, 91, 255, 0.16), transparent 70%);
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 229, 0, 0.13), transparent 70%);
     opacity: 0;
     transition: opacity 0.4s ease;
   }
@@ -555,7 +555,7 @@
     content: "";
     width: 4px; height: 4px;
     border-radius: 50%;
-    background: var(--indigo);
+    background: var(--gold);
   }
 
   /* ═══════════ SECCIONES ═══════════ */
@@ -642,7 +642,7 @@
     transition: background 0.3s ease;
   }
 
-  .skill:hover { background: rgba(91, 91, 255, 0.1); }
+  .skill:hover { background: rgba(255, 229, 0, 0.07); }
   .skill b { font-weight: 500; font-size: 0.82rem; letter-spacing: -0.01em; }
   .skill span { font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.05em; color: var(--grey-2); line-height: 1.5; }
 
@@ -700,6 +700,7 @@
   .timeline::before {
     content: "";
     position: absolute;
+    z-index: 0;
     left: 0; top: 0;
     width: 1px;
     height: 100%;
@@ -709,11 +710,12 @@
   .timeline::after {
     content: "";
     position: absolute;
+    z-index: 1;
     left: 0; top: 0;
     width: 1px;
     height: var(--drawn, 0%);
     background: var(--iris);
-    box-shadow: 0 0 14px rgba(91, 91, 255, 0.75);
+    box-shadow: 0 0 14px rgba(255, 229, 0, 0.55);
   }
 
   .job {
@@ -728,7 +730,8 @@
   .job::before {
     content: "";
     position: absolute;
-    left: -3.5px; top: calc(clamp(1.8rem, 4vw, 2.6rem) + 0.75rem);
+    z-index: 2;
+    left: -4.5px; top: calc(clamp(1.8rem, 4vw, 2.6rem) + 0.75rem);
     width: 8px; height: 8px;
     border-radius: 50%;
     background: var(--void);
@@ -771,8 +774,8 @@
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--gold);
-    border: 1px solid rgba(255, 194, 75, 0.4);
-    background: rgba(255, 194, 75, 0.1);
+    border: 1px solid rgba(255, 229, 0, 0.42);
+    background: rgba(255, 229, 0, 0.1);
     border-radius: 999px;
     padding: 0.15rem 0.55rem;
     margin-left: 0.6rem;
@@ -852,7 +855,7 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
-                rgba(91, 91, 255, 0.20), rgba(255, 194, 75, 0.07) 38%, transparent 62%);
+                rgba(255, 229, 0, 0.16), rgba(255, 229, 0, 0.05) 40%, transparent 64%);
     opacity: 0;
     transition: opacity 0.45s ease;
     pointer-events: none;
@@ -875,7 +878,7 @@
     pointer-events: none;
   }
 
-  .card:hover { border-color: transparent; box-shadow: 0 32px 70px -40px rgba(91, 91, 255, 0.85); }
+  .card:hover { border-color: transparent; box-shadow: 0 32px 70px -40px rgba(255, 229, 0, 0.5); }
   .card:hover::before, .card:hover::after { opacity: 1; }
 
   .card__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
@@ -938,8 +941,8 @@
   .track__bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--iris); }
   .track--fs .track__bar { background: linear-gradient(90deg, #5B5BFF, #8B7CFF); }
   .track--fe .track__bar { background: linear-gradient(90deg, #8B7CFF, #FF49C3); }
-  .track--be .track__bar { background: linear-gradient(90deg, #FF49C3, #FFC24B); }
-  .track--qa .track__bar { background: linear-gradient(90deg, #FFC24B, #FF8A3D); }
+  .track--be .track__bar { background: linear-gradient(90deg, #FF49C3, #FFE500); }
+  .track--qa .track__bar { background: linear-gradient(90deg, #FFE500, #FF8A3D); }
 
   .track h3 { margin: 0 0 1rem; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.03em; }
   .track ul { list-style: none; margin: 0; padding: 0; }
@@ -987,7 +990,7 @@
     box-shadow: 0 22px 60px -25px rgba(244, 243, 248, 0.55);
   }
 
-  .magnet:hover { box-shadow: 0 26px 70px -22px rgba(91, 91, 255, 0.9); }
+  .magnet:hover { box-shadow: 0 26px 70px -22px rgba(255, 229, 0, 0.7); }
   .magnet .arw { transition: transform 0.4s var(--ease); }
   .magnet:hover .arw { transform: translateX(4px); }
 
@@ -1095,7 +1098,7 @@
   }
 
   .cmdk__it .h { margin-left: auto; font-family: var(--f-mono); font-size: 0.55rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--grey-2); }
-  .cmdk__it[aria-selected="true"] { background: rgba(91, 91, 255, 0.2); color: var(--white); box-shadow: inset 0 0 0 1px rgba(91, 91, 255, 0.4); }
+  .cmdk__it[aria-selected="true"] { background: rgba(255, 229, 0, 0.14); color: var(--white); box-shadow: inset 0 0 0 1px rgba(255, 229, 0, 0.38); }
   .cmdk__foot { display: flex; gap: 1.1rem; padding: 0.65rem 1.25rem; border-top: 1px solid var(--hair); }
 
   kbd {

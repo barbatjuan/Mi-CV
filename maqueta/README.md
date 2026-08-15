@@ -11,7 +11,8 @@ No necesita `npm install` ni servidor: CSS, JS y foto van embebidos.
 ## Dirección visual
 
 Obsidiana con una retícula fina y un campo de luz que barre de violeta a magenta
-y ámbar. Es un mundo visual único y deliberado, sin tema claro: todos los
+y amarillo eléctrico (#FFE500). El amarillo es el color de la interacción: halos,
+cursor, puntos de la línea de tiempo y el apellido del encabezado. Es un mundo visual único y deliberado, sin tema claro: todos los
 colores se pintan de forma explícita para que la página no dependa del fondo del
 navegador.
 
