@@ -35,8 +35,11 @@ una CDN externa, que la CSP bloquearía.
   se enciende y una inclinación 3D sutil.
 - **Botón magnético** en el contacto, que se acerca al cursor.
 - **Línea de tiempo que se dibuja** con el scroll y enciende cada hito.
-- Preloader con contador, revelados por máscara, marquesina de stack, barrido de
-  brillo en los certificados y barra de progreso de lectura.
+- **Muro de tres marquesinas** en sentidos alternos (stack, certificaciones y
+  herramientas), con velocidades distintas para que no se sincronicen, y pausa
+  al pasar el puntero.
+- Preloader con contador, revelados por máscara, barrido de brillo en los
+  certificados y barra de progreso de lectura.
 
 ## Navegación y accesibilidad
 

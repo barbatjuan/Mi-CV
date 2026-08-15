@@ -537,20 +537,29 @@
   /* ═══════════ MARQUEE ═══════════ */
   .marquee {
     border-block: 1px solid var(--hair);
-    padding: 1.1rem 0;
-    overflow: hidden;
     background: rgba(7, 7, 11, 0.55);
     backdrop-filter: blur(10px);
+  }
+
+  .marquee__line {
+    overflow: hidden;
+    padding: 0.85rem 0;
     mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
   }
+
+  .marquee__line + .marquee__line { border-top: 1px solid var(--hair); }
 
   .marquee__row {
     display: flex;
     gap: 3rem;
     width: max-content;
-    animation: slide 34s linear infinite;
+    animation: slide 36s linear infinite;
   }
+
+  /* sentidos alternos y velocidades distintas: si van sincronizadas se nota el truco */
+  .marquee__row--rev { animation-direction: reverse; animation-duration: 47s; }
+  .marquee__row--slow { animation-duration: 41s; }
 
   .marquee:hover .marquee__row { animation-play-state: paused; }
 
@@ -602,6 +611,8 @@
     letter-spacing: -0.055em;
     line-height: 1.04;
   }
+
+  .band__head h2.gold, .cta__claim.gold { color: var(--gold); }
 
   .band__head .right { grid-column: 2; justify-self: end; padding-bottom: 0.35rem; }
 
@@ -1249,7 +1260,9 @@
 
   <!-- ══════ MARQUEE ══════ -->
   <div class="marquee" aria-hidden="true">
-    <div class="marquee__row" id="marquee"></div>
+    <div class="marquee__line"><div class="marquee__row" id="mq-stack"></div></div>
+    <div class="marquee__line"><div class="marquee__row marquee__row--rev" id="mq-certs"></div></div>
+    <div class="marquee__line"><div class="marquee__row marquee__row--slow" id="mq-tools"></div></div>
   </div>
 
   <!-- ══════ PERFIL ══════ -->
@@ -1321,7 +1334,7 @@
   <section id="trayectoria" class="band wrap">
     <div class="band__head">
       <span class="mono rv">02 — Trayectoria</span>
-      <h2 class="mask"><span>De Genexus<br />a React</span></h2>
+      <h2 class="mask gold"><span>De Genexus<br />a React</span></h2>
       <span class="mono right rv">4 roles · 2012 → hoy</span>
     </div>
 
@@ -1462,7 +1475,7 @@
   <!-- ══════ CONTACTO ══════ -->
   <section id="contacto" class="band wrap cta">
     <span class="mono rv">05 — Contacto</span>
-    <h2 class="cta__claim mask" style="margin-top: 1rem;">
+    <h2 class="cta__claim mask gold" style="margin-top: 1rem;">
       <span>Contame qué<br />necesitás</span>
     </h2>
     <a class="magnet" id="magnet" href="mailto:hola@juanbarbat.dev" data-cursor="Escribir">
@@ -1579,10 +1592,16 @@
     { t: "Certificaciones", h: "#certificaciones" }, { t: "Contacto", h: "#contacto" }
   ];
 
-  var STACK = ["Desarrollo a medida", "Claude", "Agentes IA", "Automatización", "APIs",
-               "React", "JavaScript", "Tailwind CSS", "WordPress", "WooCommerce", "Shopify",
-               "Cypress", "Postman", "K6", "Accesibilidad", "Performance", "SEO",
-               "Photoshop", "Illustrator", "Premiere", "Meta Ads", "Google Ads", "Branding"];
+  var BANDAS = {
+    "mq-stack": ["Desarrollo a medida", "Claude", "Agentes IA", "Automatización", "APIs",
+                 "React", "JavaScript", "HTML", "CSS", "Tailwind CSS", "Node", "Express",
+                 "WordPress", "Shopify"],
+    "mq-certs": ["Full Stack Developer", "Frontend Developer", "Maquetador Web", "JavaScript",
+                 "React", "Backend I", "Backend II", "Backend III", "QA Tester"],
+    "mq-tools": ["Photoshop", "Illustrator", "Premiere", "Divi", "WooCommerce", "Pasarelas de pago",
+                 "Yoast SEO", "Google Ads", "Meta Ads", "Cypress", "Postman", "K6",
+                 "Accesibilidad", "Performance", "Notion", "Genexus", "Hosting", "Branding"]
+  };
 
   /* ══════════════════════════════════════════════════════
      2 · FONDO: luz que sigue al puntero
@@ -1642,9 +1661,12 @@
      4 · MARQUEE
      ══════════════════════════════════════════════════════ */
   (function marquee() {
-    var row = $("#marquee");
-    var html = STACK.map(function (s) { return "<span>" + s + "</span>"; }).join("");
-    row.innerHTML = html + html;   // duplicado -> bucle sin costura
+    Object.keys(BANDAS).forEach(function (id) {
+      var row = document.getElementById(id);
+      if (!row) { return; }
+      var html = BANDAS[id].map(function (t) { return "<span>" + t + "</span>"; }).join("");
+      row.innerHTML = html + html;   // duplicado -> bucle sin costura
+    });
   })();
 
   /* ══════════════════════════════════════════════════════
