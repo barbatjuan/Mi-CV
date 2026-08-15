@@ -1,12 +1,22 @@
 # Maqueta — propuesta de rediseño
 
 Propuesta de rediseño del CV/portfolio. **No forma parte de la app real**: es un
-único archivo HTML autocontenido que no toca `src/`, `index.html`, ni la build de Vite.
+único archivo HTML autocontenido que no toca `src/`, el `index.html` de la raíz
+ni `vite.config.js`. Se publica como página aparte en `/maqueta/`.
+
+## Dónde vive
+
+La página es **`public/maqueta/index.html`**. Está en `public/` a propósito:
+Vite copia esa carpeta tal cual a `dist/`, así que la build la publica en
+`/maqueta/` sin tocar la app real ni su configuración. Verificado: `npm run build`
+genera `dist/maqueta/index.html` y la página funciona servida por HTTP.
+
+Este README queda fuera de `public/` para no publicarse junto con el sitio.
 
 ## Cómo verla
 
-Abrí `maqueta/index.html` directamente en el navegador (doble clic o `file://`).
-No necesita `npm install` ni servidor: CSS, JS y foto van embebidos.
+Abrí `public/maqueta/index.html` directamente en el navegador (doble clic o
+`file://`). No necesita `npm install` ni servidor: CSS, JS y foto van embebidos.
 
 ## Dirección visual
 
