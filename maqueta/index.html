@@ -13,6 +13,15 @@
      Mundo visual único y deliberado: sin tema claro.
      ═══════════════════════════════════════════════════════════ */
 
+  /* Anton (OFL), subconjunto de B/A/R/T: 824 bytes incrustados */
+  @font-face {
+    font-family: "Punk";
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url(data:font/woff2;base64,d09GMgABAAAAAAM4AA4AAAAABfwAAALkAAIdsgAAAAAAAAAAAAAAAAAAAAAAAAAAGhYbeBwqBmAARBEICoIgggwBNgIkAxQLDAAEIAWDSgcgG+cECK4HbDdtFISMDPSDwoBo9tw99d76rVFglAiotbJndvc4AKiQQSIr0gCoUlERhsmYuIerNd0AgEqR8QEv87kPqoKLUGVFKFxVdSscC1sH7XQK26z/Wcx1w0QOgGsegJ/0TVAFlsgpB0CBlNaKT/6sQKv8+1tpxwXa+DPJAr4Bs+ukPwFHt2ZNQE1EaRPgn2hpx48LF5dWaM0bxVkJaUzmTM4L/0ECKoAoCFJBQEln5ZTjugcnwbptDYtglUItAWErIYmgR0CQigqCgqg1NTorpJRA7ZsoiGxKBzItIerlXeXyftthSJOrcE5G1jd9jfMxEWG+IdkFCPCedqyPYHgy2mSR+Q2Uh8XrCJD9yv1DeypEJGhMJaAxtV5AQUHEGOMma2H0Wq19ZbUJejdwj1YPZKCEAuYBBwFIAVEiCgW1o1hyFwqmhC1mnjfOrpjiRlPCkvzM4U/zPn8O259Ke03JryFslUqxpDlfLFGesoSN/dxLK5qtN6VcYlrdeW4W82pGlSOWYoHS7X/zS+G36c1bfdKqR7+rfDxU3zDtv9+vHr/8On3/7B59O9vM+nXlwUievlCY19db1mpq/2cO9Csrz3/019RuC0aMrqF61tan3lv863OTrp06p/6Yo9vXI74mdJI5b37fSf/Tt+zM+zlx/DVeGgiIbZ7n/txKW+P/Qj09wM/aD37lHz6s/uqUb8tDgJwIAr/mfKWEqlsQuK0s+UPyoW3yCe7L/l0+NwUyi+isoqkeSwXkLaESUgPwmBMEJY8hqusFJHp5hlRLP5CZEOxOLj8hLIAOSFCMhEGhYanKlQKlmkxIAr+NCENEqUZJEBZhA2ZIGdEQ8ENS5aJhWFBIvRIlKAy5J1tXbAMipAhBqPIIJCSah5Qow26ExZfGecw/jiNQZLw1knLFypSp1kBEiMAaSlNFwyakpBbTiHdChhoI9lJhGGmN3Ks0hgi//r1hZYrVKlYh7wO5ilOq2QYAAAA=) format("woff2");
+  }
+
   :root {
     --void:      #07070B;
     --void-2:    #0C0C12;
@@ -406,7 +415,13 @@
   }
 
   .hero__name .l1, .hero__name .l2 { display: block; }
-  .hero__name .l2 { font-weight: 100; letter-spacing: -0.035em; color: var(--gold); }
+  .hero__name .l2 {
+    font-family: "Punk", Impact, Haettenschweiler, "Arial Narrow", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.063em;
+    margin-right: -0.063em;
+    color: var(--gold);
+  }
 
   .hero__name .ch {
     display: inline-block;
@@ -488,7 +503,7 @@
   }
 
   .stat--live dd { color: var(--gold); }
-  .stat--ai dd { color: #949AFF; }
+  .stat--ai dd { color: #FFA724; }
 
   .scrollcue {
     display: flex;
@@ -1393,11 +1408,11 @@
 
     <div class="filters rv" role="group" aria-label="Filtrar proyectos por tipo de trabajo">
       <button class="filter" data-filter="all" aria-pressed="true">Todos</button>
-      <button class="filter" data-filter="ecommerce" aria-pressed="false">E-commerce <b>5</b></button>
-      <button class="filter" data-filter="wordpress" aria-pressed="false">WordPress <b>13</b></button>
       <button class="filter" data-filter="codigo" aria-pressed="false">Código a medida <b>1</b></button>
-      <button class="filter" data-filter="marca" aria-pressed="false">Marca <b>7</b></button>
-      <button class="filter" data-filter="ads" aria-pressed="false">Ads &amp; Redes <b>4</b></button>
+      <button class="filter" data-filter="ecommerce" aria-pressed="false">E-commerce <b>5</b></button>
+      <button class="filter" data-filter="wordpress" aria-pressed="false">WordPress <b>15</b></button>
+      <button class="filter" data-filter="marca" aria-pressed="false">Marca <b>6</b></button>
+      <button class="filter" data-filter="ads" aria-pressed="false">Ads &amp; Redes <b>3</b></button>
     </div>
 
     <div class="grid" id="grid"></div>
@@ -1505,12 +1520,24 @@
      1 · DATOS
      ══════════════════════════════════════════════════════ */
   var PROYECTOS = [
+    { t: "Capta24", d: "Producto propio tipo SaaS: capta leads por WhatsApp con IA, para negocios locales.",
+      u: "https://capta24.es", g: ["codigo", "ia"],
+      k: ["Desarrollo a medida", "IA", "Claude", "WhatsApp", "Automatización", "SaaS"] },
     { t: "Ensildent", d: "Sitio para clínica dental, con producción de video y SEO on-page.",
       u: "https://www.ensildent.com", g: ["wordpress"],
       k: ["WordPress", "Divi", "Yoast SEO", "Photoshop", "Hosting", "Premiere"] },
-    { t: "Mi Casa Construcciones", d: "Web de empresa constructora, escrita a mano sin CMS.",
-      u: "https://www.micasaconstrucciones.uy", g: ["codigo"],
-      k: ["HTML", "CSS", "JavaScript"] },
+    { t: "Inmobiliaria Jerez Quesada", d: "Web inmobiliaria con fichas de propiedades y captación de contactos.",
+      u: "https://inmobiliariajerezquesada.com", g: ["wordpress"],
+      k: ["WordPress", "Divi", "SEO", "Hosting"] },
+    { t: "PK Cake Studio", d: "E-commerce de repostería artesanal en España.",
+      u: "https://pkcakestudio.es", g: ["wordpress", "ecommerce"],
+      k: ["WordPress", "Divi", "WooCommerce", "SEO", "Hosting"] },
+    { t: "Osteopatía Marquijano", d: "Sitio de consulta de osteopatía en España, con reserva de citas.",
+      u: "https://osteopatiamarquijano.com", g: ["wordpress"],
+      k: ["WordPress", "Divi", "SEO", "Hosting"] },
+    { t: "Bikeingo", d: "Web de servicios y venta para el mundo de la bicicleta, en España.",
+      u: "https://bikeingo.es", g: ["wordpress"],
+      k: ["WordPress", "Divi", "SEO", "Hosting"] },
     { t: "Emigrar con Ana", d: "Consultoría migratoria para Anastasia Leonova, creadora en YouTube.",
       u: "https://www.emigrarconana.com", g: ["wordpress", "marca"],
       k: ["WordPress", "Divi", "Yoast SEO", "Photoshop", "Hosting", "Logo"] },
@@ -1520,9 +1547,6 @@
     { t: "Brilla Bonito Podcast", d: "Podcast de Ana María Henao, con integración a YouTube e Instagram.",
       u: "https://brillabonito.com", g: ["wordpress", "marca"],
       k: ["WordPress", "Divi", "Yoast SEO", "YouTube", "Branding", "Photoshop", "Hosting"] },
-    { t: "Camila Verdún", d: "Sitio creado en colaboración para Camila Verdún, creadora en YouTube.",
-      u: "https://www.camilaverdun.com", g: ["wordpress", "marca"],
-      k: ["WordPress", "Divi", "Yoast SEO", "Photoshop", "Hosting", "Logo"] },
     { t: "Sublimat", d: "Catálogo tipo e-shop sin pasarela de pagos para Sublimat.",
       u: "https://www.sublimat.uy", g: ["wordpress", "ecommerce"],
       k: ["WordPress", "Divi", "WooCommerce", "Yoast SEO", "Photoshop", "Hosting"] },
@@ -1546,10 +1570,7 @@
       k: ["WordPress", "Divi", "Meta Ads", "Google Ads", "Redes", "Photoshop", "Hosting"] },
     { t: "E-Raciones", d: "E-shop en Shopify para distribución de alimentos para mascotas.",
       u: "https://www.eraciones.com", g: ["ecommerce", "ads"],
-      k: ["Shopify", "Meta Ads", "Google Ads", "Redes", "Photoshop", "Hosting"] },
-    { t: "Juano Cocina", d: "E-commerce con pasarela de pagos para un emprendimiento gourmet local.",
-      u: "https://www.rayosdelsol.uy", g: ["wordpress", "ecommerce", "ads"],
-      k: ["WordPress", "Divi", "WooCommerce", "Pasarelas de pago", "Meta Ads", "Google Ads", "Redes"] }
+      k: ["Shopify", "Meta Ads", "Google Ads", "Redes", "Photoshop", "Hosting"] }
   ];
 
   var SECCIONES = [

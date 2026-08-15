@@ -16,8 +16,11 @@ cursor, puntos de la línea de tiempo y el apellido del encabezado. Es un mundo 
 colores se pintan de forma explícita para que la página no dependa del fondo del
 navegador.
 
-Tipografía en tres roles: grotesca para los títulos, serif para el texto de
-apertura y monoespaciada para etiquetas y datos.
+Tipografía en cuatro roles: grotesca para los títulos, serif para el texto de
+apertura, monoespaciada para etiquetas y datos, y **Anton** (condensada de
+cartel) para el apellido del encabezado. Anton va incrustada como `@font-face`
+recortada a las letras de "BARBAT": 824 bytes, así no depende de lo que tenga
+instalado el visitante ni de una CDN externa.
 
 ## Efectos
 
@@ -58,10 +61,10 @@ contador del preloader sin recorte en el último dígito.
   partir de tu indicación: revisalo y ajustalo a lo que realmente ofrecés.
 - **La fila "Backend" (Node · Express · APIs REST · bases de datos) es un
   supuesto** a partir de tus certificados de CoderHouse: confirmá el stack real.
+- **El stack de Capta24 también es un supuesto** (desarrollo a medida, IA,
+  Claude, WhatsApp, automatización): ajustá las tecnologías reales.
 - Saqué "Leader" del encabezado, pero el rol en FactuPro sigue como
   "QA Tester Leader" porque es el cargo que figura en tu CV.
-- `Juano Cocina` apunta a `rayosdelsol.uy`; en el sitio actual (`src/App.jsx`)
-  tiene el mismo enlace. Falta la URL real.
 - El estado "Disponible / Abierto" del encabezado es un supuesto: cambiarlo si
   no aplica.
 - Los proyectos se presentan como "una selección", sin total cerrado, para que
