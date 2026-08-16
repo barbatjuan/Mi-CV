@@ -685,6 +685,18 @@
   }
 
   .skill:hover { background: rgba(255, 229, 0, 0.07); }
+
+  /* la última ocupa la fila entera en vez de dejar huecos, y se dispone
+     en horizontal para que el texto respire a lo ancho */
+  .skill--wide {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    gap: 1.4rem;
+  }
+
+  .skill--wide b { flex: none; min-width: 8.5rem; }
+  .skill--wide span { flex: 1; max-width: none; }
   .skill b { font-weight: 500; font-size: 0.82rem; letter-spacing: -0.01em; }
   .skill span { font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.05em; color: var(--grey-2); line-height: 1.5; }
 
@@ -1188,6 +1200,8 @@
   @media (max-width: 560px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
     .skills { grid-template-columns: minmax(0, 1fr); }
+    .skill--wide { display: grid; gap: 0.3rem; }
+    .skill--wide b { min-width: 0; }
     .topbar__brand span.long { display: none; }
     .cta__claim { max-width: 12ch; }
   }
@@ -1372,7 +1386,11 @@
         <div class="skill"><b>Calidad</b><span>Cypress · Postman · K6 · E2E · Accesibilidad</span></div>
         <div class="skill"><b>Diseño</b><span>Photoshop · Illustrator · Premiere · Branding</span></div>
         <div class="skill"><b>Crecimiento</b><span>SEO · Yoast · Google Ads · Meta Ads</span></div>
-          <div class="skill"><b>Equipo</b><span>Gestión · estándares · plazos · code review</span></div>
+          <div class="skill skill--wide">
+            <b>Equipo</b>
+            <span>Gestión de equipo · estándares de entrega · revisión de código ·
+            planificación · plazos · documentación · incorporación de nuevos perfiles</span>
+          </div>
       </div>
     </div>
   </section>
@@ -1405,6 +1423,24 @@
       </article>
 
       <article class="job">
+        <div class="job__when"><b>2024</b>Ene — Presente</div>
+        <div>
+          <h3>CEO &amp; Diseñador Web<span class="now">Ahora</span></h3>
+          <p class="job__org">Web Coders</p>
+          <p class="job__txt">
+            Desarrollo y diseño de interfaces web modernas y accesibles con WordPress,
+            JavaScript, React y Tailwind CSS.
+          </p>
+          <div class="tags">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+            <span class="tag">React</span><span class="tag">WordPress</span><span class="tag">Divi</span>
+            <span class="tag">Tailwind CSS</span><span class="tag">SEO</span><span class="tag">Photoshop</span>
+            <span class="tag">Illustrator</span><span class="tag">Google Ads</span><span class="tag">Meta Ads</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="job">
         <div class="job__when"><b>2025</b>May — Ago</div>
         <div>
           <h3>QA Tester Leader</h3>
@@ -1419,24 +1455,6 @@
             <span class="tag">Cypress</span><span class="tag">API Testing</span><span class="tag">Postman</span>
             <span class="tag">K6</span><span class="tag">Accesibilidad</span><span class="tag">Performance</span>
             <span class="tag">Test Management</span><span class="tag">Notion</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="job">
-        <div class="job__when"><b>2024</b>Ene — Presente</div>
-        <div>
-          <h3>CEO &amp; Diseñador Web<span class="now">Ahora</span></h3>
-          <p class="job__org">Web Coders</p>
-          <p class="job__txt">
-            Desarrollo y diseño de interfaces web modernas y accesibles con WordPress,
-            JavaScript, React y Tailwind CSS.
-          </p>
-          <div class="tags">
-            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
-            <span class="tag">React</span><span class="tag">WordPress</span><span class="tag">Divi</span>
-            <span class="tag">Tailwind CSS</span><span class="tag">SEO</span><span class="tag">Photoshop</span>
-            <span class="tag">Illustrator</span><span class="tag">Google Ads</span><span class="tag">Meta Ads</span>
           </div>
         </div>
       </article>
