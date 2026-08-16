@@ -49,8 +49,10 @@ una CDN externa, que la CSP bloquearía.
 - **Botón magnético** en el contacto, que se acerca al cursor.
 - **Línea de tiempo que se dibuja** con el scroll y enciende cada hito.
 - **Muro de tres marquesinas** en sentidos alternos (stack, certificaciones y
-  herramientas), con velocidades distintas para que no se sincronicen, y pausa
-  al pasar el puntero.
+  herramientas). El recorrido se calcula en píxeles a partir del ancho real de
+  cada fila, y la duración sale de una velocidad fija por banda (46, 38 y 53
+  px/s), así avanzan parejas sin quedar sincronizadas. Pausa al pasar el puntero,
+  sólo con puntero fino.
 - Preloader con contador, revelados por máscara, barrido de brillo en los
   certificados y barra de progreso de lectura.
 
@@ -75,8 +77,9 @@ sueltos.
 ## Verificado
 
 Renderizado en Chromium: consola limpia, sin desbordamiento horizontal a 390 px,
-descendentes (g, y, q, p) completas en todos los títulos enmascarados y el
-contador del preloader sin recorte en el último dígito.
+descendentes (g, y, q, p) completas en todos los títulos enmascarados, contador
+del preloader sin recorte en el último dígito y las tres marquesinas avanzando
+(transform medido a lo largo del tiempo, a 1440 y 390 px).
 
 ## Pendiente de confirmar
 

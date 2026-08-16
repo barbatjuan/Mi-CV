@@ -538,10 +538,11 @@
   }
 
   /* ═══════════ MARQUEE ═══════════ */
+  /* sin backdrop-filter: sobre un fondo casi negro no aporta nada y en Safari
+     rompe el compositado de lo que se anima encima */
   .marquee {
     border-block: 1px solid var(--hair);
     background: rgba(7, 7, 11, 0.55);
-    backdrop-filter: blur(10px);
   }
 
   .marquee__line {
@@ -557,16 +558,26 @@
     display: flex;
     gap: 3rem;
     width: max-content;
+    will-change: transform;
     animation: slide 36s linear infinite;
   }
 
-  /* sentidos alternos y velocidades distintas: si van sincronizadas se nota el truco */
-  .marquee__row--rev { animation-direction: reverse; animation-duration: 47s; }
-  .marquee__row--slow { animation-duration: 41s; }
+  /* sentidos alternos; la duración la fija el JS a partir del ancho real,
+     para que las tres avancen a velocidades parecidas y no se sincronicen */
+  .marquee__row--rev { animation-direction: reverse; }
 
-  .marquee:hover .marquee__row { animation-play-state: paused; }
+  /* la pausa sólo con puntero fino: en táctil el :hover se queda pegado
+     después de tocar y la fila se congela */
+  @media (hover: hover) and (pointer: fine) {
+    .marquee:hover .marquee__row { animation-play-state: paused; }
+  }
 
-  @keyframes slide { to { transform: translateX(-50%); } }
+  /* desplazamiento en píxeles y no en %: Safari resuelve mal el porcentaje
+     contra un width:max-content que el JS rellena después */
+  @keyframes slide {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(var(--shift, -50%), 0, 0); }
+  }
 
   .marquee__row span {
     font-family: var(--f-mono);
@@ -1721,12 +1732,36 @@
      4 · MARQUEE
      ══════════════════════════════════════════════════════ */
   (function marquee() {
-    Object.keys(BANDAS).forEach(function (id) {
+    // px por segundo de cada banda; distintos para que no queden sincronizadas
+    var VEL = { "mq-stack": 46, "mq-certs": 38, "mq-tools": 53 };
+
+    var filas = Object.keys(BANDAS).map(function (id) {
       var row = document.getElementById(id);
-      if (!row) { return; }
+      if (!row) { return null; }
       var html = BANDAS[id].map(function (t) { return "<span>" + t + "</span>"; }).join("");
       row.innerHTML = html + html;   // duplicado -> bucle sin costura
-    });
+      return row;
+    }).filter(Boolean);
+
+    // el recorrido es la mitad del contenido, en px: el % contra max-content
+    // no es fiable, y así la duración sale de la velocidad y no al revés
+    function medir() {
+      filas.forEach(function (row) {
+        var half = row.scrollWidth / 2;
+        if (!half) { return; }
+        row.style.setProperty("--shift", (-half).toFixed(1) + "px");
+        row.style.animationDuration = (half / (VEL[row.id] || 45)).toFixed(2) + "s";
+      });
+    }
+
+    medir();
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(medir); }
+
+    var t;
+    window.addEventListener("resize", function () {
+      clearTimeout(t);
+      t = setTimeout(medir, 200);   // el ancho cambia al saltar de retícula
+    }, { passive: true });
   })();
 
   /* ══════════════════════════════════════════════════════
