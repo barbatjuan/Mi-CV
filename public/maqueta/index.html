@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Propuesta de rediseno del CV y portfolio de Juan I. Barbat." />
+<meta name="description" content="Juan I. Barbat. Desarrollo web a medida e IA aplicada. Uruguay y Espana." />
 <meta name="color-scheme" content="dark" />
 <title>Estudio Barbat</title>
 <style>
@@ -946,6 +946,16 @@
   .card__url { font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.07em; color: var(--grey-2); word-break: break-all; }
   .card.hide { display: none; }
 
+  /* el producto propio pide más espacio que un encargo */
+  .card--lead { grid-column: span 2; }
+  .card--lead h3 { font-size: 1.6rem; }
+  .card--lead p { font-size: 0.975rem; max-width: 52ch; }
+
+  @media (max-width: 780px) {
+    .card--lead { grid-column: span 1; }
+    .card--lead h3 { font-size: 1.3rem; }
+  }
+
   .empty {
     grid-column: 1 / -1;
     padding: 3rem 1.5rem;
@@ -1278,9 +1288,9 @@
         <small>Primer rol como desarrollador</small>
       </div>
       <div class="stat stat--live" data-spot>
-        <dt class="mono">Estado</dt>
-        <dd>Abierto</dd>
-        <small>Freelance y colaboraciones</small>
+        <dt class="mono">Al frente de</dt>
+        <dd>+600 webs</dd>
+        <small>Equipo web de una empresa en España</small>
       </div>
     </dl>
 
@@ -1325,14 +1335,18 @@
         </p>
         <p class="rv" style="--i: 3;">
           Hoy el foco está en <strong>desarrollo web a medida</strong> — sin plantillas, cada
-          proyecto armado para su caso — y en <strong>meter IA adentro del producto</strong>:
+          proyecto armado para su caso — y en <strong>integrar IA en el producto</strong>:
           asistentes con <strong>Claude</strong>, agentes que se ocupan de lo repetitivo y
           automatizaciones que le devuelven horas al cliente.
         </p>
         <p class="rv" style="--i: 4;">
+          Desde 2025 dirijo además el <strong>equipo web de una empresa en España</strong>, con
+          más de 600 sitios entregados. Coordinar ese volumen me enseñó algo que no se
+          aprende en un proyecto suelto: lo que no está estandarizado, no escala.
+        </p>
+        <p class="rv" style="--i: 5;">
           Del lado visual manejo <strong>Photoshop, Illustrator y Premiere</strong>, y en los
-          últimos años sumé la gestión de redes y campañas para clientes. Fuera de la
-          pantalla: familia, viajes, un buen libro y un día de playa.
+          últimos años sumé la gestión de redes y campañas para clientes.
         </p>
       </div>
 
@@ -1354,10 +1368,11 @@
         <div class="skill"><b>IA aplicada</b><span>Claude · agentes · asistentes · automatización</span></div>
         <div class="skill"><b>Frontend</b><span>React · JavaScript · Tailwind · HTML/CSS</span></div>
         <div class="skill"><b>Backend</b><span>Node · Express · APIs REST · bases de datos</span></div>
-        <div class="skill"><b>CMS &amp; E-commerce</b><span>WordPress · Divi · WooCommerce · Shopify</span></div>
+        <div class="skill"><b>CMS &amp; E-commerce</b><span>WordPress · Elementor · Divi · WooCommerce · Shopify</span></div>
         <div class="skill"><b>Calidad</b><span>Cypress · Postman · K6 · E2E · Accesibilidad</span></div>
         <div class="skill"><b>Diseño</b><span>Photoshop · Illustrator · Premiere · Branding</span></div>
         <div class="skill"><b>Crecimiento</b><span>SEO · Yoast · Google Ads · Meta Ads</span></div>
+          <div class="skill"><b>Equipo</b><span>Gestión · estándares · plazos · code review</span></div>
       </div>
     </div>
   </section>
@@ -1367,24 +1382,24 @@
     <div class="band__head">
       <span class="mono rv">02 — Trayectoria</span>
       <h2 class="mask"><span>De Genexus<br />a React</span></h2>
-      <span class="mono right rv">4 roles · 2012 → hoy</span>
+      <span class="mono right rv">5 roles · 2012 → hoy</span>
     </div>
 
     <div class="timeline" id="timeline">
       <article class="job">
-        <div class="job__when"><b>2024</b>Ene — Presente</div>
+        <div class="job__when"><b>2025</b>— Presente</div>
         <div>
-          <h3>Frontend Developer &amp; Web Designer<span class="now">Ahora</span></h3>
-          <p class="job__org">Web Coders</p>
+          <h3>Manager de equipo web<span class="now">Ahora</span></h3>
+          <p class="job__org">Empresa del sector web · España</p>
           <p class="job__txt">
-            Desarrollo y diseño de interfaces web modernas y accesibles con WordPress,
-            JavaScript, React y Tailwind CSS.
+            Dirijo el equipo web de una empresa con más de 600 sitios entregados, en su
+            mayoría sobre Elementor. Reparto y superviso el trabajo del equipo, y sostengo
+            los estándares de calidad y los plazos de entrega a ese volumen.
           </p>
           <div class="tags">
-            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
-            <span class="tag">React</span><span class="tag">WordPress</span><span class="tag">Divi</span>
-            <span class="tag">Tailwind CSS</span><span class="tag">SEO</span><span class="tag">Photoshop</span>
-            <span class="tag">Illustrator</span><span class="tag">Google Ads</span><span class="tag">Meta Ads</span>
+            <span class="tag">Gestión de equipo</span><span class="tag">Elementor</span>
+            <span class="tag">WordPress</span><span class="tag">Estándares</span>
+            <span class="tag">QA</span><span class="tag">Plazos de entrega</span>
           </div>
         </div>
       </article>
@@ -1404,6 +1419,24 @@
             <span class="tag">Cypress</span><span class="tag">API Testing</span><span class="tag">Postman</span>
             <span class="tag">K6</span><span class="tag">Accesibilidad</span><span class="tag">Performance</span>
             <span class="tag">Test Management</span><span class="tag">Notion</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="job__when"><b>2024</b>Ene — Presente</div>
+        <div>
+          <h3>CEO &amp; Diseñador Web<span class="now">Ahora</span></h3>
+          <p class="job__org">Web Coders</p>
+          <p class="job__txt">
+            Desarrollo y diseño de interfaces web modernas y accesibles con WordPress,
+            JavaScript, React y Tailwind CSS.
+          </p>
+          <div class="tags">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+            <span class="tag">React</span><span class="tag">WordPress</span><span class="tag">Divi</span>
+            <span class="tag">Tailwind CSS</span><span class="tag">SEO</span><span class="tag">Photoshop</span>
+            <span class="tag">Illustrator</span><span class="tag">Google Ads</span><span class="tag">Meta Ads</span>
           </div>
         </div>
       </article>
@@ -1534,7 +1567,7 @@
 <footer>
   <div class="wrap footer__in">
     <span class="mono">© 2026 Juan I. Barbat</span>
-    <span class="mono">Maqueta · propuesta de rediseño</span>
+    <span class="mono">Diseñado y programado por mí</span>
   </div>
 </footer>
 
@@ -1565,55 +1598,56 @@
      1 · DATOS
      ══════════════════════════════════════════════════════ */
   var PROYECTOS = [
-    { t: "Capta24", d: "Producto propio tipo SaaS: capta leads por WhatsApp con IA, para negocios locales.",
+    { t: "Capta24", lead: true,
+      d: "Producto propio. Un asistente con IA atiende WhatsApp a cualquier hora, responde y deja el contacto calificado para que el negocio sólo tenga que cerrar. Pensado para comercios locales que pierden consultas fuera del horario de atención. Desarrollado a medida, sin plantillas ni CMS.",
       u: "https://capta24.es", g: ["codigo", "ia"],
       k: ["Desarrollo a medida", "IA", "Claude", "WhatsApp", "Automatización", "SaaS"] },
-    { t: "Ensildent", d: "Sitio para clínica dental, con producción de video y SEO on-page.",
+    { t: "Ensildent", d: "Clínica dental. Diseño, montaje y SEO on-page, más la producción de video de la portada.",
       u: "https://www.ensildent.com", g: ["wordpress"],
       k: ["WordPress", "Divi", "Yoast SEO", "Photoshop", "Hosting", "Premiere"] },
-    { t: "Inmobiliaria Jerez Quesada", d: "Web inmobiliaria con fichas de propiedades y captación de contactos.",
+    { t: "Inmobiliaria Jerez Quesada", d: "Inmobiliaria en España. Diseño y montaje con fichas de propiedades, trabajado para búsquedas locales.",
       u: "https://inmobiliariajerezquesada.com", g: ["wordpress"],
       k: ["WordPress", "Divi", "SEO", "Hosting"] },
-    { t: "PK Cake Studio", d: "E-commerce de repostería artesanal en España.",
+    { t: "PK Cake Studio", d: "Repostería artesanal en España. Tienda online completa, del catálogo al cobro.",
       u: "https://pkcakestudio.es", g: ["wordpress", "ecommerce"],
       k: ["WordPress", "Divi", "WooCommerce", "SEO", "Hosting"] },
-    { t: "Osteopatía Marquijano", d: "Sitio de consulta de osteopatía en España, con reserva de citas.",
+    { t: "Osteopatía Marquijano", d: "Consulta de osteopatía en España. Diseño y montaje del sitio, orientado a captar la primera visita.",
       u: "https://osteopatiamarquijano.com", g: ["wordpress"],
       k: ["WordPress", "Divi", "SEO", "Hosting"] },
-    { t: "Bikeingo", d: "Web de servicios y venta para el mundo de la bicicleta, en España.",
+    { t: "Bikeingo", d: "Servicios y venta para ciclistas, en España. Diseño, montaje y posicionamiento.",
       u: "https://bikeingo.es", g: ["wordpress"],
       k: ["WordPress", "Divi", "SEO", "Hosting"] },
-    { t: "Emigrar con Ana", d: "Consultoría migratoria para Anastasia Leonova, creadora en YouTube.",
+    { t: "Emigrar con Ana", d: "Consultoría migratoria de Anastasia Leonova, creadora en YouTube. Marca desde cero, logo y sitio.",
       u: "https://www.emigrarconana.com", g: ["wordpress", "marca"],
       k: ["WordPress", "Divi", "Yoast SEO", "Photoshop", "Hosting", "Logo"] },
-    { t: "Web Coders", d: "Sitio propio de la agencia: identidad, web y presencia en redes.",
+    { t: "Web Coders", d: "Mi propia agencia. Identidad, sitio y presencia en redes, todo hecho en casa.",
       u: "https://www.webcoders.es", g: ["wordpress", "marca"],
       k: ["WordPress", "Divi", "Yoast SEO", "Illustrator", "Photoshop", "Hosting", "Redes"] },
-    { t: "Brilla Bonito Podcast", d: "Podcast de Ana María Henao, con integración a YouTube e Instagram.",
+    { t: "Brilla Bonito Podcast", d: "Podcast de Ana María Henao. Sitio con los episodios de YouTube e Instagram integrados, más el branding.",
       u: "https://brillabonito.com", g: ["wordpress", "marca"],
       k: ["WordPress", "Divi", "Yoast SEO", "YouTube", "Branding", "Photoshop", "Hosting"] },
-    { t: "Sublimat", d: "Catálogo tipo e-shop sin pasarela de pagos para Sublimat.",
+    { t: "Sublimat", d: "Productos personalizados. Catálogo online y cierre del pedido por contacto directo.",
       u: "https://www.sublimat.uy", g: ["wordpress", "ecommerce"],
       k: ["WordPress", "Divi", "WooCommerce", "Yoast SEO", "Photoshop", "Hosting"] },
-    { t: "Casor.io", d: "Web muy estilizada para una empresa de invitaciones digitales de boda.",
+    { t: "Casor.io", d: "Invitaciones digitales de boda. Marca y sitio para un producto que se vende por lo visual.",
       u: "https://www.casor.io", g: ["wordpress", "marca"],
       k: ["WordPress", "Divi", "Yoast SEO", "Logo", "Redes", "Photoshop", "Hosting"] },
     { t: "Laguna Garzón", d: "Sitio turístico construido alrededor de la fotografía de Ana Amorin.",
       u: "https://www.lagunagarzon.uy", g: ["wordpress"],
       k: ["WordPress", "Divi", "Yoast SEO", "Photoshop", "Hosting"] },
-    { t: "Raciones Caninas", d: "E-commerce de importación y distribución de artículos para mascotas.",
+    { t: "Raciones Caninas", d: "Importación y distribución para mascotas. E-commerce con pasarela de pagos, más logo y redes.",
       u: "https://www.racionescaninas.com.uy", g: ["wordpress", "ecommerce", "marca"],
       k: ["WordPress", "WooCommerce", "Pasarela de pagos", "Yoast SEO", "Logo", "Redes", "Hosting"] },
-    { t: "Oro Azul", d: "E-commerce de importación y distribución de filtros Stéfani.",
+    { t: "Oro Azul", d: "Importación de filtros Stéfani. E-commerce con pasarela de pagos y logo, para un producto que se compra comparando.",
       u: "https://www.oroazuluy.com", g: ["wordpress", "ecommerce", "marca"],
       k: ["WordPress", "Divi", "WooCommerce", "Pasarela de pagos", "Logo", "Photoshop", "Hosting"] },
-    { t: "Depilación MC", d: "Web de estética y depilación definitiva para Mariela Carballo.",
+    { t: "Depilación MC", d: "Estética y depilación definitiva. Sitio, campañas en Meta y Google, y gestión de redes.",
       u: "https://www.depilacionmc.com", g: ["wordpress", "ads"],
       k: ["WordPress", "Divi", "Meta Ads", "Google Ads", "Redes", "Photoshop", "Hosting"] },
-    { t: "Rayos del Sol", d: "Complejo de cabañas con más de 15 años en La Paloma, Rocha.",
+    { t: "Rayos del Sol", d: "Cabañas en La Paloma, Rocha. Sitio, campañas en Meta y Google, y redes durante la temporada.",
       u: "https://www.rayosdelsol.uy", g: ["wordpress", "ads"],
       k: ["WordPress", "Divi", "Meta Ads", "Google Ads", "Redes", "Photoshop", "Hosting"] },
-    { t: "E-Raciones", d: "E-shop en Shopify para distribución de alimentos para mascotas.",
+    { t: "E-Raciones", d: "Distribución de alimento para mascotas. Tienda en Shopify y campañas apuntando al catálogo.",
       u: "https://www.eraciones.com", g: ["ecommerce", "ads"],
       k: ["Shopify", "Meta Ads", "Google Ads", "Redes", "Photoshop", "Hosting"] }
   ];
@@ -1627,12 +1661,12 @@
   var BANDAS = {
     "mq-stack": ["Desarrollo a medida", "Claude", "MCP", "Agentes IA", "ChatGPT", "OpenAI",
                  "DeepSeek", "Automatización", "APIs", "React", "JavaScript", "HTML", "CSS",
-                 "Tailwind CSS", "Node", "Express", "WordPress", "Shopify"],
+                 "Tailwind CSS", "Node", "Express", "WordPress", "Elementor", "Shopify"],
     "mq-certs": ["Full Stack Developer", "Frontend Developer", "Maquetador Web", "JavaScript",
                  "React", "Backend I", "Backend II", "Backend III", "QA Tester"],
     "mq-tools": ["Photoshop", "Illustrator", "Premiere", "Divi", "WooCommerce", "Pasarelas de pago",
                  "Yoast SEO", "Google Ads", "Meta Ads", "Cypress", "Postman", "K6",
-                 "Accesibilidad", "Performance", "Notion", "Genexus", "SSH", "Hosting", "Branding"]
+                 "Accesibilidad", "Performance", "Notion", "Genexus", "SSH", "Hosting", "Branding", "Gestión de equipo"]
   };
 
   /* ══════════════════════════════════════════════════════
@@ -1771,7 +1805,7 @@
 
   PROYECTOS.forEach(function (p) {
     var a = document.createElement("a");
-    a.className = "card";
+    a.className = p.lead ? "card card--lead" : "card";
     a.href = p.u;
     a.target = "_blank";
     a.rel = "noopener noreferrer";

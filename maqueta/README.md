@@ -91,6 +91,11 @@ del preloader sin recorte en el último dígito y las tres marquesinas avanzando
   Claude, WhatsApp, automatización): ajustá las tecnologías reales.
 - Saqué "Leader" del encabezado, pero el rol en FactuPro sigue como
   "QA Tester Leader" porque es el cargo que figura en tu CV.
+- **El puesto de manager figura como "Empresa del sector web · España"**: falta
+  el nombre real, y el mes de inicio en 2025.
+- **Las descripciones de proyectos las reescribí yo**, derivadas de las
+  tecnologías que ya tenías listadas. Describen el encargo y el alcance, no
+  resultados: si tenés cifras (consultas, ventas, posiciones), valen más.
 - El estado "Disponible / Abierto" del encabezado es un supuesto: cambiarlo si
   no aplica.
 - Los proyectos se presentan como "una selección", sin total cerrado, para que
