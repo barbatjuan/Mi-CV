@@ -794,9 +794,7 @@
 
   .critter.hulk .critter__shadow { width: 40px; background: radial-gradient(50% 50% at 50% 50%, rgba(79, 155, 60, 0.5), transparent 72%); }
 
-  /* mientras dura no se lo puede desgastar, así que el aguante deja sitio a un
-     reloj: lo que hay que aguantar, no lo que le queda */
-  .critter.hulk .critter__pips { display: none; }
+  .critter.hulk .critter__pips i { background: #7FD45F; }
 
   .critter__reloj {
     position: absolute;
@@ -901,9 +899,13 @@
   .critter__rendicion b { display: block; font-weight: 400; }
   .critter__rendicion a {
     color: var(--gold);
-    pointer-events: auto;       /* lo único agarrable de toda la capa */
     border-bottom: 1px solid rgba(255, 229, 0, 0.35);
   }
+
+  /* el enlace sólo se puede pulsar con el bicho ya atrapado. Antes lo tenía
+     siempre: una franja invisible de 148x11px abriendo WhatsApp a quien
+     clickease ahí mientras el bicho seguía vivo. */
+  .critter.atrapado .critter__rendicion a { pointer-events: auto; }
 
   /* Va al costado y no encima: entre el apellido y la línea sólo hay 38px, y
      ahí arriba ya viven el casco y las marcas de aguante. */
@@ -2813,7 +2815,7 @@
        que es cuando es un blanco móvil de verdad. Y con el dedo, un poco más. */
     function alcanceClick() {
       var huyendo = (modo === "huida" || modo === "susto" || modo === "esquina") &&
-                    !(poder && (poder.plantado || poder.pelea));
+                    !hulk && !(poder && (poder.plantado || poder.pelea));
       return ancho * tam() * (huyendo ? 2.1 : 1.1) + (COARSE ? 22 : 0);
     }
     var SALTO = 10;
@@ -2841,7 +2843,8 @@
     ];
 
     var AGUANTE = 4;        // golpes que para antes de quedarse sin aire
-    var DUR_HULK = 7000;    // lo que hay que aguantarlo: no se lo puede desgastar
+    var AGUANTE_HULK = 6;   // transformado aguanta dos más
+    var CALMA_HULK = 7000;  // y se calma siete segundos después del último ataque
     var RENDIDO = 10000;
 
     /* atajo de prueba y de demo: #bicho=espada fuerza uno solo */
@@ -2880,7 +2883,8 @@
     rend.appendChild(rendTxt);
     rend.appendChild(rendWa);
 
-    for (var k = 0; k < AGUANTE; k++) { pips.appendChild(document.createElement("i")); }
+    /* se crean las del modo bestia y se ocultan las que sobran */
+    for (var k = 0; k < AGUANTE_HULK; k++) { pips.appendChild(document.createElement("i")); }
     var marcas = Array.prototype.slice.call(pips.children);
 
     function medir() {
@@ -2925,7 +2929,9 @@
     }
 
     function pintarPips(mostrar) {
+      var tope = hulk ? AGUANTE_HULK : AGUANTE;
       for (var i = 0; i < marcas.length; i++) {
+        marcas[i].style.display = i < tope ? "" : "none";
         marcas[i].className = i < aguante ? "" : "off";
       }
       if (mostrar !== false) {
@@ -3214,13 +3220,14 @@
        desinflarse sí se queda sin aire: la ventana no se pierde, se retrasa. */
     function bestia() {
       hulk = true; yaHulk = true;
-      hulkHasta = performance.now() + DUR_HULK;
+      hulkHasta = performance.now() + CALMA_HULK;
       lane.classList.add("hulk");
+      aguante = AGUANTE_HULK;
       lane.classList.remove("agotado");
       apagarPoder();
       pintarPips();
       temblar(true);
-      mostrarGlobo("ya me hartaste", 2800);
+      mostrarGlobo("me hiciste enojar", 2800);
       decir("modo bestia", "oro", 2600);
       for (var i = 0; i < 12; i++) {
         var a = (i / 12) * Math.PI * 2;
@@ -3319,13 +3326,12 @@
         else { chispa(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)), "critter__spark--oro"); }
         if (p.onda) { onda(r, mio, r.top + r.height / 2); }
 
-        /* transformado no se lo puede desgastar: la bestia no se gana a golpes,
-           se aguanta. Si no, se agrandaba y lo matabas cuatro segundos después. */
-        if (!hulk) {
-          aguante--;
-          pintarPips();
-          if (aguante <= 0) { sinAire(); }
-        }
+        aguante--;
+        pintarPips();
+        /* mientras siga peleando no se calma: el reloj cuenta desde el último
+           ataque, no desde la transformación */
+        if (hulk) { hulkHasta = performance.now() + CALMA_HULK; }
+        if (aguante <= 0) { if (hulk) { desinflar(); } else { sinAire(); } }
         return;
       }
 
@@ -3353,7 +3359,7 @@
 
       if (poder && ts > poderHasta) { apagarPoder(); enGuardia = false; }
       if (hulk) {
-        sprite.style.setProperty("--resto", Math.max(0, (hulkHasta - ts) / DUR_HULK).toFixed(3));
+        sprite.style.setProperty("--resto", Math.max(0, (hulkHasta - ts) / CALMA_HULK).toFixed(3));
         if (ts > hulkHasta) { desinflar(); }
       }
       moverCohetes(r, ts, dt);
@@ -3389,7 +3395,7 @@
           mirada = 0;
           enGuardia = d < GUARDIA;            // llegado a distancia de golpe, se planta
           if (d < ALCANCE && ts - ultimoTajo > 640 - furia * 240) { tajo(r, cx, cy, ts); }
-        } else if (poder && (poder.plantado || poder.ciego)) {
+        } else if (poder && poder.plantado) {
           /* el estado no puede mentir: plantado no es huyendo, y de ese flag
              depende cuánto se perdona al apuntarle */
           if (modo === "huida") { modo = "paseo"; }
@@ -3408,6 +3414,15 @@
             lanzarCohete(r, cx, cy, ts);
             proximoCohete = ts + 1000 + Math.random() * 1000;
           }
+        } else if (hulk) {
+          /* transformado no huye de nadie: te encara y te va a buscar */
+          if (modo === "huida") { modo = "paseo"; }
+          dir = dx > 0 ? 1 : -1;
+          mirada = 0;
+          enGuardia = d < GUARDIA;
+          if (d < ALCANCE && ts - ultimoTajo > 520) { tajo(r, cx, cy, ts); }
+        } else if (poder && poder.ciego) {
+          mirada = 0;
         } else if (d < RADIO) {
           modo = "huida";
           dir = dx > 0 ? -1 : 1;
@@ -3445,18 +3460,20 @@
       var v = V[modo];
       if (poder && poder.pelea && libre) { v = enGuardia ? 0 : V.pelea * (poder.mult || 1) * (1 + furia * 0.35); }
       else if (poder && poder.plantado && libre) { v = 0; }
+      else if (hulk && libre) { v = enGuardia ? 0 : V.pelea * 1.3; }
       if (pausa > 0) { pausa -= dt * 1000; v = 0; }
 
       x += dir * v * dt;
       /* al crecer se ensancha hacia los dos lados desde el centro: si no se
          descuenta, el bicho grande asoma por fuera del carril */
       var borde = ancho * (tam() - 1) / 2;
+      var persigue = hulk || (poder && poder.pelea);
       if (x <= borde && dir < 0) {
         x = borde;
-        if (!(poder && poder.pelea)) { dir = 1; if (modo === "paseo") { pausa = 420; parpadear(); } }
+        if (!persigue) { dir = 1; if (modo === "paseo") { pausa = 420; parpadear(); } }
       } else if (x >= W - ancho - borde && dir > 0) {
         x = W - ancho - borde;
-        if (!(poder && poder.pelea)) { dir = -1; if (modo === "paseo") { pausa = 420; parpadear(); } }
+        if (!persigue) { dir = -1; if (modo === "paseo") { pausa = 420; parpadear(); } }
       }
 
       if (salto > 0) {
