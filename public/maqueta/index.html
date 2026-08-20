@@ -150,6 +150,11 @@
   main, .topbar, footer { position: relative; z-index: 3; }
 
   /* ── cursor propio ────────────────────────────────────── */
+  /* La clase la pone el JS y sólo cuando el cursor propio arranca de verdad:
+     si el script fallara, la clase nunca llega y el puntero del sistema sigue
+     ahí. Los campos de texto conservan su cursor: ahí importa ver dónde escribís. */
+  html.cur-on, html.cur-on *:not(input):not(textarea) { cursor: none !important; }
+
   .cur, .cur-ring {
     position: fixed;
     top: 0; left: 0;
@@ -643,6 +648,8 @@
   }
 
   .critter__field .fx-in { stroke-width: 0.6; opacity: 0.6; }
+  .critter__field .fx-hit { fill: rgba(255, 229, 0, 0.55); stroke: none; opacity: 0; }
+  .critter.impacto .fx-hit { animation: destello 0.34s var(--ease); }
 
   .critter.pw-escudo .critter__field { animation: campo 0.42s var(--ease) forwards; }
   .critter.pw-escudo .fx-out { animation: girar 7s linear infinite; }
@@ -718,6 +725,21 @@
   }
 
   /* la onda que devuelve el escudo, viaja hasta el cursor y lo aparta */
+  .critter__bala {
+    position: absolute;
+    width: 5px; height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    background: var(--gold);
+    box-shadow: 0 0 7px rgba(255, 229, 0, 0.85);
+    transition: transform 0.23s linear;
+  }
+
+  .critter.retro .critter__svg { animation: retroceso 0.2s var(--ease); }
+  @keyframes retroceso {
+    0%, 100% { transform: scaleX(var(--flip, 1)) translateX(0); }
+    45%      { transform: scaleX(var(--flip, 1)) translateX(-4px); }
+  }
+
   .critter__onda {
     position: absolute;
     width: 14px; height: 14px;
@@ -1567,6 +1589,7 @@
           <svg class="critter__field" viewBox="0 0 60 60" focusable="false" aria-hidden="true">
             <polygon class="fx-out" points="30,2 54,16 54,44 30,58 6,44 6,16" />
             <polygon class="fx-in" points="30,11 46,20.5 46,39.5 30,49 14,39.5 14,20.5" />
+            <polygon class="fx-hit" points="30,2 54,16 54,44 30,58 6,44 6,16" />
           </svg>
           <span class="critter__pips" id="critter-pips"></span>
           <svg class="critter__svg" viewBox="0 0 32 21" focusable="false" aria-hidden="true">
@@ -1939,7 +1962,7 @@
   /* puente entre el cursor propio (7) y el bicho (12): el anillo vive en un
      closure, así que en vez de globals se comparte este par de funciones.
      Quedan en null si no hay cursor propio, y el bicho comprueba antes. */
-  var ANILLO = { golpe: null, desvio: null };
+  var ANILLO = { golpe: null, desvio: null, barrera: null };
 
   /* ══════════════════════════════════════════════════════
      1 · DATOS
@@ -2234,9 +2257,12 @@
     var px = window.innerWidth / 2, py = window.innerHeight / 2;
     var rx2 = px, ry2 = py;
 
+    /* el cursor propio pasa a ser EL cursor: si no, la flecha del sistema
+       atravesaría el campo de fuerza y el muro parecería un fallo de dibujo */
+    document.documentElement.classList.add("cur-on");
+
     document.addEventListener("mousemove", function (e) {
       px = e.clientX; py = e.clientY;
-      cur.style.transform = "translate(" + px + "px," + py + "px)";
 
       var hot = e.target.closest ? e.target.closest("[data-cursor], a, button") : null;
       if (hot) {
@@ -2252,6 +2278,13 @@
        elástico sale gratis, sin escribir un resorte. */
     var kx = 0, ky = 0, ox = 0, oy = 0, tox = 0, toy = 0;
     var TOPE = 52;   // más que esto y el cursor se siente perdido, no repelido
+    var muro = null; // círculo que el cursor no puede pisar (el campo de fuerza)
+
+    /* a diferencia de golpe y desvio, esto no empuja: recorta. El punto se
+       queda pegado al borde por más que insistas, y por eso se lee como muro. */
+    ANILLO.barrera = function (bx, by, br) {
+      muro = br > 0 ? { x: bx, y: by, r: br } : null;
+    };
 
     ANILLO.golpe = function (ix, iy) {
       kx = Math.max(-TOPE, Math.min(TOPE, kx + ix));
@@ -2264,8 +2297,22 @@
     };
 
     (function ringLoop() {
-      rx2 += (px - rx2) * 0.16;
-      ry2 += (py - ry2) * 0.16;
+      var ax = px, ay = py;
+
+      if (muro) {
+        var mvx = px - muro.x, mvy = py - muro.y;
+        var md = Math.hypot(mvx, mvy);
+        if (md < muro.r) {
+          if (md < 0.01) { mvx = 1; mvy = 0; md = 1; }
+          ax = muro.x + mvx / md * muro.r;
+          ay = muro.y + mvy / md * muro.r;
+        }
+      }
+
+      cur.style.transform = "translate(" + ax.toFixed(1) + "px," + ay.toFixed(1) + "px)";
+
+      rx2 += (ax - rx2) * 0.16;
+      ry2 += (ay - ry2) * 0.16;
       kx *= 0.88; ky *= 0.88;
       if (Math.abs(kx) < 0.15) { kx = 0; }
       if (Math.abs(ky) < 0.15) { ky = 0; }
@@ -2567,13 +2614,17 @@
        te viene encima. Lo que lo desgasta es la pelea, no el poder.
          pelea    → deja de huir y avanza sobre el cursor, repartiendo
          plantado → se queda firme en el sitio, aguantando
+         apunta   → gira para encararte sin moverse del sitio
+         barrera  → el cursor no puede entrar en la burbuja, punto
+         dispara  → le tira balas al cursor
          ciego    → se cree invisible y sigue su camino
          anillo   → empuja el cursor mientras te acercás                     */
     var PODERES = [
       { id: "espada",    nombre: "espada",          dur: 3200, peso: 6, pelea: true, mult: 1 },
+      { id: "escudo",    nombre: "campo de fuerza", dur: 3200, peso: 5, plantado: true, apunta: true, barrera: true, onda: true },
+      { id: "disparo",   nombre: "disparo",         dur: 2600, peso: 5, plantado: true, apunta: true, dispara: true },
       { id: "embestida", nombre: "embestida",       dur: 1600, peso: 4, pelea: true, mult: 2.4 },
-      { id: "escudo",    nombre: "campo de fuerza", dur: 3200, peso: 5, plantado: true, onda: true },
-      { id: "repulsor",  nombre: "repulsor",        dur: 2800, peso: 3, plantado: true, anillo: true },
+      { id: "repulsor",  nombre: "repulsor",        dur: 2800, peso: 3, plantado: true, apunta: true, anillo: true },
       { id: "camuflaje", nombre: "camuflaje",       dur: 3200, peso: 3, ciego: true },
       { id: "parpadeo",  nombre: "parpadeo",        dur: 700,  peso: 2 }
     ];
@@ -2591,7 +2642,8 @@
     var aguante = AGUANTE, furia = 0, furiaAnt = -1, ultimoTajo = 0, enGuardia = false;
     var pcx = null, pcy = null;
     var corriendo = false, visible = false, last = 0;
-    var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0;
+    var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0, impT = 0, retroT = 0;
+    var ultimoTiro = 0;
 
     /* el mensaje de la rendición se arma una vez para colgarle los listeners
        del hover sin rehacerlos en cada captura */
@@ -2617,6 +2669,9 @@
       if (x > W - ancho) { x = Math.max(0, W - ancho); }
       return r;
     }
+
+    /* la burbuja mide el 155% del sprite: su radio, en píxeles de pantalla */
+    function radioEscudo() { return ancho * 0.78; }
 
     function parpadear() {
       lane.classList.add("blink");
@@ -2705,6 +2760,40 @@
       if (clase === "parry") { parryT = t; } else { golpeT = t; }
     }
 
+    /* el click no llega al bicho: revienta contra la burbuja. La chispa va
+       sobre la superficie, que es lo que cuenta la historia de que lo paró. */
+    function impactoEscudo(r, cx, cy, clx, cly) {
+      var vx = clx - cx, vy = cly - cy, d = Math.hypot(vx, vy) || 1;
+      var R = radioEscudo();
+      chispa(cx + vx / d * R - r.left, cy + vy / d * R - r.top, "critter__spark--oro");
+      lane.classList.add("impacto");
+      clearTimeout(impT);
+      impT = setTimeout(function () { lane.classList.remove("impacto"); }, 340);
+    }
+
+    /* le tira una bala al cursor: viaja, revienta y empuja */
+    function disparar(r, cx, cy, ts) {
+      ultimoTiro = ts;
+      var destX = pcx, destY = pcy;
+      var b = document.createElement("span");
+      b.className = "critter__bala";
+      b.style.left = (cx - r.left).toFixed(0) + "px";
+      b.style.top  = (cy - r.top).toFixed(0) + "px";
+      lane.appendChild(b);
+      void b.offsetWidth;                       // fuerza el reflow: si no, no hay transición
+      b.style.transform = "translate(" + (destX - cx).toFixed(0) + "px," + (destY - cy).toFixed(0) + "px)";
+
+      lane.classList.add("retro");
+      clearTimeout(retroT);
+      retroT = setTimeout(function () { lane.classList.remove("retro"); }, 210);
+
+      setTimeout(function () {
+        chispa(destX - r.left, destY - r.top, "critter__spark--oro");
+        empujar(destX - cx, destY - cy, 42 * (1 + furia * 0.5));
+        if (b.parentNode) { b.parentNode.removeChild(b); }
+      }, 230);
+    }
+
     /* la onda del escudo: sale del bicho, viaja hasta el cursor y lo aparta */
     function onda(r, cx, cy) {
       if (pcx === null) { return; }
@@ -2765,6 +2854,7 @@
       if (!poder) { return; }
       lane.classList.remove("pw-" + poder.id);
       if (poder.anillo && ANILLO.desvio) { ANILLO.desvio(0, 0); }
+      if (poder.barrera && ANILLO.barrera) { ANILLO.barrera(0, 0, 0); }
       poder = null;
     }
 
@@ -2798,6 +2888,7 @@
       dir = cx > r.left + x + ancho / 2 ? 1 : -1;   // se da vuelta y te encara
       pausa = 0; salto = 0; y = 0;
       if (ANILLO.desvio) { ANILLO.desvio(0, 0); }
+      if (ANILLO.barrera) { ANILLO.barrera(0, 0, 0); }
       estallido(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)));
 
       rendTxt.textContent = "me ganaste en " + intentos + " · hablemos";
@@ -2844,7 +2935,8 @@
         /* para el golpe y contesta */
         if (!poder) { salto = 1; }
         activarPoder(p, r, mio);
-        chispa(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)), "critter__spark--oro");
+        if (p.barrera) { impactoEscudo(r, mio, r.top + r.height / 2, cx, cy); }
+        else { chispa(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)), "critter__spark--oro"); }
         if (p.onda) { onda(r, mio, r.top + r.height / 2); }
 
         aguante--;
@@ -2908,7 +3000,11 @@
           enGuardia = d < GUARDIA;            // llegado a distancia de golpe, se planta
           if (d < ALCANCE && ts - ultimoTajo > 640 - furia * 240) { tajo(r, cx, cy, ts); }
         } else if (poder && (poder.plantado || poder.ciego)) {
-          mirada = poder.plantado ? Math.max(-1.4, Math.min(1.4, dx / 55)) : 0;
+          if (poder.apunta) { dir = dx > 0 ? 1 : -1; }
+          mirada = poder.ciego ? 0 : Math.max(-1.4, Math.min(1.4, dx / 55));
+          /* sólo dispara a lo que tiene cerca: no tiene sentido tirarle a un
+             cursor que está al otro lado de la página */
+          if (poder.dispara && d < 280 && ts - ultimoTiro > 460 - furia * 170) { disparar(r, cx, cy, ts); }
         } else if (d < RADIO) {
           modo = "huida";
           dir = dx > 0 ? -1 : 1;
@@ -2922,6 +3018,12 @@
           modo = "paseo";
           mirada = 0;
         }
+      }
+
+      /* el muro viaja con el bicho: si se mueve, la burbuja se mueve con él */
+      if (ANILLO.barrera) {
+        if (poder && poder.barrera && modo !== "atrapado") { ANILLO.barrera(cx, cy, radioEscudo()); }
+        else if (!poder || !poder.barrera) { ANILLO.barrera(0, 0, 0); }
       }
 
       /* el repulsor aparta el cursor mientras te acercás */
@@ -2995,6 +3097,7 @@
       lane.classList.add("quieto");
       firmaAnt = "";
       if (ANILLO.desvio) { ANILLO.desvio(0, 0); }
+      if (ANILLO.barrera) { ANILLO.barrera(0, 0, 0); }
     }
 
     if (!COARSE) {

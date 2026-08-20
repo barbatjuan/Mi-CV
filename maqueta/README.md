@@ -62,16 +62,23 @@ una CDN externa, que la CSP bloquearía.
   queda acorralado contra una pared no tiembla en la esquina: pasa de largo por
   debajo del cursor. A partir del tercer intento aparece un contador discreto.
   Sólo corre con el hero a la vista y con la pestaña activa.
-- **La pelea**: en cuanto lo atacás deja de ser un bicho que huye. Cada click
-  lo para con una de seis defensas, y ninguna lo deja expuesto: con la
-  **espada** y la **embestida** te encara, cierra la distancia y se planta a
-  distancia de golpe repartiendo tajos que mandan el anillo del cursor lejos; con
-  el **campo de fuerza** aguanta firme y devuelve el click como una onda que
-  viaja hasta tu cursor y lo aparta; el **repulsor** te empuja el cursor mientras
-  te acercás; el **camuflaje** lo deja en dos ojos flotando; el **parpadeo** lo
-  saca de ahí dejando tres fantasmas. Y se va enojando: a partir de cierto número
-  de golpes se le ponen los ojos naranjas, después rojos, y pega más fuerte y más
-  seguido.
+- **La pelea**: en cuanto lo atacás deja de ser un bicho que huye. Cada click lo
+  para con una de siete defensas, y ninguna lo deja expuesto: con la **espada** y
+  la **embestida** te encara, cierra la distancia y se planta a distancia de
+  golpe repartiendo tajos que mandan el cursor lejos; el **disparo** te apunta y
+  te tira balas que estallan sobre el puntero; el **campo de fuerza** es un muro
+  de verdad —ver abajo— y encima devuelve el click como una onda que viaja hasta
+  tu cursor; el **repulsor** te lo aparta mientras te acercás; el **camuflaje**
+  lo deja en dos ojos flotando; el **parpadeo** lo saca de ahí dejando tres
+  fantasmas. Y se va enojando: a partir de cierto número de golpes se le ponen
+  los ojos naranjas, después rojos, y pega más fuerte y más seguido.
+- **El campo de fuerza frena el cursor**, no lo empuja: mientras está levantado,
+  el puntero no puede entrar en la burbuja. Se queda pegado al borde y resbala
+  por el hexágono por más que apuntes al centro. Para que eso se lea como un muro
+  y no como un fallo de dibujo, la página oculta el puntero del sistema mientras
+  el cursor propio está activo (`cursor: none`), que además era lo que faltaba:
+  hasta ahora se veían los dos a la vez. La clase la pone el JS, así que si el
+  script fallara, el puntero del sistema seguiría ahí.
 - **Sin aire**: lo que lo desgasta es la pelea, no el poder. Para cuatro golpes
   —las marcas sobre su cabeza los van contando— y al quinto se queda sin aire un
   par de segundos, jadeando y sin defenderse. Esa es la única ventana en la que
@@ -115,7 +122,7 @@ del hero (`.hero__name`, `.hero__meta`, `.stats`) mide exactamente igual que
 antes de agregarlo, en los seis anchos, también con la espada y el campo de
 fuerza desplegados.
 
-La pelea: en cuarenta ataques salieron las seis defensas; la espada y la
+La pelea: en cuarenta ataques salieron las siete defensas; la espada y la
 embestida cierran una distancia de 110 px y se plantan a 36; el escudo y el
 repulsor aguantan firmes sin moverse un píxel; el empuje del anillo llega a 46 px
 con un tajo y 40 con la onda del escudo, siempre por debajo del tope de 52, y
@@ -123,6 +130,12 @@ vuelve solo a cero. El aguante baja un punto por golpe parado y al cuarto llega
 "sin aire"; un click ahí lo gana y uno fuera no. En puntero grueso el repulsor
 queda fuera del grupo, porque no hay anillo que empujar, y el ciclo entero se
 completa a dedazos. Sin un solo error en consola en los cinco anchos.
+
+El muro del escudo, medido barriendo el puntero por encima del bicho: el punto se
+queda clavado a 34 px del centro en todo el recorrido —nunca entra— y vuelve a
+pasar en cuanto el escudo se apaga. `cursor: none` sólo se aplica en escritorio
+con el cursor propio activo: en táctil y con `prefers-reduced-motion` la clase no
+llega, y los campos de texto conservan el suyo.
 
 Renderizado en Chromium: consola limpia, sin desbordamiento horizontal a 390 px,
 descendentes (g, y, q, p) completas en todos los títulos enmascarados, contador
