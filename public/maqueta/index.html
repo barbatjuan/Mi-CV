@@ -699,6 +699,19 @@
   .critter.retro .critter__arma { transform: rotate(var(--mira, 0deg)) translateX(-4px); }
   .critter.retro .fogonazo rect { animation: destello 0.2s var(--ease); }
 
+  .critter__bazuca {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: 12% 84%;
+    transform: rotate(var(--mira, 0deg)) translateX(-9px);
+    transition: opacity 0.16s var(--ease), transform 0.16s var(--ease);
+  }
+
+  .critter__bazuca rect { fill: #7E8598; }
+  .critter__bazuca .fogonazo rect { fill: #FF7A2F; opacity: 0; }
+  .critter.pw-bazooka .critter__bazuca { opacity: 1; transform: rotate(var(--mira, 0deg)) translateX(0); }
+  .critter.retro .critter__bazuca { transform: rotate(var(--mira, 0deg)) translateX(-7px); }
+
   .critter__sword {
     opacity: 0;
     transform-box: fill-box;
@@ -831,6 +844,73 @@
     pointer-events: auto;       /* lo único agarrable de toda la capa */
     border-bottom: 1px solid rgba(255, 229, 0, 0.35);
   }
+
+  /* Va al costado y no encima: entre el apellido y la línea sólo hay 38px, y
+     ahí arriba ya viven el casco y las marcas de aguante. */
+  .critter__globo {
+    position: absolute;
+    bottom: 5px;
+    white-space: nowrap;
+    padding: 3px 7px;
+    border: 1px solid var(--hair-2);
+    border-radius: 3px;
+    background: rgba(7, 7, 11, 0.92);
+    font-family: var(--f-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+
+  .critter__globo b { color: var(--gold); font-weight: 400; }
+  .critter__globo.on { opacity: 1; transform: translateY(0); }
+
+  .critter__globo::after {
+    content: "";
+    position: absolute;
+    bottom: 6px;
+    width: 5px; height: 5px;
+    background: rgba(7, 7, 11, 0.92);
+    transform: rotate(45deg);
+  }
+
+  .critter__globo--der { left: calc(100% + 9px); }
+  .critter__globo--izq { right: calc(100% + 9px); }
+  .critter__globo--der::after { left: -3px; border-left: 1px solid var(--hair-2); border-bottom: 1px solid var(--hair-2); }
+  .critter__globo--izq::after { right: -3px; border-right: 1px solid var(--hair-2); border-top: 1px solid var(--hair-2); }
+
+  /* ── bazuca: el cohete teledirigido y su estela ─────── */
+  .critter__cohete {
+    position: absolute;
+    width: 10px; height: 4px;
+    margin: -2px 0 0 -5px;
+    background: var(--gold);
+    box-shadow: 0 0 9px rgba(255, 229, 0, 0.9);
+  }
+
+  .critter__cohete::after {
+    content: "";
+    position: absolute;
+    right: 100%; top: 0;
+    width: 5px; height: 4px;
+    background: #FF7A2F;
+    animation: llama 0.12s steps(2) infinite;
+  }
+
+  @keyframes llama { from { opacity: 1; } to { opacity: 0.35; } }
+
+  .critter__humo {
+    position: absolute;
+    width: 4px; height: 4px;
+    margin: -2px 0 0 -2px;
+    background: rgba(255, 229, 0, 0.55);
+    animation: humo 0.55s linear forwards;
+  }
+
+  @keyframes humo { to { opacity: 0; transform: scale(0.3); } }
 
   .critter__spark--oro { border-color: var(--gold); }
 
@@ -1527,6 +1607,7 @@
     .critter__shadow { width: 21px; }
     .critter__ghost { width: 30px; }
     .critter__pips { top: -13px; }
+    .critter__globo { font-size: 0.5rem; padding: 2px 5px; }
     .critter__rendicion { font-size: 0.5rem; max-width: 70%; }
     .stats { grid-template-columns: repeat(2, 1fr); }
     .skills { grid-template-columns: minmax(0, 1fr); }
@@ -1550,7 +1631,7 @@
     .critter__i { left: 22%; }
     .critter__legs rect { animation: none !important; }
     .critter__field, .critter__aura, .critter__sword, .critter__estela,
-    .critter__casco, .critter__arma { display: none !important; }
+    .critter__casco, .critter__arma, .critter__globo { display: none !important; }
     .track::before { display: none; }
   }
 </style>
@@ -1657,6 +1738,16 @@
                 <rect x="44.2" y="6.8" width="2" height="5.9" />
               </g>
             </g>
+            <g class="critter__bazuca">
+              <rect x="28.5" y="6.2"  width="2"  height="5.6" />
+              <rect x="30"   y="7"    width="15" height="4" />
+              <rect x="34.5" y="5.4"  width="2"  height="1.8" />
+              <rect x="33"   y="11"   width="2"  height="3.2" />
+              <g class="fogonazo">
+                <rect x="45.5" y="6.9" width="3.4" height="4.4" />
+                <rect x="47.5" y="5.2" width="2"   height="7.8" />
+              </g>
+            </g>
             <g class="critter__sword">
               <rect x="32.5" y="-3" width="2" height="11" />
               <rect x="30"   y="8"  width="7" height="1.6" />
@@ -1664,6 +1755,7 @@
               <circle cx="33.5" cy="-2.5" r="3.4" />
             </g>
           </svg>
+          <span class="critter__globo critter__globo--der" id="critter-globo"></span>
         </span>
         <span class="critter__hint mono" id="critter-hint"></span>
         <span class="critter__rendicion" id="critter-rendicion"></span>
@@ -2641,7 +2733,7 @@
     var lane = $("#critter");
     if (!lane) { return; }
 
-    var sprite = $("#critter-i"), hint = $("#critter-hint");
+    var sprite = $("#critter-i"), hint = $("#critter-hint"), globo = $("#critter-globo");
     var pips = $("#critter-pips"), rend = $("#critter-rendicion"), hero = $(".hero");
     if (REDUCED) { lane.classList.add("quieto"); return; }
 
@@ -2667,6 +2759,7 @@
       { id: "espada",    nombre: "espada",          dur: 3200, peso: 6, pelea: true, mult: 1, arma: true },
       { id: "escudo",    nombre: "campo de fuerza", dur: 3200, peso: 5, plantado: true, apunta: true, barrera: true, onda: true },
       { id: "disparo",   nombre: "disparo",         dur: 2600, peso: 5, plantado: true, apunta: true, dispara: true, arma: true },
+      { id: "bazooka",   nombre: "bazuca",          dur: 4800, peso: 3, plantado: true, apunta: true, cohete: true, arma: true },
       { id: "embestida", nombre: "embestida",       dur: 1600, peso: 4, pelea: true, mult: 2.4 },
       { id: "repulsor",  nombre: "repulsor",        dur: 2800, peso: 3, plantado: true, apunta: true, anillo: true },
       { id: "camuflaje", nombre: "camuflaje",       dur: 3200, peso: 3, ciego: true },
@@ -2687,7 +2780,14 @@
     var pcx = null, pcy = null;
     var corriendo = false, visible = false, last = 0;
     var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0, impT = 0, retroT = 0;
-    var ultimoTiro = 0;
+    var ultimoTiro = 0, globoT = 0, frase = 0, cohete = null;
+
+    /* invita a que lo toquen, y deja de insistir en cuanto le hacen caso */
+    var FRASES = ["eh, tocame", "a que no me agarrás", "acá estoy, dale"];
+    var VIDA_COHETE = 4200;  // lo que persigue antes de apagarse
+    var VEL_COHETE = 250;
+    var GIRO = 0.1;          // cuanto más bajo, más se pasa de largo y más misil parece
+    var TOQUE = 20;          // radio de impacto
 
     /* el mensaje de la rendición se arma una vez para colgarle los listeners
        del hover sin rehacerlos en cada captura */
@@ -2744,6 +2844,28 @@
         clearTimeout(pipsT);
         pipsT = setTimeout(function () { pips.classList.remove("on"); }, 4200);
       }
+    }
+
+    function mostrarGlobo(txt, ms) {
+      globo.innerHTML = "";
+      globo.appendChild(document.createTextNode(txt));
+      globo.classList.add("on");
+      clearTimeout(globoT);
+      globoT = setTimeout(function () { globo.classList.remove("on"); }, ms || 4200);
+    }
+
+    function callarGlobo() {
+      clearTimeout(globoT);
+      globo.classList.remove("on");
+    }
+
+    /* tres avisos espaciados y para: si nadie le hace caso, tampoco va a
+       insistir para siempre. Un solo ataque lo calla del todo. */
+    function invitar() {
+      if (intentos > 0 || frase >= FRASES.length) { return; }
+      if (!visible || document.hidden) { globoT = setTimeout(invitar, 4000); return; }
+      mostrarGlobo(FRASES[frase++], 4600);
+      globoT = setTimeout(invitar, 11000);
     }
 
     function chispa(lx, ly, cls) {
@@ -2840,6 +2962,79 @@
       }, 230);
     }
 
+    /* ── la bazuca: un cohete que te persigue ──────────── */
+
+    function lanzarCohete(r, cx, cy, ts) {
+      quitarCohete();
+      var e = document.createElement("span");
+      e.className = "critter__cohete";
+      lane.appendChild(e);
+      cohete = {
+        el: e,
+        x: cx - r.left, y: cy - r.top,
+        vx: dir * VEL_COHETE * 0.55, vy: -70,   // sale hacia arriba y ya se corregirá
+        hasta: ts + VIDA_COHETE, humo: 0
+      };
+      lane.classList.add("retro");
+      clearTimeout(retroT);
+      retroT = setTimeout(function () { lane.classList.remove("retro"); }, 260);
+    }
+
+    function quitarCohete() {
+      if (!cohete) { return; }
+      if (cohete.el.parentNode) { cohete.el.parentNode.removeChild(cohete.el); }
+      cohete = null;
+    }
+
+    function estelaCohete() {
+      var h = document.createElement("span");
+      h.className = "critter__humo";
+      h.style.left = cohete.x.toFixed(0) + "px";
+      h.style.top  = cohete.y.toFixed(0) + "px";
+      lane.appendChild(h);
+      setTimeout(function () { if (h.parentNode) { h.parentNode.removeChild(h); } }, 620);
+    }
+
+    function explotar(r) {
+      var ex = cohete.x, ey = cohete.y;
+      quitarCohete();
+      for (var i = 0; i < 10; i++) {
+        var a = (i / 10) * Math.PI * 2;
+        chispa(ex + Math.cos(a) * 15, ey + Math.sin(a) * 13, "critter__spark--oro");
+      }
+      if (pcx !== null) { empujar(pcx - (r.left + ex), pcy - (r.top + ey), 52); }
+      decir("impacto", "oro", 1400);
+    }
+
+    function moverCohete(r, ts, dt) {
+      if (!cohete) { return; }
+      if (pcx === null || ts > cohete.hasta) {
+        if (cohete.el.parentNode) { estelaCohete(); }
+        quitarCohete();
+        return;
+      }
+      var tx = pcx - r.left, ty = pcy - r.top;
+      var ax = tx - cohete.x, ay = ty - cohete.y;
+      var d = Math.hypot(ax, ay) || 1;
+
+      /* vira hacia el objetivo en vez de apuntar directo: por eso se pasa,
+         describe una curva y vuelve. Un rayo no daría ninguna gracia.
+         Y afloja al llegar: a toda velocidad orbitaba sin acertar nunca. */
+      var cerca = d < 110 ? 1 - d / 110 : 0;
+      var vel = VEL_COHETE * (1 - cerca * 0.5);
+      var giro = GIRO * (1 + cerca * 2.4);   // cierra el viraje al llegar: con
+      cohete.vx += (ax / d * vel - cohete.vx) * giro;   // uno fijo se quedaba
+      cohete.vy += (ay / d * vel - cohete.vy) * giro;   // orbitando a 20px
+      cohete.x += cohete.vx * dt;
+      cohete.y += cohete.vy * dt;
+
+      cohete.el.style.transform = "translate(" + cohete.x.toFixed(1) + "px," + cohete.y.toFixed(1) + "px) rotate(" +
+        (Math.atan2(cohete.vy, cohete.vx) * 180 / Math.PI).toFixed(1) + "deg)";
+
+      if (ts - cohete.humo > 45) { cohete.humo = ts; estelaCohete(); }
+      if (d < TOQUE) { explotar(r); }
+    }
+
     /* la onda del escudo: sale del bicho, viaja hasta el cursor y lo aparta */
     function onda(r, cx, cy) {
       if (pcx === null) { return; }
@@ -2892,6 +3087,7 @@
       lane.classList.add("pw-" + p.id);
       if (p.arma) { lane.classList.add("armado"); }
       decir(p.nombre, "oro", p.dur);
+      if (p.cohete) { lanzarCohete(r, cx, r.top + r.height / 2, performance.now()); }
       if (p.pelea && pcx !== null) { dir = pcx > cx ? 1 : -1; }
       if (p.id === "parpadeo") { teletransportar(); }
     }
@@ -2901,6 +3097,7 @@
       if (!poder) { return; }
       lane.classList.remove("pw-" + poder.id);
       lane.classList.remove("armado");
+      quitarCohete();
       if (poder.anillo && ANILLO.desvio) { ANILLO.desvio(0, 0); }
       if (poder.barrera && ANILLO.barrera) { ANILLO.barrera(0, 0, 0); }
       poder = null;
@@ -2972,6 +3169,7 @@
       var r = lane.getBoundingClientRect();
       var mio = r.left + x + ancho / 2;
       intentos++;
+      callarGlobo();
 
       /* sin aire: ésta es la única ventana en la que se lo agarra */
       if (modo === "agotado") { atrapar(cx, cy, r); return; }
@@ -3016,6 +3214,7 @@
       var cy = r.top + r.height / 2;
 
       if (poder && ts > poderHasta) { apagarPoder(); enGuardia = false; }
+      moverCohete(r, ts, dt);
 
       if ((modo === "susto" || modo === "esquina") && ts > hasta) {
         modo = "paseo";
@@ -3134,6 +3333,8 @@
         ladoAnt = lado;
         hint.style.left = lado ? "0" : "auto";
         hint.style.right = lado ? "auto" : "0";
+        globo.className = "critter__globo critter__globo--" + (lado ? "izq" : "der") +
+                          (globo.classList.contains("on") ? " on" : "");
       }
 
       requestAnimationFrame(frame);
@@ -3152,6 +3353,7 @@
       firmaAnt = "";
       if (ANILLO.desvio) { ANILLO.desvio(0, 0); }
       if (ANILLO.barrera) { ANILLO.barrera(0, 0, 0); }
+      quitarCohete();
     }
 
     if (!COARSE) {
@@ -3176,6 +3378,7 @@
     medir();
     x = Math.max(0, W * 0.18);
     pintarPips(false);
+    globoT = setTimeout(invitar, 4200);
 
     if ("IntersectionObserver" in window && hero) {
       new IntersectionObserver(function (es) {

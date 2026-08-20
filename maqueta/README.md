@@ -62,12 +62,20 @@ una CDN externa, que la CSP bloquearía.
   queda acorralado contra una pared no tiembla en la esquina: pasa de largo por
   debajo del cursor. A partir del tercer intento aparece un contador discreto.
   Sólo corre con el hero a la vista y con la pestaña activa.
+- **Invita él**: a los cuatro segundos saca un globo de diálogo a su lado —"eh,
+  tocame"— y lo repite dos veces más con otra frase, espaciado. Si nadie le hace
+  caso, deja de insistir; y un solo ataque lo calla para siempre. Va al costado y
+  no encima porque entre el apellido y la línea sólo hay 38 px, y ahí arriba ya
+  viven el casco y las marcas de aguante.
 - **La pelea**: en cuanto lo atacás deja de ser un bicho que huye. Cada click lo
-  para con una de siete defensas, y ninguna lo deja expuesto: con la **espada** y
+  para con una de ocho defensas, y ninguna lo deja expuesto: con la **espada** y
   la **embestida** te encara, cierra la distancia y se planta a distancia de
   golpe repartiendo tajos que mandan el cursor lejos; el **disparo** saca un
   fusil que apunta de verdad —el cañón sigue al puntero en vertical— y escupe
-  balas que estallan sobre él, con culatazo y fogonazo; el **campo de fuerza** es un muro
+  balas que estallan sobre él, con culatazo y fogonazo; la **bazuca** lanza un
+  cohete teledirigido que te persigue hasta cuatro segundos dejando estela y
+  explota si te alcanza —vira más cerrado y afloja el gas cuanto más cerca está,
+  así que te pilla si te quedás quieto y lo esquivás si corrés de verdad—; el **campo de fuerza** es un muro
   de verdad —ver abajo— y encima devuelve el click como una onda que viaja hasta
   tu cursor; el **repulsor** te lo aparta mientras te acercás; el **camuflaje**
   lo deja en dos ojos flotando; el **parpadeo** lo saca de ahí dejando tres
@@ -125,7 +133,8 @@ del hero (`.hero__name`, `.hero__meta`, `.stats`) mide exactamente igual que
 antes de agregarlo, en los seis anchos, también con la espada y el campo de
 fuerza desplegados.
 
-La pelea: en cuarenta ataques salieron las siete defensas; la espada y la
+La pelea: en ocho partidas salieron las ocho defensas y se ganaron las ocho, sin
+un nodo huérfano ni un error. La espada y la
 embestida cierran una distancia de 110 px y se plantan a 36; el escudo y el
 repulsor aguantan firmes sin moverse un píxel; el empuje del anillo llega a 46 px
 con un tajo y 40 con la onda del escudo, siempre por debajo del tope de 52, y
@@ -136,7 +145,13 @@ completa a dedazos. Sin un solo error en consola en los cinco anchos.
 
 El equipo: el cañón apunta hasta 38 grados arriba y abajo siguiendo al puntero;
 el casco no pisa las marcas de aguante ni se sale del carril, y el arma tampoco,
-en escritorio y en móvil.
+en escritorio y en móvil. El cohete, medido contra tres formas de mover el ratón:
+acierta al puntero quieto en un cuarto de segundo, al que va a la deriva en dos
+tercios, y no llega al que huye en serio.
+
+El globo: las tres frases salen a los 2, 13 y 24 segundos, cambian de lado según
+por dónde ande el bicho, y no vuelven a aparecer después del primer ataque. En
+móvil entra dentro del carril sin desbordar.
 
 El muro del escudo, medido barriendo el puntero por encima del bicho: el punto se
 queda clavado a 34 px del centro en todo el recorrido —nunca entra— y vuelve a
