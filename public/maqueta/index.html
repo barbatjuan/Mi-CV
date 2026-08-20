@@ -2748,7 +2748,14 @@
        en vez de temblar en el rincón pasa de largo por debajo del cursor. */
     var V = { paseo: 34, huida: 150, susto: 300, esquina: 330, pelea: 96, agotado: 18, atrapado: 0 };
     var RADIO = 140;        // el puntero a esta distancia ya lo pone nervioso
-    var RADIO_CLICK = 130;  // un click más cerca que esto cuenta como ataque
+    /* Radio de acierto, en múltiplos del ancho del sprite para que valga igual
+       en móvil. Pegado al bicho es exigente; sólo se perdona mientras huye,
+       que es cuando es un blanco móvil de verdad. Y con el dedo, un poco más. */
+    function alcanceClick() {
+      var huyendo = (modo === "huida" || modo === "susto" || modo === "esquina") &&
+                    !(poder && (poder.plantado || poder.pelea));
+      return ancho * (huyendo ? 2.1 : 1.1) + (COARSE ? 22 : 0);
+    }
     var SALTO = 10;
     var ALCANCE = 58;       // a esta distancia del cursor, le acierta
     var GUARDIA = 40;       // y a ésta se planta: pelear no es meterse encima
@@ -3257,11 +3264,15 @@
         var d = Math.hypot(dx, pcy - cy);
 
         if (poder && poder.pelea) {
+          if (modo === "huida") { modo = "paseo"; }
           dir = dx > 0 ? 1 : -1;              // deja de huir: te encara y avanza
           mirada = 0;
           enGuardia = d < GUARDIA;            // llegado a distancia de golpe, se planta
           if (d < ALCANCE && ts - ultimoTajo > 640 - furia * 240) { tajo(r, cx, cy, ts); }
         } else if (poder && (poder.plantado || poder.ciego)) {
+          /* el estado no puede mentir: plantado no es huyendo, y de ese flag
+             depende cuánto se perdona al apuntarle */
+          if (modo === "huida") { modo = "paseo"; }
           if (poder.apunta) { dir = dx > 0 ? 1 : -1; }
           mirada = poder.ciego ? 0 : Math.max(-1.4, Math.min(1.4, dx / 55));
           /* el cañón apunta de verdad: el ángulo sale en el espacio del sprite
@@ -3386,7 +3397,7 @@
       var r = lane.getBoundingClientRect();
       var cx = r.left + x + ancho / 2, cy = r.top + r.height / 2;
       if (COARSE) { pcx = e.clientX; pcy = e.clientY; }
-      if (Math.hypot(e.clientX - cx, e.clientY - cy) < RADIO_CLICK) { reaccionar(e.clientX, e.clientY); }
+      if (Math.hypot(e.clientX - cx, e.clientY - cy) < alcanceClick()) { reaccionar(e.clientX, e.clientY); }
     }, { passive: true });
 
     window.addEventListener("resize", medir, { passive: true });

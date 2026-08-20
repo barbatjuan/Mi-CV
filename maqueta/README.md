@@ -153,6 +153,11 @@ en escritorio y en móvil. El cohete, medido contra tres formas de mover el rat�
 acierta al puntero quieto en un cuarto de segundo, al que va a la deriva en dos
 tercios, y no llega al que huye en serio.
 
+El radio de acierto va en múltiplos del ancho del sprite, para que valga igual en
+móvil, y sólo se ensancha mientras el bicho huye, que es cuando es un blanco móvil
+de verdad. Medido: quieto o plantado deja de contar pasados los 48 px; huyendo
+llega a 70; con el dedo, 50.
+
 La ráfaga de la bazuca: tres lanzamientos en los cinco segundos que dura, con uno
 y dos segundos de separación, tres cohetes en vuelo como mucho y ni un cohete ni
 una nube de humo huérfanos al terminar. Es la defensa más frecuente: 22% de las
