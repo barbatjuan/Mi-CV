@@ -37,6 +37,7 @@
     --indigo:    #5B5BFF;
     --gold:      #FFE500;
     --magenta:   #FF49C3;
+    --clay:      #D97757;
     --iris:      linear-gradient(96deg, #5B5BFF 0%, #FF49C3 50%, #FFE500 100%);
 
     --f-disp: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
@@ -439,6 +440,7 @@
   body.ready .hero__name .ch { opacity: 1; transform: none; filter: none; }
 
   .hero__meta {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
@@ -536,6 +538,95 @@
     60%  { transform: translateX(100%); }
     100% { transform: translateX(100%); }
   }
+
+  /* ═══════════ EL BICHO ═══════════ */
+  /* Carril colgado del borde superior de .hero__meta: esa hairline es el suelo.
+     Se cuelga desde dentro y no desde fuera porque el margen del bloque es un
+     clamp() y habría que recalcularlo en cada breakpoint.
+     pointer-events: none en toda la capa — no hay hitbox, así que el click no
+     puede aterrizar nunca y además atraviesa hasta el fondo. */
+  .critter {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: calc(100% + 1px);
+    height: 46px;
+    pointer-events: none;
+  }
+
+  .critter__i {
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 44px;
+    will-change: transform;
+  }
+
+  .critter__svg {
+    display: block;
+    width: 100%; height: auto;
+    color: var(--clay);
+    transform: scaleX(var(--flip, 1));
+    transition: transform 0.16s var(--ease), filter 0.25s var(--ease);
+  }
+
+  .critter__body rect, .critter__legs rect { fill: currentColor; }
+  .critter__eyes  rect { fill: var(--void); }
+
+  .critter__eyes { transform: translateX(calc(var(--mirada, 0) * 1px)); }
+  .critter__eyes rect {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.12s var(--ease);
+  }
+
+  .critter.asustado .critter__svg { filter: drop-shadow(0 0 7px rgba(217, 119, 87, 0.6)); }
+  .critter.asustado .critter__eyes rect { transform: scale(1.35, 1.2); }
+  .critter.blink .critter__eyes rect { transform: scaleY(0.16); transition-duration: 0.06s; }
+
+  /* pisada de pixel-art: dos fotogramas secos, no una interpolación suave */
+  @keyframes paso {
+    from { transform: translate(0, 0); }
+    to   { transform: translate(1px, -2px); }
+  }
+
+  .critter__legs rect {
+    animation: paso var(--paso, 0.34s) steps(2, jump-none) infinite;
+  }
+  .critter__legs .lg--b { animation-delay: calc(var(--paso, 0.34s) / -2); }
+  .critter.quieto .critter__legs rect { animation-play-state: paused; }
+
+  .critter__shadow {
+    position: absolute;
+    left: 50%; bottom: -1px;
+    width: 30px; height: 3px;
+    transform: translateX(-50%) scaleX(var(--sombra, 1));
+    background: radial-gradient(50% 50% at 50% 50%, rgba(217, 119, 87, 0.5), transparent 72%);
+  }
+
+  .critter__spark {
+    position: absolute;
+    width: 8px; height: 8px;
+    margin: -4px 0 0 -4px;
+    border: 1px solid var(--clay);
+    border-radius: 50%;
+    opacity: 0;
+    animation: spark 0.5s var(--ease) forwards;
+  }
+
+  @keyframes spark {
+    from { opacity: 0.9; transform: scale(0.4); }
+    to   { opacity: 0;   transform: scale(4.2); }
+  }
+
+  .critter__hint {
+    position: absolute;
+    right: 0; bottom: 3px;
+    font-size: 0.58rem;
+    color: var(--grey-2);
+    opacity: 0;
+    transition: opacity 0.35s var(--ease);
+  }
+
+  .critter__hint.on { opacity: 1; }
 
   /* ═══════════ MARQUEE ═══════════ */
   /* sin backdrop-filter: sobre un fondo casi negro no aporta nada y en Safari
@@ -884,7 +975,8 @@
 
   .filter[aria-pressed="true"] b { color: rgba(7, 7, 11, 0.5); }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1rem; }
+  /* min() para que por debajo de 350px la pista no sea más ancha que el contenedor */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(310px, 100%), 1fr)); gap: 1rem; }
 
   .card {
     position: relative;
@@ -1198,6 +1290,9 @@
   }
 
   @media (max-width: 560px) {
+    .critter { height: 34px; }
+    .critter__i { width: 30px; }
+    .critter__shadow { width: 21px; }
     .stats { grid-template-columns: repeat(2, 1fr); }
     .skills { grid-template-columns: minmax(0, 1fr); }
     .skill--wide { display: grid; gap: 0.3rem; }
@@ -1216,6 +1311,9 @@
     .rv, .mask > span, .hero__name .ch { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
     .grain, .marquee__row, .scrollcue__track::after, .dot { animation: none !important; }
     .cur, .cur-ring { display: none !important; }
+    /* el bicho se queda quieto en el carril: sigue siendo un guiño, deja de ser movimiento */
+    .critter__i { left: 22%; }
+    .critter__legs rect { animation: none !important; }
     .track::before { display: none; }
   }
 </style>
@@ -1277,6 +1375,29 @@
     </h1>
 
     <p class="hero__meta rv" style="--i: 3;">
+      <span class="critter" id="critter" aria-hidden="true">
+        <span class="critter__i" id="critter-i">
+          <span class="critter__shadow"></span>
+          <svg class="critter__svg" viewBox="0 0 32 21" focusable="false" aria-hidden="true">
+            <g class="critter__legs">
+              <rect class="lg--a" x="6"  y="16" width="2" height="5" />
+              <rect class="lg--b" x="10" y="16" width="2" height="5" />
+              <rect class="lg--a" x="20" y="16" width="2" height="5" />
+              <rect class="lg--b" x="24" y="16" width="2" height="5" />
+            </g>
+            <g class="critter__body">
+              <rect x="0"  y="8" width="4"  height="4" />
+              <rect x="28" y="8" width="4"  height="4" />
+              <rect x="4"  y="0" width="24" height="16" />
+            </g>
+            <g class="critter__eyes">
+              <rect x="8"  y="4" width="2" height="4" />
+              <rect x="22" y="4" width="2" height="4" />
+            </g>
+          </svg>
+        </span>
+        <span class="critter__hint mono" id="critter-hint"></span>
+      </span>
       <b>Full Stack Developer</b>
       <span class="slash">/</span>
       <b>Diseñador Web</b>
@@ -2163,6 +2284,191 @@
       pbar.style.width = (e * 100) + "%";
       if (p < 1) { requestAnimationFrame(step); } else { setTimeout(done, 160); }
     })(performance.now());
+  })();
+
+  /* ══════════════════════════════════════════════════════
+     12 · EL BICHO: camina por la hairline y esquiva los clicks
+     ══════════════════════════════════════════════════════ */
+  (function () {
+    var lane = $("#critter");
+    if (!lane) { return; }
+
+    var sprite = $("#critter-i"), hint = $("#critter-hint"), hero = $(".hero");
+    if (REDUCED) { lane.classList.add("quieto"); return; }
+
+    /* velocidades en px/s. "embestida" es la salida cuando queda acorralado
+       contra una pared: en vez de temblar en la esquina pasa de largo. */
+    var V = { paseo: 34, huida: 150, susto: 300, embestida: 330 };
+    var RADIO = 140;        // el puntero a esta distancia ya lo pone nervioso
+    var RADIO_CLICK = 90;   // un click más cerca que esto cuenta como intento
+    var SALTO = 10;         // px de altura del brinco
+    var PODERES = [];       // etapa 2: campo de fuerza, escudo, dash
+
+    var x = 0, dir = 1, y = 0, W = 0, ancho = 44;
+    var modo = "paseo", modoAnt = "", hasta = 0, pausa = 0, salto = 0;
+    var mirada = 0, miradaAnt = 0, intentos = 0, poder = null;
+    var pcx = null, pcy = null;
+    var corriendo = false, visible = false, last = 0, hintT = 0, blinkT = 0;
+
+    function medir() {
+      var r = lane.getBoundingClientRect();
+      W = r.width;
+      ancho = sprite.offsetWidth || 44;
+      if (x > W - ancho) { x = Math.max(0, W - ancho); }
+      return r;
+    }
+
+    function parpadear() {
+      lane.classList.add("blink");
+      clearTimeout(blinkT);
+      blinkT = setTimeout(function () { lane.classList.remove("blink"); }, 110);
+    }
+
+    function contar() {
+      if (intentos < 3) { return; }
+      hint.textContent = intentos < 8 ? ("intentos: " + intentos) : "no vas a poder";
+      hint.classList.add("on");
+      clearTimeout(hintT);
+      hintT = setTimeout(function () { hint.classList.remove("on"); }, 2600);
+    }
+
+    function chispa(lx, ly) {
+      var s = document.createElement("span");
+      s.className = "critter__spark";
+      s.style.left = lx.toFixed(0) + "px";
+      s.style.top  = ly.toFixed(0) + "px";
+      lane.appendChild(s);
+      setTimeout(function () { if (s.parentNode) { s.parentNode.removeChild(s); } }, 560);
+    }
+
+    /* puerta única para cualquier intento: la etapa 2 sólo tiene que tirar
+       el dado acá dentro y encender un poder de la tabla */
+    function reaccionar(cx, cy) {
+      var r = lane.getBoundingClientRect();
+      intentos++;
+      modo = "susto";
+      hasta = performance.now() + 900;
+      salto = 1;
+      pausa = 0;
+      dir = cx > r.left + x + ancho / 2 ? -1 : 1;
+      lane.classList.add("asustado");
+      chispa(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)));
+      if (poder === null && PODERES.length) { poder = PODERES[(Math.random() * PODERES.length) | 0]; }
+      contar();
+    }
+
+    function frame(ts) {
+      if (!corriendo) { return; }
+      var dt = Math.min(50, ts - last) / 1000;
+      last = ts;
+
+      var r = lane.getBoundingClientRect();
+      W = r.width;
+      var cx = r.left + x + ancho / 2;
+      var cy = r.top + r.height / 2;
+
+      if (modo !== "paseo" && modo !== "huida" && ts > hasta) {
+        modo = "paseo";
+        lane.classList.remove("asustado");
+      }
+
+      /* proximidad: sólo manda mientras pasea o huye, para no pisar un sprint */
+      if (pcx !== null && (modo === "paseo" || modo === "huida")) {
+        var dx = pcx - cx;
+        var d = Math.hypot(dx, pcy - cy);
+        if (d < RADIO) {
+          modo = "huida";
+          dir = dx > 0 ? -1 : 1;
+          mirada = Math.max(-1.4, Math.min(1.4, dx / 55));
+          if ((dir < 0 && x <= 1) || (dir > 0 && x >= W - ancho - 1)) {
+            modo = "embestida";
+            hasta = ts + 700;
+            dir = -dir;
+          }
+        } else if (modo === "huida") {
+          modo = "paseo";
+          mirada = 0;
+        }
+      }
+
+      var v = V[modo];
+      if (pausa > 0) { pausa -= dt * 1000; v = 0; }
+
+      x += dir * v * dt;
+      if (x <= 0 && dir < 0) {
+        x = 0; dir = 1;
+        if (modo === "paseo") { pausa = 420; parpadear(); }
+      } else if (x >= W - ancho && dir > 0) {
+        x = W - ancho; dir = -1;
+        if (modo === "paseo") { pausa = 420; parpadear(); }
+      }
+
+      if (salto > 0) {
+        salto = Math.max(0, salto - dt / 0.32);
+        y = -SALTO * Math.sin(Math.PI * (1 - salto));
+      } else if (y !== 0) { y = 0; }
+
+      sprite.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+      sprite.style.setProperty("--sombra", (1 + y / SALTO * 0.5).toFixed(2));
+      lane.style.setProperty("--flip", String(dir));
+
+      /* el ciclo de patas se toca sólo al cambiar de estado: reescribirlo cada
+         fotograma da un tirón en la animación */
+      if (modo !== modoAnt || (v === 0) !== lane.classList.contains("quieto")) {
+        modoAnt = modo;
+        lane.style.setProperty("--paso", (22 / V[modo]).toFixed(2) + "s");
+        lane.classList.toggle("quieto", v === 0);
+      }
+
+      var m = (mirada * dir).toFixed(1);
+      if (m !== miradaAnt) { miradaAnt = m; lane.style.setProperty("--mirada", m); }
+
+      requestAnimationFrame(frame);
+    }
+
+    function arrancar() {
+      if (corriendo || document.hidden || !visible) { return; }
+      corriendo = true;
+      last = performance.now();
+      requestAnimationFrame(frame);
+    }
+
+    function parar() {
+      corriendo = false;
+      lane.classList.add("quieto");
+      modoAnt = "";
+    }
+
+    if (!COARSE) {
+      document.addEventListener("mousemove", function (e) {
+        pcx = e.clientX; pcy = e.clientY;
+      }, { passive: true });
+    }
+
+    document.addEventListener("pointerdown", function (e) {
+      if (!visible) { return; }
+      var r = lane.getBoundingClientRect();
+      var cx = r.left + x + ancho / 2, cy = r.top + r.height / 2;
+      if (Math.hypot(e.clientX - cx, e.clientY - cy) < RADIO_CLICK) { reaccionar(e.clientX, e.clientY); }
+    }, { passive: true });
+
+    window.addEventListener("resize", medir, { passive: true });
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) { parar(); } else { arrancar(); }
+    });
+
+    medir();
+    x = Math.max(0, W * 0.18);
+
+    if ("IntersectionObserver" in window && hero) {
+      new IntersectionObserver(function (es) {
+        visible = es[0].isIntersecting;
+        if (visible) { medir(); arrancar(); } else { parar(); }
+      }, { threshold: 0 }).observe(hero);
+    } else {
+      visible = true;
+      arrancar();
+    }
   })();
 })();
 </script>

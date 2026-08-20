@@ -53,6 +53,15 @@ una CDN externa, que la CSP bloquearía.
   cada fila, y la duración sale de una velocidad fija por banda (46, 38 y 53
   px/s), así avanzan parejas sin quedar sincronizadas. Pausa al pasar el puntero,
   sólo con puntero fino.
+- **El bicho de Claude Code**: camina por la hairline que hay debajo del
+  apellido, moviendo las patitas con una pisada de dos fotogramas. Si el puntero
+  se le acerca a menos de 140 px acelera y sale para el lado contrario; si
+  intentás clickearlo pega un brinco, deja una chispa y esprinta. **No se puede
+  agarrar**: la capa entera es `pointer-events: none`, así que no hay hitbox que
+  pueda recibir el click, y de paso el click atraviesa hasta el fondo. Cuando
+  queda acorralado contra una pared no tiembla en la esquina: pasa de largo por
+  debajo del cursor. A partir del tercer intento aparece un contador discreto.
+  Sólo corre con el hero a la vista y con la pestaña activa.
 - Preloader con contador, revelados por máscara, barrido de brillo en los
   certificados y barra de progreso de lectura.
 
@@ -76,10 +85,23 @@ sueltos.
 
 ## Verificado
 
+El bicho, medido en Chromium: camina y gira en las dos paredes con su pausa,
+acelera y cambia de sentido cuando el puntero entra en el radio, sale del rincón
+cuando lo acorralan, y `elementFromPoint` sobre su centro nunca lo devuelve —ni
+con mouse ni con tap—, así que el click es imposible por construcción. El layout
+del hero (`.hero__name`, `.hero__meta`, `.stats`) mide exactamente igual que
+antes de agregarlo, en los seis anchos.
+
 Renderizado en Chromium: consola limpia, sin desbordamiento horizontal a 390 px,
 descendentes (g, y, q, p) completas en todos los títulos enmascarados, contador
 del preloader sin recorte en el último dígito y las tres marquesinas avanzando
 (transform medido a lo largo del tiempo, a 1440 y 390 px).
+
+## Pendiente
+
+- **Etapa 2 del bicho**: poderes aleatorios que lo protejan del click (campo de
+  fuerza, escudo, dash con estela). La costura ya está puesta: todos los intentos
+  entran por `reaccionar()` y hay una tabla `PODERES` vacía esperando.
 
 ## Pendiente de confirmar
 
