@@ -788,12 +788,28 @@
   }
 
   .critter.hulk .critter__svg {
-    color: #C4472A;
-    filter: drop-shadow(0 0 12px rgba(196, 71, 42, 0.6));
+    color: #4F9B3C;
+    filter: drop-shadow(0 0 12px rgba(79, 155, 60, 0.65));
   }
 
-  .critter.hulk .critter__pips i { background: #FF3B1F; }
-  .critter.hulk .critter__shadow { width: 40px; }
+  .critter.hulk .critter__shadow { width: 40px; background: radial-gradient(50% 50% at 50% 50%, rgba(79, 155, 60, 0.5), transparent 72%); }
+
+  /* mientras dura no se lo puede desgastar, así que el aguante deja sitio a un
+     reloj: lo que hay que aguantar, no lo que le queda */
+  .critter.hulk .critter__pips { display: none; }
+
+  .critter__reloj {
+    position: absolute;
+    left: 50%; top: -17px;
+    width: 34px; height: 3px;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.16);
+    opacity: 0;
+    transition: opacity 0.25s var(--ease);
+  }
+
+  .critter__reloj i { display: block; height: 100%; width: calc(var(--resto, 1) * 100%); background: #7FD45F; }
+  .critter.hulk .critter__reloj { opacity: 1; }
 
   .critter__estela rect { fill: currentColor; opacity: 0; transition: opacity 0.15s var(--ease); }
   .critter.pw-embestida .critter__estela rect { opacity: 0.55; animation: estela 0.24s steps(2) infinite; }
@@ -1652,6 +1668,7 @@
     .critter__ghost { width: 30px; }
     .critter__pips { top: -13px; }
     .critter.hulk { --tam: 1.32; }
+    .critter__reloj { top: -13px; width: 24px; }
     .critter.hulk .critter__shadow { width: 28px; }
     .critter__globo { font-size: 0.5rem; padding: 2px 5px; }
     .critter__rendicion { font-size: 0.5rem; max-width: 70%; }
@@ -1749,6 +1766,7 @@
             <polygon class="fx-hit" points="30,2 54,16 54,44 30,58 6,44 6,16" />
           </svg>
           <span class="critter__pips" id="critter-pips"></span>
+          <span class="critter__reloj"><i></i></span>
           <svg class="critter__svg" viewBox="0 0 32 21" focusable="false" aria-hidden="true">
             <g class="critter__estela">
               <rect x="-7"  y="3"  width="5" height="2" />
@@ -2782,6 +2800,7 @@
     if (!lane) { return; }
 
     var sprite = $("#critter-i"), hint = $("#critter-hint"), globo = $("#critter-globo");
+    var reloj = $(".critter__reloj", sprite);
     var pips = $("#critter-pips"), rend = $("#critter-rendicion"), hero = $(".hero");
     if (REDUCED) { lane.classList.add("quieto"); return; }
 
@@ -2822,8 +2841,7 @@
     ];
 
     var AGUANTE = 4;        // golpes que para antes de quedarse sin aire
-    var AGUANTE_HULK = 6;
-    var DUR_HULK = 11000;
+    var DUR_HULK = 7000;    // lo que hay que aguantarlo: no se lo puede desgastar
     var RENDIDO = 10000;
 
     /* atajo de prueba y de demo: #bicho=espada fuerza uno solo */
@@ -2862,9 +2880,7 @@
     rend.appendChild(rendTxt);
     rend.appendChild(rendWa);
 
-    /* se crean las del modo bestia y se ocultan las que sobran: si no, en
-       bestia aguantaría seis golpes mostrando sólo cuatro marcas */
-    for (var k = 0; k < Math.max(AGUANTE, AGUANTE_HULK); k++) { pips.appendChild(document.createElement("i")); }
+    for (var k = 0; k < AGUANTE; k++) { pips.appendChild(document.createElement("i")); }
     var marcas = Array.prototype.slice.call(pips.children);
 
     function medir() {
@@ -2908,12 +2924,8 @@
       hintT = setTimeout(callar, ms || 2200);
     }
 
-    function maxAguante() { return hulk ? AGUANTE_HULK : AGUANTE; }
-
     function pintarPips(mostrar) {
-      var tope = maxAguante();
       for (var i = 0; i < marcas.length; i++) {
-        marcas[i].style.display = i < tope ? "" : "none";
         marcas[i].className = i < aguante ? "" : "off";
       }
       if (mostrar !== false) {
@@ -3203,7 +3215,6 @@
     function bestia() {
       hulk = true; yaHulk = true;
       hulkHasta = performance.now() + DUR_HULK;
-      aguante = AGUANTE_HULK;
       lane.classList.add("hulk");
       lane.classList.remove("agotado");
       apagarPoder();
@@ -3225,7 +3236,9 @@
         chispa(x + ancho / 2 + (Math.random() - 0.5) * 30, 20 + Math.random() * 16, "");
       }
       aguante = 0;
+      pintarPips(false);
       sinAire();
+      hasta += 900;    // aguantar a la bestia se paga con una ventana más ancha
     }
 
     function sinAire() {
@@ -3306,9 +3319,13 @@
         else { chispa(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)), "critter__spark--oro"); }
         if (p.onda) { onda(r, mio, r.top + r.height / 2); }
 
-        aguante--;
-        pintarPips();
-        if (aguante <= 0) { sinAire(); }
+        /* transformado no se lo puede desgastar: la bestia no se gana a golpes,
+           se aguanta. Si no, se agrandaba y lo matabas cuatro segundos después. */
+        if (!hulk) {
+          aguante--;
+          pintarPips();
+          if (aguante <= 0) { sinAire(); }
+        }
         return;
       }
 
@@ -3335,7 +3352,10 @@
       var cy = r.top + r.height / 2;
 
       if (poder && ts > poderHasta) { apagarPoder(); enGuardia = false; }
-      if (hulk && ts > hulkHasta) { desinflar(); }
+      if (hulk) {
+        sprite.style.setProperty("--resto", Math.max(0, (hulkHasta - ts) / DUR_HULK).toFixed(3));
+        if (ts > hulkHasta) { desinflar(); }
+      }
       moverCohetes(r, ts, dt);
 
       if ((modo === "susto" || modo === "esquina") && ts > hasta) {

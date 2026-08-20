@@ -91,12 +91,14 @@ una CDN externa, que la CSP bloquearía.
   el cursor propio está activo (`cursor: none`), que además era lo que faltaba:
   hasta ahora se veían los dos a la vez. La clase la pone el JS, así que si el
   script fallara, el puntero del sistema seguiría ahí.
-- **Modo bestia**: si desperdiciás la ventana y le volvés a vaciar el aguante,
-  ya no cae: ruge, la pantalla tiembla y crece un 40%, granate y con los ojos
-  encendidos. Aguanta seis golpes en vez de cuatro, pega más fuerte y cada
-  impacto suyo sacude la pantalla. A los once segundos se desinfla y ahí sí se
-  queda sin aire: la ventana no se pierde, se retrasa. Pasa una sola vez por
-  visita, y sólo lo ve quien falla la primera oportunidad.
+- **Modo bestia**: si desperdiciás la ventana y le volvés a vaciar el aguante, ya
+  no cae: ruge, la pantalla tiembla y crece un 40%, verde y con los ojos
+  encendidos. **No se lo puede desgastar mientras dura** —hay que aguantarlo—,
+  así que las marcas de aguante dejan sitio a un reloj que cuenta los siete
+  segundos que tarda en desinflarse. Pega más fuerte y cada golpe suyo sacude la
+  pantalla. Al desinflarse se queda sin aire, con la ventana algo más ancha por
+  haberlo soportado. Pasa una sola vez por visita, y sólo lo ve quien falla la
+  primera oportunidad.
 - **Sin aire**: lo que lo desgasta es la pelea, no el poder. Para cuatro golpes
   —las marcas sobre su cabeza los van contando— y al quinto se queda sin aire un
   par de segundos, jadeando y sin defenderse. Esa es la única ventana en la que
@@ -161,8 +163,9 @@ tercios, y no llega al que huye en serio.
 
 El modo bestia: se dispara al vaciarle el aguante por segunda vez, crece x1.38 en
 escritorio y x1.30 en móvil creciendo desde los pies —no despega de la línea—, no
-se sale del carril ni pisa las marcas de aguante, y al desinflarse deja la ventana
-para ganarle, que se sigue ganando. El temblor sacude `<main>` y no `<body>`:
+se sale del carril ni pisa el reloj, dura los siete segundos enteros encadenando
+defensas sin que se le pueda hacer nada, y al desinflarse deja la ventana para
+ganarle, que se sigue ganando. El temblor sacude `<main>` y no `<body>`:
 body ya trae `overflow-x: hidden` y recorta el desplazamiento. Recortarlo en
 `html` era lo intuitivo, pero tanto `hidden` como `clip` ahí rompen el
 `position: sticky` de la columna del perfil —medido contra la versión anterior— y
