@@ -54,6 +54,30 @@
 
   html { scroll-behavior: smooth; }
 
+  html { background: var(--void); }
+
+  /* El temblor sacude <main> y no <body>: body ya trae overflow-x: hidden, así
+     que recorta el desplazamiento y no asoma barra de scroll. Recortarlo en html
+     sería lo intuitivo, pero tanto hidden como clip ahí convierten el documento
+     en otra cosa y rompen el position:sticky de la columna del perfil. Medido. */
+  @keyframes temblor {
+    0%, 100% { transform: translate(0, 0); }
+    18%      { transform: translate(-4px, 2px); }
+    36%      { transform: translate(4px, -3px); }
+    54%      { transform: translate(-3px, -2px); }
+    72%      { transform: translate(3px, 2px); }
+    88%      { transform: translate(-2px, 1px); }
+  }
+
+  @keyframes sacudida {
+    0%, 100% { transform: translate(0, 0); }
+    35%      { transform: translate(-2px, 1px); }
+    70%      { transform: translate(2px, -1px); }
+  }
+
+  html.temblor  main { animation: temblor 0.44s var(--ease); }
+  html.sacudida main { animation: sacudida 0.18s var(--ease); }
+
   body {
     margin: 0;
     background: var(--void);
@@ -576,8 +600,9 @@
     width: 100%; height: auto;
     overflow: visible;          /* la espada vive fuera del viewBox */
     color: var(--clay);
-    transform: scaleX(var(--flip, 1));
-    transition: transform 0.16s var(--ease), filter 0.25s var(--ease);
+    transform-origin: 50% 100%; /* crece desde los pies: no despega de la línea */
+    transform: scaleX(var(--flip, 1)) scale(var(--tam, 1));
+    transition: transform 0.16s var(--ease), filter 0.25s var(--ease), color 0.3s var(--ease);
   }
 
   .critter__body rect, .critter__legs rect { fill: currentColor; }
@@ -756,18 +781,32 @@
     100% { opacity: 0; }
   }
 
+  /* ── modo bestia: el clímax de la furia ─────────────── */
+  .critter.hulk {
+    --tam: 1.4;              /* más y se come el apellido: el carril mide 46px */
+    --ojo: #FFE500;
+  }
+
+  .critter.hulk .critter__svg {
+    color: #C4472A;
+    filter: drop-shadow(0 0 12px rgba(196, 71, 42, 0.6));
+  }
+
+  .critter.hulk .critter__pips i { background: #FF3B1F; }
+  .critter.hulk .critter__shadow { width: 40px; }
+
   .critter__estela rect { fill: currentColor; opacity: 0; transition: opacity 0.15s var(--ease); }
   .critter.pw-embestida .critter__estela rect { opacity: 0.55; animation: estela 0.24s steps(2) infinite; }
-  .critter.pw-embestida .critter__svg { transform: scaleX(var(--flip, 1)) rotate(-9deg); }
+  .critter.pw-embestida .critter__svg { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) rotate(-9deg); }
 
   @keyframes estela { from { opacity: 0.6; } to { opacity: 0.2; } }
 
   /* el cuerpo acusa el golpe cuando pega sin espada */
   .critter.golpea .critter__svg { animation: topetazo 0.26s var(--ease); }
   @keyframes topetazo {
-    0%   { transform: scaleX(var(--flip, 1)) translateX(0); }
-    40%  { transform: scaleX(var(--flip, 1)) translateX(5px); }
-    100% { transform: scaleX(var(--flip, 1)) translateX(0); }
+    0%   { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateX(0); }
+    40%  { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateX(5px); }
+    100% { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateX(0); }
   }
 
   /* la onda que devuelve el escudo, viaja hasta el cursor y lo aparta */
@@ -782,8 +821,8 @@
 
   .critter.retro .critter__svg { animation: retroceso 0.2s var(--ease); }
   @keyframes retroceso {
-    0%, 100% { transform: scaleX(var(--flip, 1)) translateX(0); }
-    45%      { transform: scaleX(var(--flip, 1)) translateX(-4px); }
+    0%, 100% { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateX(0); }
+    45%      { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateX(-4px); }
   }
 
   .critter__onda {
@@ -805,8 +844,8 @@
   .critter.agotado .critter__eyes rect { transform: scaleY(0.45); }
 
   @keyframes jadeo {
-    0%, 100% { transform: scaleX(var(--flip, 1)) translateY(0); }
-    50%      { transform: scaleX(var(--flip, 1)) translateY(1.5px); }
+    0%, 100% { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateY(0); }
+    50%      { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateY(1.5px); }
   }
 
   .critter__pips {
@@ -1612,6 +1651,8 @@
     .critter__shadow { width: 21px; }
     .critter__ghost { width: 30px; }
     .critter__pips { top: -13px; }
+    .critter.hulk { --tam: 1.32; }
+    .critter.hulk .critter__shadow { width: 28px; }
     .critter__globo { font-size: 0.5rem; padding: 2px 5px; }
     .critter__rendicion { font-size: 0.5rem; max-width: 70%; }
     .stats { grid-template-columns: repeat(2, 1fr); }
@@ -2754,7 +2795,7 @@
     function alcanceClick() {
       var huyendo = (modo === "huida" || modo === "susto" || modo === "esquina") &&
                     !(poder && (poder.plantado || poder.pelea));
-      return ancho * (huyendo ? 2.1 : 1.1) + (COARSE ? 22 : 0);
+      return ancho * tam() * (huyendo ? 2.1 : 1.1) + (COARSE ? 22 : 0);
     }
     var SALTO = 10;
     var ALCANCE = 58;       // a esta distancia del cursor, le acierta
@@ -2781,6 +2822,8 @@
     ];
 
     var AGUANTE = 4;        // golpes que para antes de quedarse sin aire
+    var AGUANTE_HULK = 6;
+    var DUR_HULK = 11000;
     var RENDIDO = 10000;
 
     /* atajo de prueba y de demo: #bicho=espada fuerza uno solo */
@@ -2791,6 +2834,7 @@
     var mirada = 0, miradaAnt = 0, intentos = 0, ladoAnt = -1;
     var poder = null, poderHasta = 0, ultimoPoder = "", frio = 0;
     var aguante = AGUANTE, furia = 0, furiaAnt = -1, ultimoTajo = 0, enGuardia = false;
+    var hulk = false, yaHulk = false, hulkHasta = 0, temblorT = 0, vecesSinAire = 0;
     var pcx = null, pcy = null;
     var corriendo = false, visible = false, last = 0;
     var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0, impT = 0, retroT = 0;
@@ -2818,7 +2862,9 @@
     rend.appendChild(rendTxt);
     rend.appendChild(rendWa);
 
-    for (var k = 0; k < AGUANTE; k++) { pips.appendChild(document.createElement("i")); }
+    /* se crean las del modo bestia y se ocultan las que sobran: si no, en
+       bestia aguantaría seis golpes mostrando sólo cuatro marcas */
+    for (var k = 0; k < Math.max(AGUANTE, AGUANTE_HULK); k++) { pips.appendChild(document.createElement("i")); }
     var marcas = Array.prototype.slice.call(pips.children);
 
     function medir() {
@@ -2830,7 +2876,19 @@
     }
 
     /* la burbuja mide el 155% del sprite: su radio, en píxeles de pantalla */
-    function radioEscudo() { return ancho * 0.78; }
+    function tam() { return hulk ? (window.innerWidth <= 560 ? 1.32 : 1.4) : 1; }
+    function radioEscudo() { return ancho * 0.78 * tam(); }
+
+    /* el temblor va en el body: una clase, se quita sola al acabar la animación */
+    function temblar(fuerte) {
+      var c = fuerte ? "temblor" : "sacudida";
+      var raiz = document.documentElement;
+      raiz.classList.remove("temblor", "sacudida");
+      void raiz.offsetWidth;                 // reinicia la animación si ya estaba
+      raiz.classList.add(c);
+      clearTimeout(temblorT);
+      temblorT = setTimeout(function () { raiz.classList.remove(c); }, fuerte ? 460 : 200);
+    }
 
     function parpadear() {
       lane.classList.add("blink");
@@ -2850,8 +2908,12 @@
       hintT = setTimeout(callar, ms || 2200);
     }
 
+    function maxAguante() { return hulk ? AGUANTE_HULK : AGUANTE; }
+
     function pintarPips(mostrar) {
+      var tope = maxAguante();
       for (var i = 0; i < marcas.length; i++) {
+        marcas[i].style.display = i < tope ? "" : "none";
         marcas[i].className = i < aguante ? "" : "off";
       }
       if (mostrar !== false) {
@@ -2932,8 +2994,9 @@
     function tajo(r, cx, cy, ts) {
       ultimoTajo = ts;
       var vx = pcx - cx, vy = pcy - cy;
-      var fuerza = (poder && poder.id === "embestida" ? 64 : 46) * (1 + furia * 0.5);
+      var fuerza = (poder && poder.id === "embestida" ? 64 : 46) * (1 + furia * 0.5) * (hulk ? 1.6 : 1);
       empujar(vx, vy, fuerza);
+      if (hulk) { temblar(false); }
       chispa(pcx - r.left, Math.max(4, Math.min(r.height - 4, pcy - r.top)), "critter__spark--oro");
 
       var clase = poder && poder.id === "espada" ? "parry" : "golpea";
@@ -3133,7 +3196,41 @@
       lane.classList.remove("asustado");
     }
 
+    /* El clímax, y se lo gana quien falla: la primera vez que se queda sin aire
+       tenés tu ventana; si la desperdiciás, se recupera y a la segunda vez que le
+       vacíes el aguante ya no cae, se transforma. Una sola vez por visita, y al
+       desinflarse sí se queda sin aire: la ventana no se pierde, se retrasa. */
+    function bestia() {
+      hulk = true; yaHulk = true;
+      hulkHasta = performance.now() + DUR_HULK;
+      aguante = AGUANTE_HULK;
+      lane.classList.add("hulk");
+      lane.classList.remove("agotado");
+      apagarPoder();
+      pintarPips();
+      temblar(true);
+      mostrarGlobo("ya me hartaste", 2800);
+      decir("modo bestia", "oro", 2600);
+      for (var i = 0; i < 12; i++) {
+        var a = (i / 12) * Math.PI * 2;
+        chispa(x + ancho / 2 + Math.cos(a) * 26, 24 + Math.sin(a) * 16, "critter__spark--oro");
+      }
+    }
+
+    function desinflar() {
+      hulk = false;
+      lane.classList.remove("hulk");
+      temblar(false);
+      for (var i = 0; i < 6; i++) {
+        chispa(x + ancho / 2 + (Math.random() - 0.5) * 30, 20 + Math.random() * 16, "");
+      }
+      aguante = 0;
+      sinAire();
+    }
+
     function sinAire() {
+      vecesSinAire++;
+      if (vecesSinAire > 1 && !yaHulk) { bestia(); return; }
       apagarPoder();
       modo = "agotado";
       hasta = performance.now() + (2400 - furia * 400);
@@ -3148,6 +3245,8 @@
     function atrapar(cx, cy, r) {
       modo = "atrapado";
       lane.classList.remove("agotado");
+      hulk = false;
+      lane.classList.remove("hulk");
       lane.classList.add("atrapado");
       pips.classList.remove("on");
       callar();
@@ -3196,7 +3295,7 @@
       /* sin aire: ésta es la única ventana en la que se lo agarra */
       if (modo === "agotado") { atrapar(cx, cy, r); return; }
 
-      furia = Math.min(1, (intentos - 1) / 12);
+      furia = Math.min(1, (intentos - 1) / 9);
 
       var p = elegirPoder();
       if (p) {
@@ -3236,6 +3335,7 @@
       var cy = r.top + r.height / 2;
 
       if (poder && ts > poderHasta) { apagarPoder(); enGuardia = false; }
+      if (hulk && ts > hulkHasta) { desinflar(); }
       moverCohetes(r, ts, dt);
 
       if ((modo === "susto" || modo === "esquina") && ts > hasta) {
@@ -3328,11 +3428,14 @@
       if (pausa > 0) { pausa -= dt * 1000; v = 0; }
 
       x += dir * v * dt;
-      if (x <= 0 && dir < 0) {
-        x = 0;
+      /* al crecer se ensancha hacia los dos lados desde el centro: si no se
+         descuenta, el bicho grande asoma por fuera del carril */
+      var borde = ancho * (tam() - 1) / 2;
+      if (x <= borde && dir < 0) {
+        x = borde;
         if (!(poder && poder.pelea)) { dir = 1; if (modo === "paseo") { pausa = 420; parpadear(); } }
-      } else if (x >= W - ancho && dir > 0) {
-        x = W - ancho;
+      } else if (x >= W - ancho - borde && dir > 0) {
+        x = W - ancho - borde;
         if (!(poder && poder.pelea)) { dir = -1; if (modo === "paseo") { pausa = 420; parpadear(); } }
       }
 
