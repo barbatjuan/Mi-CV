@@ -65,13 +65,16 @@ una CDN externa, que la CSP bloquearía.
 - **La pelea**: en cuanto lo atacás deja de ser un bicho que huye. Cada click lo
   para con una de siete defensas, y ninguna lo deja expuesto: con la **espada** y
   la **embestida** te encara, cierra la distancia y se planta a distancia de
-  golpe repartiendo tajos que mandan el cursor lejos; el **disparo** te apunta y
-  te tira balas que estallan sobre el puntero; el **campo de fuerza** es un muro
+  golpe repartiendo tajos que mandan el cursor lejos; el **disparo** saca un
+  fusil que apunta de verdad —el cañón sigue al puntero en vertical— y escupe
+  balas que estallan sobre él, con culatazo y fogonazo; el **campo de fuerza** es un muro
   de verdad —ver abajo— y encima devuelve el click como una onda que viaja hasta
   tu cursor; el **repulsor** te lo aparta mientras te acercás; el **camuflaje**
   lo deja en dos ojos flotando; el **parpadeo** lo saca de ahí dejando tres
   fantasmas. Y se va enojando: a partir de cierto número de golpes se le ponen
   los ojos naranjas, después rojos, y pega más fuerte y más seguido.
+- **Se arma**: al sacar la espada o el fusil le cae en la cabeza un casco de
+  guerra, domo de acero con cresta dorada, y se lo quita al soltar el arma.
 - **El campo de fuerza frena el cursor**, no lo empuja: mientras está levantado,
   el puntero no puede entrar en la burbuja. Se queda pegado al borde y resbala
   por el hexágono por más que apuntes al centro. Para que eso se lea como un muro
@@ -130,6 +133,10 @@ vuelve solo a cero. El aguante baja un punto por golpe parado y al cuarto llega
 "sin aire"; un click ahí lo gana y uno fuera no. En puntero grueso el repulsor
 queda fuera del grupo, porque no hay anillo que empujar, y el ciclo entero se
 completa a dedazos. Sin un solo error en consola en los cinco anchos.
+
+El equipo: el cañón apunta hasta 38 grados arriba y abajo siguiendo al puntero;
+el casco no pisa las marcas de aguante ni se sale del carril, y el arma tampoco,
+en escritorio y en móvil.
 
 El muro del escudo, medido barriendo el puntero por encima del bicho: el punto se
 queda clavado a 34 px del centro en todo el recorrido —nunca entra— y vuelve a
