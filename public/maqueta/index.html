@@ -2480,6 +2480,34 @@
   })();
 
   /* ══════════════════════════════════════════════════════
+     13 · MAILTO DENTRO DE UN IFRAME
+     Navegar a un protocolo externo desde un iframe con sandbox hace que el
+     navegador reemplace el marco entero por una pantalla de "contenido
+     bloqueado". En el sitio real no cambia nada: esto sólo se activa si la
+     página está embebida, y entonces copia la dirección en vez de navegar.
+     ══════════════════════════════════════════════════════ */
+  if (window.top !== window.self) {
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest ? e.target.closest('a[href^="mailto:"]') : null;
+      if (!a) { return; }
+      e.preventDefault();
+
+      var txt = a.firstChild && a.firstChild.nodeType === 3 ? a.firstChild : null;
+      var previo = txt ? txt.nodeValue : "";
+
+      function avisar() {
+        if (!txt) { return; }
+        txt.nodeValue = "copiado ";
+        setTimeout(function () { txt.nodeValue = previo; }, 1600);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(a.getAttribute("href").slice(7)).then(avisar, avisar);
+      } else { avisar(); }
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════
      12 · EL BICHO: camina, esquiva, saca poderes y se rinde
      ══════════════════════════════════════════════════════ */
   (function () {
@@ -2527,10 +2555,16 @@
     /* el mensaje de la rendición se arma una vez para poder colgarle los
        listeners del hover sin rehacerlos en cada captura */
     var rendTxt = document.createElement("b");
+    /* WhatsApp y no mailto: dentro de un iframe con sandbox —el visor del
+       artifact, sin ir más lejos— navegar a un protocolo externo hace que el
+       navegador reemplace el marco por una pantalla de contenido bloqueado.
+       Un https en pestaña nueva no puede romper nada. */
     var rendMail = document.createElement("a");
-    rendMail.href = "mailto:hola@juanbarbat.dev";
-    rendMail.textContent = "hola@juanbarbat.dev";
-    rendMail.setAttribute("data-cursor", "Escribir");
+    rendMail.href = "https://wa.me/34655088494";
+    rendMail.target = "_blank";
+    rendMail.rel = "noopener noreferrer";
+    rendMail.textContent = "whatsapp +34 655 088 494";
+    rendMail.setAttribute("data-cursor", "WhatsApp");
     rend.appendChild(rendTxt);
     rend.appendChild(rendMail);
 
@@ -2685,7 +2719,7 @@
       if (ANILLO.desvio) { ANILLO.desvio(0, 0); }
       estallido(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)));
 
-      rendTxt.textContent = "me atrapaste en " + intentos;
+      rendTxt.textContent = "me atrapaste en " + intentos + " · hablemos";
       var izq = x > W / 2;
       rend.style.left = izq ? "0" : "auto";
       rend.style.right = izq ? "auto" : "0";

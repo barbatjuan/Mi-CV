@@ -71,7 +71,14 @@ una CDN externa, que la CSP bloquearía.
   de frente— y **repulsor**, que empuja el anillo del cursor como dos imanes del
   mismo polo. Gastar un poder lo deja **sin energía** durante 1,8 s: se arrastra,
   se le vacía una barrita y ahí sí se atrapa. Fuera de esa ventana sigue siendo
-  imposible. Al atraparlo se planta, te encara y te deja su correo.
+  imposible. Al atraparlo se planta, te encara y te deja el WhatsApp.
+
+  El contacto de la rendición va por WhatsApp y no por `mailto:` a propósito:
+  dentro de un iframe con sandbox —el visor de artifacts, sin ir más lejos—
+  navegar a un protocolo externo hace que el navegador reemplace el marco entero
+  por una pantalla de "contenido bloqueado". Por lo mismo, el botón de contacto
+  de abajo copia la dirección en vez de navegar **sólo cuando la página está
+  embebida**; en el sitio real sigue abriendo el cliente de correo.
 - Preloader con contador, revelados por máscara, barrido de brillo en los
   certificados y barra de progreso de lectura.
 
