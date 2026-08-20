@@ -101,8 +101,10 @@ una CDN externa, que la CSP bloquearía.
   transformarse cada vez que dejes escapar una ventana.
 - **Tu vida**: una barrita pegada al puntero. Cada impacto suyo te quita un
   pedazo, proporcional a la fuerza del golpe, y se regenera sola en cuanto dejás
-  de recibir. Si llega a cero te tumba un par de segundos —"te gané"— y afloja
-  para que te recuperes: es un juguete de un hero, no un roguelike.
+  de recibir. Si llega a cero **el puntero estalla en doce trozos y desaparece de
+  la pantalla** un par de segundos, mientras el bicho se planta a festejarlo a
+  saltos con un "te gané". Después el puntero vuelve entero y con la vida llena:
+  es un juguete de un hero, no un roguelike.
 - **Sin aire**: lo que lo desgasta es la pelea, no el poder. Para cuatro golpes
   —las marcas sobre su cabeza los van contando— y al quinto se queda sin aire un
   par de segundos, jadeando y sin defenderse. Esa es la única ventana en la que
@@ -169,7 +171,10 @@ El modo bestia: se dispara al vaciarle el aguante por segunda vez, crece x1.38 e
 escritorio y x1.30 en móvil creciendo desde los pies —no despega de la línea—, no
 se sale del carril, persigue al puntero aunque lo alejes al otro extremo, cae en
 seis golpes y al caer deja la ventana para ganarle, que se sigue ganando. En una
-partida larga se transformó once veces y tumbó al jugador ocho. El enlace de WhatsApp sólo se puede pulsar con el bicho ya atrapado:
+partida larga se transformó once veces y tumbó al jugador ocho. Al tumbarte, el
+punto, el anillo y la barra se apagan a la vez, salen doce trozos, y a los 2,6
+segundos está todo de vuelta sin un nodo huérfano; mientras estás en el suelo los
+clicks se ignoran, que para algo no tenés puntero. El enlace de WhatsApp sólo se puede pulsar con el bicho ya atrapado:
 `elementFromPoint` sobre él devuelve la sección mientras sigue vivo. El temblor sacude `<main>` y no `<body>`:
 body ya trae `overflow-x: hidden` y recorta el desplazamiento. Recortarlo en
 `html` era lo intuitivo, pero tanto `hidden` como `clip` ahí rompen el

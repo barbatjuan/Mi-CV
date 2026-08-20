@@ -230,8 +230,21 @@
   }
 
   .cur-vida.bajo i { background: #FF3B1F; }
-  .cur-vida.ko { animation: koParpadeo 0.36s var(--ease) 4; }
-  @keyframes koParpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+  /* al quedarte sin vida el puntero revienta y no queda nada en pantalla */
+  .cur.roto, .cur-ring.roto, .cur-vida.roto { opacity: 0 !important; transition: opacity 0.1s linear; }
+  .cur.vuelve, .cur-ring.vuelve { animation: reaparece 0.42s var(--ease); }
+  @keyframes reaparece { from { opacity: 0; } to { opacity: 1; } }
+
+  .cur-tro {
+    position: fixed;
+    top: 0; left: 0;
+    width: 4px; height: 4px;
+    margin: -2px 0 0 -2px;
+    background: var(--gold);
+    pointer-events: none;
+    z-index: 301;
+    transition: transform 0.6s cubic-bezier(0.15, 0.7, 0.3, 1), opacity 0.6s linear;
+  }
 
   @media (hover: none), (pointer: coarse) { .cur-vida { display: none; } }
 
@@ -895,6 +908,14 @@
   .critter.agotado .critter__pips i { background: rgba(255, 255, 255, 0.16); }
 
   /* ── atrapado ───────────────────────────────────────── */
+  /* va después del jadeo y del topetazo a propósito: festejar los pisa */
+  .critter.festeja .critter__svg { animation: festejo 0.44s var(--ease) 5; }
+  @keyframes festejo {
+    0%, 100% { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateY(0); }
+    32%      { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateY(-8px); }
+    64%      { transform: scaleX(var(--flip, 1)) scale(var(--tam, 1)) translateY(0); }
+  }
+
   .critter.atrapado .critter__svg { filter: saturate(0.5) brightness(0.9); }
   .critter.atrapado .critter__eyes rect { transform: scaleY(0.32); }
 
@@ -2182,7 +2203,7 @@
   /* puente entre el cursor propio (7) y el bicho (12): el anillo vive en un
      closure, así que en vez de globals se comparte este par de funciones.
      Quedan en null si no hay cursor propio, y el bicho comprueba antes. */
-  var ANILLO = { golpe: null, desvio: null, barrera: null, dano: null };
+  var ANILLO = { golpe: null, desvio: null, barrera: null, dano: null, tumbado: null };
 
   /* ══════════════════════════════════════════════════════
      1 · DATOS
@@ -2503,8 +2524,43 @@
     /* La vida del jugador. Se regenera sola al dejar de recibir, y al llegar a
        cero te tumba unos segundos en vez de terminar la partida: esto es un
        juguete de un hero, no un roguelike. */
-    var VIDA_MAX = 100, REGEN = 16, TUMBADO = 2600;
+    var VIDA_MAX = 100, REGEN = 16, TUMBADO = 2200;
     var vida = VIDA_MAX, ultimoDano = -9999, tumbadoHasta = 0, vidaAnt = -1, vidaT = 0;
+    var curX = px, curY = py;
+
+    /* el puntero estalla en pedazos y desaparece de la pantalla mientras
+       estás tumbado; los trozos son fixed porque el cursor también lo es */
+    function reventar() {
+      cur.classList.add("roto");
+      ring.classList.add("roto");
+      vidaEl.classList.add("roto");
+      for (var i = 0; i < 12; i++) {
+        (function (k) {
+          var a = (k / 12) * Math.PI * 2 + Math.random() * 0.4;
+          var dist = 26 + Math.random() * 30;
+          var t = document.createElement("span");
+          t.className = "cur-tro";
+          t.style.transform = "translate(" + curX.toFixed(1) + "px," + curY.toFixed(1) + "px)";
+          document.body.appendChild(t);
+          void t.offsetWidth;                  // fuerza el reflow: si no, no hay transición
+          t.style.transform = "translate(" + (curX + Math.cos(a) * dist).toFixed(1) + "px," +
+                              (curY + Math.sin(a) * dist).toFixed(1) + "px) scale(0.3)";
+          t.style.opacity = "0";
+          setTimeout(function () { if (t.parentNode) { t.parentNode.removeChild(t); } }, 700);
+        })(i);
+      }
+    }
+
+    function recomponer() {
+      cur.classList.remove("roto");
+      ring.classList.remove("roto");
+      vidaEl.classList.remove("roto");
+      cur.classList.add("vuelve");
+      ring.classList.add("vuelve");
+      setTimeout(function () { cur.classList.remove("vuelve"); ring.classList.remove("vuelve"); }, 450);
+    }
+
+    ANILLO.tumbado = function () { return performance.now() < tumbadoHasta; };
 
     ANILLO.dano = function (n) {
       var ahora = performance.now();
@@ -2515,7 +2571,7 @@
       clearTimeout(vidaT);
       if (vida <= 0) {
         tumbadoHasta = ahora + TUMBADO;
-        vidaEl.classList.add("ko");
+        reventar();
         return true;          // te tumbó
       }
       vidaT = setTimeout(function () {
@@ -2546,7 +2602,7 @@
       var dt = Math.min(50, (ts || vidaT0) - vidaT0) / 1000;
       vidaT0 = ts || vidaT0;
 
-      if (performance.now() > tumbadoHasta && vida <= 0) { vida = VIDA_MAX; vidaEl.classList.remove("ko"); }
+      if (performance.now() > tumbadoHasta && vida <= 0) { vida = VIDA_MAX; recomponer(); }
       else if (vida > 0 && vida < VIDA_MAX && performance.now() - ultimoDano > 1800) {
         vida = Math.min(VIDA_MAX, vida + REGEN * dt);
         if (vida >= VIDA_MAX) { vidaEl.classList.remove("on"); }
@@ -2571,6 +2627,7 @@
         }
       }
 
+      curX = ax; curY = ay;
       cur.style.transform = "translate(" + ax.toFixed(1) + "px," + ay.toFixed(1) + "px)";
 
       rx2 += (ax - rx2) * 0.16;
@@ -2916,7 +2973,7 @@
     var hulk = false, hulkHasta = 0, temblorT = 0, vecesSinAire = 0, treguaHasta = 0;
     var pcx = null, pcy = null;
     var corriendo = false, visible = false, last = 0;
-    var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0, impT = 0, retroT = 0;
+    var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0, impT = 0, retroT = 0, festejoT = 0;
     var ultimoTiro = 0, globoT = 0, frase = 0, cohetes = [], proximoCohete = 0;
 
     /* invita a que lo toquen, y deja de insistir en cuanto le hacen caso */
@@ -3069,11 +3126,19 @@
       if (ANILLO.dano && ANILLO.dano(fuerza * 0.22)) { tumbarte(); }
     }
 
-    /* te quedaste sin vida: se relaja, se ríe y te deja recuperarte */
+    /* te quedaste sin vida: para de pegar, se planta y lo festeja */
     function tumbarte() {
       treguaHasta = performance.now() + 2600;
-      mostrarGlobo("te gané", 2400);
-      decir("te tumbó", "oro", 2000);
+      pausa = 2300;
+      mostrarGlobo("te gané", 2500);
+      decir("te tumbó", "oro", 2200);
+      lane.classList.add("festeja");
+      clearTimeout(festejoT);
+      festejoT = setTimeout(function () { lane.classList.remove("festeja"); }, 2200);
+      for (var i = 0; i < 10; i++) {
+        var a = (i / 10) * Math.PI * 2;
+        chispa(x + ancho / 2 + Math.cos(a) * 24, 22 + Math.sin(a) * 15, "critter__spark--oro");
+      }
     }
 
     /* le acierta al cursor: chispa, empujón y el gesto que corresponda */
@@ -3601,6 +3666,7 @@
 
     document.addEventListener("pointerdown", function (e) {
       if (!visible) { return; }
+      if (ANILLO.tumbado && ANILLO.tumbado()) { return; }   // estás en el suelo
       var r = lane.getBoundingClientRect();
       var cx = r.left + x + ancho / 2, cy = r.top + r.height / 2;
       if (COARSE) { pcx = e.clientX; pcy = e.clientY; }
