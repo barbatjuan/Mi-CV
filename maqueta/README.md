@@ -143,7 +143,10 @@ vuelve solo a cero. El aguante baja un punto por golpe parado y al cuarto llega
 queda fuera del grupo, porque no hay anillo que empujar, y el ciclo entero se
 completa a dedazos. Sin un solo error en consola en los cinco anchos.
 
-El equipo: el cañón apunta hasta 38 grados arriba y abajo siguiendo al puntero;
+El equipo: la bazuca mide 37x17 px contra los 21x11 de la pistola, que es lo que
+hace falta para que a ese tamaño no se confundan —tubo gordo, bocas acampanadas y
+banda de aviso—; el cañón apunta hasta 38 grados arriba y abajo siguiendo al
+puntero;
 el casco no pisa las marcas de aguante ni se sale del carril, y el arma tampoco,
 en escritorio y en móvil. El cohete, medido contra tres formas de mover el ratón:
 acierta al puntero quieto en un cuarto de segundo, al que va a la deriva en dos

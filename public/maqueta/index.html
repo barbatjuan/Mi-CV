@@ -707,7 +707,12 @@
     transition: opacity 0.16s var(--ease), transform 0.16s var(--ease);
   }
 
-  .critter__bazuca rect { fill: #7E8598; }
+  /* tubo gordo, bocas acampanadas y banda de aviso: al tamaño al que se ve,
+     la silueta es lo único que distingue una bazuca de una pistola */
+  .critter__bazuca .tubo { fill: #5F6752; }
+  .critter__bazuca .boca { fill: #444B3B; }
+  .critter__bazuca .mira { fill: #444B3B; }
+  .critter__bazuca .banda { fill: var(--gold); }
   .critter__bazuca .fogonazo rect { fill: #FF7A2F; opacity: 0; }
   .critter.pw-bazooka .critter__bazuca { opacity: 1; transform: rotate(var(--mira, 0deg)) translateX(0); }
   .critter.retro .critter__bazuca { transform: rotate(var(--mira, 0deg)) translateX(-7px); }
@@ -1739,13 +1744,15 @@
               </g>
             </g>
             <g class="critter__bazuca">
-              <rect x="28.5" y="6.2"  width="2"  height="5.6" />
-              <rect x="30"   y="7"    width="15" height="4" />
-              <rect x="34.5" y="5.4"  width="2"  height="1.8" />
-              <rect x="33"   y="11"   width="2"  height="3.2" />
+              <rect class="boca"  x="26.5" y="2.6" width="2.5" height="8.8" />
+              <rect class="tubo"  x="29"   y="4"   width="17"  height="6" />
+              <rect class="boca"  x="45.5" y="2.6" width="2.5" height="8.8" />
+              <rect class="banda" x="41"   y="4"   width="2"   height="6" />
+              <rect class="mira"  x="34"   y="1.9" width="2.4" height="2.3" />
+              <rect class="tubo"  x="32.5" y="10"  width="2.6" height="3.6" />
               <g class="fogonazo">
-                <rect x="45.5" y="6.9" width="3.4" height="4.4" />
-                <rect x="47.5" y="5.2" width="2"   height="7.8" />
+                <rect x="48.5" y="3.4" width="3.6" height="7.2" />
+                <rect x="51"   y="1.4" width="2.4" height="11.2" />
               </g>
             </g>
             <g class="critter__sword">
