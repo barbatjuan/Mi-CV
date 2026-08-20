@@ -62,6 +62,16 @@ una CDN externa, que la CSP bloquearía.
   queda acorralado contra una pared no tiembla en la esquina: pasa de largo por
   debajo del cursor. A partir del tercer intento aparece un contador discreto.
   Sólo corre con el hero a la vista y con la pestaña activa.
+- **Los poderes y la ventana**: del cuarto intento en adelante empieza a sacar
+  poderes, y cuanto más insistís, más seguido. Son cinco, cada uno un verbo
+  distinto para que el azar se lea como variedad y no como ruido: **campo de
+  fuerza** hexagonal que rebota el click, **parpadeo** que lo teletransporta al
+  otro extremo dejando tres fantasmas, **camuflaje** que deja sólo los ojos
+  flotando, **espada** —el único que invierte el juego: deja de huir y te viene
+  de frente— y **repulsor**, que empuja el anillo del cursor como dos imanes del
+  mismo polo. Gastar un poder lo deja **sin energía** durante 1,8 s: se arrastra,
+  se le vacía una barrita y ahí sí se atrapa. Fuera de esa ventana sigue siendo
+  imposible. Al atraparlo se planta, te encara y te deja su correo.
 - Preloader con contador, revelados por máscara, barrido de brillo en los
   certificados y barra de progreso de lectura.
 
@@ -90,18 +100,28 @@ acelera y cambia de sentido cuando el puntero entra en el radio, sale del rincó
 cuando lo acorralan, y `elementFromPoint` sobre su centro nunca lo devuelve —ni
 con mouse ni con tap—, así que el click es imposible por construcción. El layout
 del hero (`.hero__name`, `.hero__meta`, `.stats`) mide exactamente igual que
-antes de agregarlo, en los seis anchos.
+antes de agregarlo, en los seis anchos, también con la espada y el campo de
+fuerza desplegados.
+
+Los poderes: los tres primeros intentos nunca sacan ninguno y del cuarto en
+adelante sí; los cinco se activan con su efecto y todos desembocan en la ventana
+sin energía; un click dentro la gana y uno fuera no; el empuje del anillo llega a
+40 px con la espada, 21 con el escudo y 32 sostenidos con el repulsor, siempre
+por debajo del tope de 52, y vuelve solo a cero. En puntero grueso el repulsor
+queda fuera del grupo, porque no hay anillo que empujar. Veintidós clicks
+seguidos no dejan un solo nodo huérfano ni un error en consola.
 
 Renderizado en Chromium: consola limpia, sin desbordamiento horizontal a 390 px,
 descendentes (g, y, q, p) completas en todos los títulos enmascarados, contador
 del preloader sin recorte en el último dígito y las tres marquesinas avanzando
 (transform medido a lo largo del tiempo, a 1440 y 390 px).
 
-## Pendiente
+## Atajo para mostrar un poder
 
-- **Etapa 2 del bicho**: poderes aleatorios que lo protejan del click (campo de
-  fuerza, escudo, dash con estela). La costura ya está puesta: todos los intentos
-  entran por `reaccionar()` y hay una tabla `PODERES` vacía esperando.
+`#bicho=espada` en la URL fuerza el grupo a un solo poder, desde el primer click.
+Sirve para las pruebas automáticas y para enseñar uno concreto sin tener que
+clickear veinte veces. Los ids son `escudo`, `parpadeo`, `camuflaje`, `espada` y
+`repulsor`.
 
 ## Pendiente de confirmar
 
