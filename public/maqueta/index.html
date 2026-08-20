@@ -560,6 +560,12 @@
     will-change: transform;
   }
 
+  /* furia: cuanto más lo golpeás, más se enoja. Va antes que el camuflaje a
+     propósito, para que camuflado los ojos sigan siendo dorados. */
+  .critter.furia-1 { --ojo: #FFA724; }
+  .critter.furia-2 { --ojo: #FF3B1F; }
+  .critter.furia-2 .critter__svg { filter: drop-shadow(0 0 7px rgba(255, 59, 31, 0.5)); }
+
   .critter__svg {
     display: block;
     width: 100%; height: auto;
@@ -571,7 +577,7 @@
 
   .critter__body rect, .critter__legs rect { fill: currentColor; }
   .critter__body, .critter__legs { transition: opacity 0.3s var(--ease); }
-  .critter__eyes  rect { fill: var(--void); }
+  .critter__eyes  rect { fill: var(--ojo, var(--void)); }
 
   .critter__eyes { transform: translateX(calc(var(--mirada, 0) * 1px)); }
   .critter__eyes rect {
@@ -697,9 +703,33 @@
     100% { opacity: 0; }
   }
 
+  .critter__estela rect { fill: currentColor; opacity: 0; transition: opacity 0.15s var(--ease); }
+  .critter.pw-embestida .critter__estela rect { opacity: 0.55; animation: estela 0.24s steps(2) infinite; }
+  .critter.pw-embestida .critter__svg { transform: scaleX(var(--flip, 1)) rotate(-9deg); }
+
+  @keyframes estela { from { opacity: 0.6; } to { opacity: 0.2; } }
+
+  /* el cuerpo acusa el golpe cuando pega sin espada */
+  .critter.golpea .critter__svg { animation: topetazo 0.26s var(--ease); }
+  @keyframes topetazo {
+    0%   { transform: scaleX(var(--flip, 1)) translateX(0); }
+    40%  { transform: scaleX(var(--flip, 1)) translateX(5px); }
+    100% { transform: scaleX(var(--flip, 1)) translateX(0); }
+  }
+
+  /* la onda que devuelve el escudo, viaja hasta el cursor y lo aparta */
+  .critter__onda {
+    position: absolute;
+    width: 14px; height: 14px;
+    margin: -7px 0 0 -7px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    transition: transform 0.3s var(--ease), opacity 0.3s linear;
+  }
+
   .critter.pw-camuflaje .critter__body,
   .critter.pw-camuflaje .critter__legs { opacity: 0.1; }
-  .critter.pw-camuflaje .critter__eyes rect { fill: rgba(255, 229, 0, 0.8); }
+  .critter.pw-camuflaje { --ojo: rgba(255, 229, 0, 0.8); }
   .critter.pw-camuflaje .critter__shadow { opacity: 0.15; }
 
   /* ── sin energía: la ventana para atraparlo ─────────── */
@@ -711,18 +741,20 @@
     50%      { transform: scaleX(var(--flip, 1)) translateY(1.5px); }
   }
 
-  .critter__bar {
+  .critter__pips {
     position: absolute;
-    left: 50%; top: -7px;
-    width: 26px; height: 2px;
+    left: 50%; top: -9px;
+    display: flex;
+    gap: 2px;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.14);
     opacity: 0;
-    transition: opacity 0.2s var(--ease);
+    transition: opacity 0.25s var(--ease);
   }
 
-  .critter__bar i { display: block; height: 100%; width: calc(var(--drenaje, 1) * 100%); background: var(--gold); }
-  .critter.agotado .critter__bar { opacity: 1; }
+  .critter__pips.on { opacity: 1; }
+  .critter__pips i { width: 4px; height: 4px; background: var(--gold); }
+  .critter__pips i.off { background: rgba(255, 255, 255, 0.16); }
+  .critter.agotado .critter__pips i { background: rgba(255, 255, 255, 0.16); }
 
   /* ── atrapado ───────────────────────────────────────── */
   .critter.atrapado .critter__svg { filter: saturate(0.5) brightness(0.9); }
@@ -1444,7 +1476,6 @@
     .critter__i { width: 30px; }
     .critter__shadow { width: 21px; }
     .critter__ghost { width: 30px; }
-    .critter__bar { width: 20px; }
     .critter__rendicion { font-size: 0.5rem; max-width: 70%; }
     .stats { grid-template-columns: repeat(2, 1fr); }
     .skills { grid-template-columns: minmax(0, 1fr); }
@@ -1467,7 +1498,7 @@
     /* el bicho se queda quieto en el carril: sigue siendo un guiño, deja de ser movimiento */
     .critter__i { left: 22%; }
     .critter__legs rect { animation: none !important; }
-    .critter__field, .critter__aura, .critter__sword { display: none !important; }
+    .critter__field, .critter__aura, .critter__sword, .critter__estela { display: none !important; }
     .track::before { display: none; }
   }
 </style>
@@ -1537,8 +1568,13 @@
             <polygon class="fx-out" points="30,2 54,16 54,44 30,58 6,44 6,16" />
             <polygon class="fx-in" points="30,11 46,20.5 46,39.5 30,49 14,39.5 14,20.5" />
           </svg>
-          <span class="critter__bar"><i></i></span>
+          <span class="critter__pips" id="critter-pips"></span>
           <svg class="critter__svg" viewBox="0 0 32 21" focusable="false" aria-hidden="true">
+            <g class="critter__estela">
+              <rect x="-7"  y="3"  width="5" height="2" />
+              <rect x="-13" y="8"  width="7" height="2" />
+              <rect x="-7"  y="13" width="5" height="2" />
+            </g>
             <g class="critter__legs">
               <rect class="lg--a" x="6"  y="16" width="2" height="5" />
               <rect class="lg--b" x="10" y="16" width="2" height="5" />
@@ -2508,65 +2544,71 @@
   }
 
   /* ══════════════════════════════════════════════════════
-     12 · EL BICHO: camina, esquiva, saca poderes y se rinde
+     12 · EL BICHO: camina, se defiende y devuelve los golpes
      ══════════════════════════════════════════════════════ */
   (function () {
     var lane = $("#critter");
     if (!lane) { return; }
 
     var sprite = $("#critter-i"), hint = $("#critter-hint");
-    var rend = $("#critter-rendicion"), hero = $(".hero");
+    var pips = $("#critter-pips"), rend = $("#critter-rendicion"), hero = $(".hero");
     if (REDUCED) { lane.classList.add("quieto"); return; }
 
-    /* velocidades en px/s. "embestida" es la salida cuando queda acorralado
-       contra una pared: en vez de temblar en la esquina pasa de largo. */
-    var V = { paseo: 34, huida: 150, susto: 300, embestida: 330, agotado: 18, atrapado: 0 };
+    /* velocidades en px/s. "esquina" es la salida cuando queda acorralado:
+       en vez de temblar en el rincón pasa de largo por debajo del cursor. */
+    var V = { paseo: 34, huida: 150, susto: 300, esquina: 330, pelea: 96, agotado: 18, atrapado: 0 };
     var RADIO = 140;        // el puntero a esta distancia ya lo pone nervioso
-    var RADIO_CLICK = 90;   // un click más cerca que esto cuenta como intento
-    var SALTO = 10;         // px de altura del brinco
+    var RADIO_CLICK = 130;  // un click más cerca que esto cuenta como ataque
+    var SALTO = 10;
+    var ALCANCE = 58;       // a esta distancia del cursor, le acierta
+    var GUARDIA = 40;       // y a ésta se planta: pelear no es meterse encima
 
-    /* Los cinco poderes. "peso" es la probabilidad relativa dentro del grupo:
-       la espada pesa más porque es el único que invierte el juego —deja de huir
-       y te viene de frente—. "mult" escala la velocidad mientras dura. */
+    /* Seis defensas. Ninguna lo deja expuesto: mientras dura, o planta cara o
+       te viene encima. Lo que lo desgasta es la pelea, no el poder.
+         pelea    → deja de huir y avanza sobre el cursor, repartiendo
+         plantado → se queda firme en el sitio, aguantando
+         ciego    → se cree invisible y sigue su camino
+         anillo   → empuja el cursor mientras te acercás                     */
     var PODERES = [
-      { id: "escudo",    nombre: "campo de fuerza", dur: 3500, peso: 3, mult: 0.6 },
-      { id: "parpadeo",  nombre: "parpadeo",        dur: 700,  peso: 3 },
-      { id: "camuflaje", nombre: "camuflaje",       dur: 3500, peso: 3, ciego: true },
-      { id: "espada",    nombre: "espada",          dur: 3000, peso: 4, encara: true, mult: 1.8 },
-      { id: "repulsor",  nombre: "repulsor",        dur: 2600, peso: 2, anillo: true }
+      { id: "espada",    nombre: "espada",          dur: 3200, peso: 6, pelea: true, mult: 1 },
+      { id: "embestida", nombre: "embestida",       dur: 1600, peso: 4, pelea: true, mult: 2.4 },
+      { id: "escudo",    nombre: "campo de fuerza", dur: 3200, peso: 5, plantado: true, onda: true },
+      { id: "repulsor",  nombre: "repulsor",        dur: 2800, peso: 3, plantado: true, anillo: true },
+      { id: "camuflaje", nombre: "camuflaje",       dur: 3200, peso: 3, ciego: true },
+      { id: "parpadeo",  nombre: "parpadeo",        dur: 700,  peso: 2 }
     ];
 
-    var AGOTE   = 1800;     // la ventana en la que sí se deja atrapar
-    var FRIO    = 2500;     // enfriamiento: nunca dos poderes seguidos
-    var RENDIDO = 10000;    // cuánto se queda en el suelo tras perder
+    var AGUANTE = 4;        // golpes que para antes de quedarse sin aire
+    var RENDIDO = 10000;
 
-    /* atajo de prueba y de demo: #bicho=espada fuerza uno solo, desde el
-       primer click. Documentado en el README, no escondido. */
+    /* atajo de prueba y de demo: #bicho=espada fuerza uno solo */
     var forzado = (String(location.hash).match(/bicho=([a-z]+)/) || [])[1] || "";
 
     var x = 0, dir = 1, y = 0, W = 0, ancho = 44;
     var modo = "paseo", firmaAnt = "", hasta = 0, pausa = 0, salto = 0;
     var mirada = 0, miradaAnt = 0, intentos = 0, ladoAnt = -1;
-    var poder = null, poderHasta = 0, frio = 0, agoteT0 = 0;
+    var poder = null, poderHasta = 0, ultimoPoder = "", frio = 0;
+    var aguante = AGUANTE, furia = 0, furiaAnt = -1, ultimoTajo = 0, enGuardia = false;
     var pcx = null, pcy = null;
     var corriendo = false, visible = false, last = 0;
-    var hintT = 0, blinkT = 0, parryT = 0, levantarT = 0;
+    var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0;
 
-    /* el mensaje de la rendición se arma una vez para poder colgarle los
-       listeners del hover sin rehacerlos en cada captura */
+    /* el mensaje de la rendición se arma una vez para colgarle los listeners
+       del hover sin rehacerlos en cada captura */
     var rendTxt = document.createElement("b");
-    /* WhatsApp y no mailto: dentro de un iframe con sandbox —el visor del
-       artifact, sin ir más lejos— navegar a un protocolo externo hace que el
-       navegador reemplace el marco por una pantalla de contenido bloqueado.
-       Un https en pestaña nueva no puede romper nada. */
-    var rendMail = document.createElement("a");
-    rendMail.href = "https://wa.me/34655088494";
-    rendMail.target = "_blank";
-    rendMail.rel = "noopener noreferrer";
-    rendMail.textContent = "whatsapp +34 655 088 494";
-    rendMail.setAttribute("data-cursor", "WhatsApp");
+    var rendWa = document.createElement("a");
+    /* WhatsApp y no mailto: dentro de un iframe con sandbox, navegar a un
+       protocolo externo hace que el navegador tape el marco entero */
+    rendWa.href = "https://wa.me/34655088494";
+    rendWa.target = "_blank";
+    rendWa.rel = "noopener noreferrer";
+    rendWa.textContent = "whatsapp +34 655 088 494";
+    rendWa.setAttribute("data-cursor", "WhatsApp");
     rend.appendChild(rendTxt);
-    rend.appendChild(rendMail);
+    rend.appendChild(rendWa);
+
+    for (var k = 0; k < AGUANTE; k++) { pips.appendChild(document.createElement("i")); }
+    var marcas = Array.prototype.slice.call(pips.children);
 
     function medir() {
       var r = lane.getBoundingClientRect();
@@ -2591,12 +2633,18 @@
       hint.textContent = txt;
       hint.className = "critter__hint mono on" + (cls ? " " + cls : "");
       clearTimeout(hintT);
-      hintT = setTimeout(callar, ms || 2600);
+      hintT = setTimeout(callar, ms || 2200);
     }
 
-    function contar() {
-      if (intentos < 3) { return; }
-      decir(intentos < 8 ? ("intentos: " + intentos) : "no vas a poder", "", 2600);
+    function pintarPips(mostrar) {
+      for (var i = 0; i < marcas.length; i++) {
+        marcas[i].className = i < aguante ? "" : "off";
+      }
+      if (mostrar !== false) {
+        pips.classList.add("on");
+        clearTimeout(pipsT);
+        pipsT = setTimeout(function () { pips.classList.remove("on"); }, 4200);
+      }
     }
 
     function chispa(lx, ly, cls) {
@@ -2621,8 +2669,8 @@
         (function (n) {
           var g = document.createElement("span");
           var copia = base.cloneNode(true);
-          var espada = copia.querySelector(".critter__sword");
-          if (espada) { espada.parentNode.removeChild(espada); }
+          var esp = copia.querySelector(".critter__sword");
+          if (esp) { esp.parentNode.removeChild(esp); }
           g.className = "critter__ghost";
           g.style.left = (x - dir * n * 13).toFixed(1) + "px";
           g.style.animationDelay = (n * 0.05).toFixed(2) + "s";
@@ -2634,33 +2682,90 @@
       }
     }
 
+    /* ── la pelea ──────────────────────────────────────── */
+
+    function empujar(vx, vy, fuerza) {
+      if (!ANILLO.golpe) { return; }
+      var d = Math.hypot(vx, vy) || 1;
+      ANILLO.golpe(vx / d * fuerza, vy / d * fuerza * 0.7);
+    }
+
+    /* le acierta al cursor: chispa, empujón y el gesto que corresponda */
+    function tajo(r, cx, cy, ts) {
+      ultimoTajo = ts;
+      var vx = pcx - cx, vy = pcy - cy;
+      var fuerza = (poder && poder.id === "embestida" ? 64 : 46) * (1 + furia * 0.5);
+      empujar(vx, vy, fuerza);
+      chispa(pcx - r.left, Math.max(4, Math.min(r.height - 4, pcy - r.top)), "critter__spark--oro");
+
+      var clase = poder && poder.id === "espada" ? "parry" : "golpea";
+      lane.classList.add(clase);
+      clearTimeout(clase === "parry" ? parryT : golpeT);
+      var t = setTimeout(function () { lane.classList.remove(clase); }, clase === "parry" ? 320 : 280);
+      if (clase === "parry") { parryT = t; } else { golpeT = t; }
+    }
+
+    /* la onda del escudo: sale del bicho, viaja hasta el cursor y lo aparta */
+    function onda(r, cx, cy) {
+      if (pcx === null) { return; }
+      var dx = pcx - r.left, dy = pcy - r.top;
+      var e = document.createElement("span");
+      e.className = "critter__onda";
+      e.style.left = (cx - r.left).toFixed(0) + "px";
+      e.style.top  = (cy - r.top).toFixed(0) + "px";
+      lane.appendChild(e);
+      void e.offsetWidth;                       // fuerza el reflow: si no, no hay transición
+      e.style.transform = "translate(" + (dx - (cx - r.left)).toFixed(0) + "px," +
+                          (dy - (cy - r.top)).toFixed(0) + "px) scale(2.4)";
+      e.style.opacity = "0";
+      setTimeout(function () {
+        empujar(pcx - cx, pcy - cy, 52 * (1 + furia * 0.4));
+        if (e.parentNode) { e.parentNode.removeChild(e); }
+      }, 300);
+    }
+
     /* ── poderes ───────────────────────────────────────── */
 
     function elegirPoder() {
-      var ahora = performance.now();
-      /* el repulsor sólo entra si hay un anillo que empujar */
       var grupo = PODERES.filter(function (p) { return !p.anillo || ANILLO.desvio; });
-      var i, total = 0, t;
+      var i, total = 0, t, sorteo;
 
       if (forzado) {
         for (i = 0; i < grupo.length; i++) { if (grupo[i].id === forzado) { return grupo[i]; } }
         return null;
       }
-      if (ahora < frio || intentos < 4) { return null; }
-      if (Math.random() > Math.min(0.85, 0.35 + (intentos - 4) * 0.08)) { return null; }
+      if (performance.now() < frio) { return null; }
 
-      for (i = 0; i < grupo.length; i++) { total += grupo[i].peso; }
-      t = Math.random() * total;
-      for (i = 0; i < grupo.length; i++) { t -= grupo[i].peso; if (t <= 0) { return grupo[i]; } }
-      return grupo[0];
+      /* dos vueltas para no repetir la misma defensa seguida: así se ven todas */
+      for (var vuelta = 0; vuelta < 2; vuelta++) {
+        total = 0;
+        for (i = 0; i < grupo.length; i++) { total += grupo[i].peso; }
+        t = Math.random() * total;
+        sorteo = grupo[0];
+        for (i = 0; i < grupo.length; i++) { t -= grupo[i].peso; if (t <= 0) { sorteo = grupo[i]; break; } }
+        if (sorteo.id !== ultimoPoder) { break; }
+      }
+      return sorteo;
     }
 
-    function activarPoder(p) {
+    function activarPoder(p, r, cx) {
+      if (poder) { apagarPoder(); }
       poder = p;
+      ultimoPoder = p.id;
       poderHasta = performance.now() + p.dur;
+      frio = performance.now() + 260;
       lane.classList.add("pw-" + p.id);
       decir(p.nombre, "oro", p.dur);
+      if (p.pelea && pcx !== null) { dir = pcx > cx ? 1 : -1; }
       if (p.id === "parpadeo") { teletransportar(); }
+    }
+
+    function apagarPoder() {
+      enGuardia = false;
+      if (!poder) { return; }
+      lane.classList.remove("pw-" + poder.id);
+      if (poder.anillo && ANILLO.desvio) { ANILLO.desvio(0, 0); }
+      poder = null;
     }
 
     function teletransportar() {
@@ -2672,39 +2777,14 @@
       lane.classList.remove("asustado");
     }
 
-    /* el click contra un poder activo: no lo toca, pero deja rastro */
-    function pararGolpe(cx, cy, r) {
-      var lx = cx - r.left, ly = Math.max(4, Math.min(r.height - 4, cy - r.top));
-      var vx = cx - (r.left + x + ancho / 2), vy = cy - (r.top + r.height / 2);
-      var d = Math.hypot(vx, vy) || 1;
-
-      if (poder.id === "espada") {
-        lane.classList.add("parry");
-        clearTimeout(parryT);
-        parryT = setTimeout(function () { lane.classList.remove("parry"); }, 340);
-        chispa(lx, ly, "critter__spark--oro");
-        if (ANILLO.golpe) { ANILLO.golpe(vx / d * 46, vy / d * 34); }
-        decir("parada", "oro", 1400);
-      } else if (poder.id === "escudo") {
-        chispa(lx, ly, "critter__spark--oro");
-        if (ANILLO.golpe) { ANILLO.golpe(vx / d * 24, vy / d * 18); }
-        decir("rebotó", "oro", 1400);
-      } else {
-        decir(poder.nombre, "oro", 1400);
-      }
-    }
-
-    function acabarPoder(ts) {
-      lane.classList.remove("pw-" + poder.id);
-      if (poder.anillo && ANILLO.desvio) { ANILLO.desvio(0, 0); }
-      poder = null;
+    function sinAire() {
+      apagarPoder();
       modo = "agotado";
-      hasta = ts + AGOTE;
-      agoteT0 = ts;
-      frio = hasta + FRIO;
+      hasta = performance.now() + (2400 - furia * 400);
       lane.classList.add("agotado");
       lane.classList.remove("asustado");
-      decir("sin energía", "oro late", AGOTE);
+      pintarPips();
+      decir("sin aire", "oro late", 2400);
     }
 
     /* ── atrapado ──────────────────────────────────────── */
@@ -2713,13 +2793,14 @@
       modo = "atrapado";
       lane.classList.remove("agotado");
       lane.classList.add("atrapado");
+      pips.classList.remove("on");
       callar();
       dir = cx > r.left + x + ancho / 2 ? 1 : -1;   // se da vuelta y te encara
       pausa = 0; salto = 0; y = 0;
       if (ANILLO.desvio) { ANILLO.desvio(0, 0); }
       estallido(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)));
 
-      rendTxt.textContent = "me atrapaste en " + intentos + " · hablemos";
+      rendTxt.textContent = "me ganaste en " + intentos + " · hablemos";
       var izq = x > W / 2;
       rend.style.left = izq ? "0" : "auto";
       rend.style.right = izq ? "auto" : "0";
@@ -2733,37 +2814,53 @@
       if (modo !== "atrapado") { return; }
       lane.classList.remove("atrapado");
       modo = "paseo";
+      aguante = AGUANTE;
+      pintarPips(false);
       V.paseo = 42;    // se levanta más rápido y más desconfiado
       RADIO = 170;
       parpadear();
     }
 
-    /* el enlace no se puede escapar justo cuando lo vas a clickear */
-    rendMail.addEventListener("mouseenter", function () { clearTimeout(levantarT); });
-    rendMail.addEventListener("mouseleave", function () {
+    rendWa.addEventListener("mouseenter", function () { clearTimeout(levantarT); });
+    rendWa.addEventListener("mouseleave", function () {
       if (modo === "atrapado") { clearTimeout(levantarT); levantarT = setTimeout(levantar, 3200); }
     });
 
-    /* ── puerta única de todos los intentos ────────────── */
+    /* ── puerta única de todos los ataques ─────────────── */
 
     function reaccionar(cx, cy) {
       if (modo === "atrapado") { return; }
       var r = lane.getBoundingClientRect();
+      var mio = r.left + x + ancho / 2;
       intentos++;
 
+      /* sin aire: ésta es la única ventana en la que se lo agarra */
       if (modo === "agotado") { atrapar(cx, cy, r); return; }
-      if (poder) { pararGolpe(cx, cy, r); return; }
 
+      furia = Math.min(1, (intentos - 1) / 12);
+
+      var p = elegirPoder();
+      if (p) {
+        /* para el golpe y contesta */
+        if (!poder) { salto = 1; }
+        activarPoder(p, r, mio);
+        chispa(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)), "critter__spark--oro");
+        if (p.onda) { onda(r, mio, r.top + r.height / 2); }
+
+        aguante--;
+        pintarPips();
+        if (aguante <= 0) { sinAire(); }
+        return;
+      }
+
+      /* sin defensa disponible: el susto de siempre */
       modo = "susto";
       hasta = performance.now() + 900;
       salto = 1;
       pausa = 0;
-      dir = cx > r.left + x + ancho / 2 ? -1 : 1;
+      dir = cx > mio ? -1 : 1;
       lane.classList.add("asustado");
       chispa(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)), "");
-
-      var p = elegirPoder();
-      if (p) { activarPoder(p); } else { contar(); }
     }
 
     /* ── bucle ─────────────────────────────────────────── */
@@ -2778,39 +2875,46 @@
       var cx = r.left + x + ancho / 2;
       var cy = r.top + r.height / 2;
 
-      if (poder && ts > poderHasta) { acabarPoder(ts); }
+      if (poder && ts > poderHasta) { apagarPoder(); enGuardia = false; }
 
-      if ((modo === "susto" || modo === "embestida") && ts > hasta) {
+      if ((modo === "susto" || modo === "esquina") && ts > hasta) {
         modo = "paseo";
         lane.classList.remove("asustado");
       }
-      if (modo === "agotado") {
-        sprite.style.setProperty("--drenaje", Math.max(0, 1 - (ts - agoteT0) / AGOTE).toFixed(3));
-        if (ts > hasta) {
-          modo = "paseo";
-          lane.classList.remove("agotado");
-          callar();
-        }
+      if (modo === "agotado" && ts > hasta) {
+        modo = "paseo";
+        lane.classList.remove("agotado");
+        aguante = AGUANTE;
+        pintarPips(false);
+        callar();
       }
 
-      /* proximidad: sólo manda mientras pasea o huye, para no pisar un sprint.
-         Sin energía no huye —esa es la ventana— y camuflado se cree invisible. */
+      var f = furia > 0.72 ? 2 : (furia > 0.34 ? 1 : 0);
+      if (f !== furiaAnt) {
+        lane.classList.remove("furia-1", "furia-2");
+        if (f) { lane.classList.add("furia-" + f); }
+        furiaAnt = f;
+      }
+
+      /* mientras se defiende no huye: o planta cara o te viene encima */
       var libre = modo === "paseo" || modo === "huida";
       if (pcx !== null && libre) {
         var dx = pcx - cx;
         var d = Math.hypot(dx, pcy - cy);
 
-        if (poder && poder.encara) {
-          dir = dx > 0 ? 1 : -1;              // deja de huir: te encara
+        if (poder && poder.pelea) {
+          dir = dx > 0 ? 1 : -1;              // deja de huir: te encara y avanza
           mirada = 0;
-        } else if (poder && poder.ciego) {
-          mirada = 0;                          // sigue como si nada
+          enGuardia = d < GUARDIA;            // llegado a distancia de golpe, se planta
+          if (d < ALCANCE && ts - ultimoTajo > 640 - furia * 240) { tajo(r, cx, cy, ts); }
+        } else if (poder && (poder.plantado || poder.ciego)) {
+          mirada = poder.plantado ? Math.max(-1.4, Math.min(1.4, dx / 55)) : 0;
         } else if (d < RADIO) {
           modo = "huida";
           dir = dx > 0 ? -1 : 1;
           mirada = Math.max(-1.4, Math.min(1.4, dx / 55));
           if ((dir < 0 && x <= 1) || (dir > 0 && x >= W - ancho - 1)) {
-            modo = "embestida";
+            modo = "esquina";
             hasta = ts + 700;
             dir = -dir;
           }
@@ -2820,30 +2924,31 @@
         }
       }
 
-      /* el repulsor empuja el anillo del cursor mientras te acercás */
+      /* el repulsor aparta el cursor mientras te acercás */
       if (poder && poder.anillo && ANILLO.desvio) {
         if (pcx === null) { ANILLO.desvio(0, 0); }
         else {
           var rx = pcx - cx, ry = pcy - cy;
           var rd = Math.hypot(rx, ry) || 1;
-          if (rd < 130) {
-            var f = (1 - rd / 130) * 50;
-            ANILLO.desvio(rx / rd * f, ry / rd * f);
+          if (rd < 140) {
+            var fz = (1 - rd / 140) * 50 * (1 + furia * 0.3);
+            ANILLO.desvio(rx / rd * fz, ry / rd * fz);
           } else { ANILLO.desvio(0, 0); }
         }
       }
 
       var v = V[modo];
-      if (poder && poder.mult) { v *= poder.mult; }
+      if (poder && poder.pelea && libre) { v = enGuardia ? 0 : V.pelea * (poder.mult || 1) * (1 + furia * 0.35); }
+      else if (poder && poder.plantado && libre) { v = 0; }
       if (pausa > 0) { pausa -= dt * 1000; v = 0; }
 
       x += dir * v * dt;
       if (x <= 0 && dir < 0) {
         x = 0;
-        if (!(poder && poder.encara)) { dir = 1; if (modo === "paseo") { pausa = 420; parpadear(); } }
+        if (!(poder && poder.pelea)) { dir = 1; if (modo === "paseo") { pausa = 420; parpadear(); } }
       } else if (x >= W - ancho && dir > 0) {
         x = W - ancho;
-        if (!(poder && poder.encara)) { dir = -1; if (modo === "paseo") { pausa = 420; parpadear(); } }
+        if (!(poder && poder.pelea)) { dir = -1; if (modo === "paseo") { pausa = 420; parpadear(); } }
       }
 
       if (salto > 0) {
@@ -2867,7 +2972,7 @@
       var m = (mirada * dir).toFixed(1);
       if (m !== miradaAnt) { miradaAnt = m; lane.style.setProperty("--mirada", m); }
 
-      /* el rótulo se va siempre al lado contrario del bicho, si no se lo tapa */
+      /* el rótulo y las marcas se van al lado contrario, si no se los tapa */
       var lado = x > W / 2 ? 1 : 0;
       if (lado !== ladoAnt) {
         ladoAnt = lado;
@@ -2902,6 +3007,7 @@
       if (!visible) { return; }
       var r = lane.getBoundingClientRect();
       var cx = r.left + x + ancho / 2, cy = r.top + r.height / 2;
+      if (COARSE) { pcx = e.clientX; pcy = e.clientY; }
       if (Math.hypot(e.clientX - cx, e.clientY - cy) < RADIO_CLICK) { reaccionar(e.clientX, e.clientY); }
     }, { passive: true });
 
@@ -2912,6 +3018,7 @@
 
     medir();
     x = Math.max(0, W * 0.18);
+    pintarPips(false);
 
     if ("IntersectionObserver" in window && hero) {
       new IntersectionObserver(function (es) {

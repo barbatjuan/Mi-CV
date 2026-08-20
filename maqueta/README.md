@@ -62,16 +62,21 @@ una CDN externa, que la CSP bloquearía.
   queda acorralado contra una pared no tiembla en la esquina: pasa de largo por
   debajo del cursor. A partir del tercer intento aparece un contador discreto.
   Sólo corre con el hero a la vista y con la pestaña activa.
-- **Los poderes y la ventana**: del cuarto intento en adelante empieza a sacar
-  poderes, y cuanto más insistís, más seguido. Son cinco, cada uno un verbo
-  distinto para que el azar se lea como variedad y no como ruido: **campo de
-  fuerza** hexagonal que rebota el click, **parpadeo** que lo teletransporta al
-  otro extremo dejando tres fantasmas, **camuflaje** que deja sólo los ojos
-  flotando, **espada** —el único que invierte el juego: deja de huir y te viene
-  de frente— y **repulsor**, que empuja el anillo del cursor como dos imanes del
-  mismo polo. Gastar un poder lo deja **sin energía** durante 1,8 s: se arrastra,
-  se le vacía una barrita y ahí sí se atrapa. Fuera de esa ventana sigue siendo
-  imposible. Al atraparlo se planta, te encara y te deja el WhatsApp.
+- **La pelea**: en cuanto lo atacás deja de ser un bicho que huye. Cada click
+  lo para con una de seis defensas, y ninguna lo deja expuesto: con la
+  **espada** y la **embestida** te encara, cierra la distancia y se planta a
+  distancia de golpe repartiendo tajos que mandan el anillo del cursor lejos; con
+  el **campo de fuerza** aguanta firme y devuelve el click como una onda que
+  viaja hasta tu cursor y lo aparta; el **repulsor** te empuja el cursor mientras
+  te acercás; el **camuflaje** lo deja en dos ojos flotando; el **parpadeo** lo
+  saca de ahí dejando tres fantasmas. Y se va enojando: a partir de cierto número
+  de golpes se le ponen los ojos naranjas, después rojos, y pega más fuerte y más
+  seguido.
+- **Sin aire**: lo que lo desgasta es la pelea, no el poder. Para cuatro golpes
+  —las marcas sobre su cabeza los van contando— y al quinto se queda sin aire un
+  par de segundos, jadeando y sin defenderse. Esa es la única ventana en la que
+  se lo agarra, y te la ganás peleando. Al ganarle se planta, te encara y te deja
+  el WhatsApp.
 
   El contacto de la rendición va por WhatsApp y no por `mailto:` a propósito:
   dentro de un iframe con sandbox —el visor de artifacts, sin ir más lejos—
@@ -110,13 +115,14 @@ del hero (`.hero__name`, `.hero__meta`, `.stats`) mide exactamente igual que
 antes de agregarlo, en los seis anchos, también con la espada y el campo de
 fuerza desplegados.
 
-Los poderes: los tres primeros intentos nunca sacan ninguno y del cuarto en
-adelante sí; los cinco se activan con su efecto y todos desembocan en la ventana
-sin energía; un click dentro la gana y uno fuera no; el empuje del anillo llega a
-40 px con la espada, 21 con el escudo y 32 sostenidos con el repulsor, siempre
-por debajo del tope de 52, y vuelve solo a cero. En puntero grueso el repulsor
-queda fuera del grupo, porque no hay anillo que empujar. Veintidós clicks
-seguidos no dejan un solo nodo huérfano ni un error en consola.
+La pelea: en cuarenta ataques salieron las seis defensas; la espada y la
+embestida cierran una distancia de 110 px y se plantan a 36; el escudo y el
+repulsor aguantan firmes sin moverse un píxel; el empuje del anillo llega a 46 px
+con un tajo y 40 con la onda del escudo, siempre por debajo del tope de 52, y
+vuelve solo a cero. El aguante baja un punto por golpe parado y al cuarto llega
+"sin aire"; un click ahí lo gana y uno fuera no. En puntero grueso el repulsor
+queda fuera del grupo, porque no hay anillo que empujar, y el ciclo entero se
+completa a dedazos. Sin un solo error en consola en los cinco anchos.
 
 Renderizado en Chromium: consola limpia, sin desbordamiento horizontal a 390 px,
 descendentes (g, y, q, p) completas en todos los títulos enmascarados, contador
