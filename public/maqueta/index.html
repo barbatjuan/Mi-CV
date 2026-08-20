@@ -207,6 +207,34 @@
                 border-color 0.35s var(--ease), opacity 0.3s ease;
   }
 
+  /* la vida del jugador va en el puntero: es donde te están pegando */
+  .cur-vida {
+    position: fixed;
+    top: 0; left: 0;
+    width: 34px; height: 3px;
+    margin: 26px 0 0 -17px;
+    background: rgba(255, 255, 255, 0.18);
+    pointer-events: none;
+    z-index: 300;
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+    will-change: transform;
+  }
+
+  .cur-vida.on { opacity: 1; }
+  .cur-vida i {
+    display: block; height: 100%;
+    width: calc(var(--vida, 1) * 100%);
+    background: var(--gold);
+    transition: width 0.18s linear, background 0.2s var(--ease);
+  }
+
+  .cur-vida.bajo i { background: #FF3B1F; }
+  .cur-vida.ko { animation: koParpadeo 0.36s var(--ease) 4; }
+  @keyframes koParpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+  @media (hover: none), (pointer: coarse) { .cur-vida { display: none; } }
+
   .cur-ring__label {
     font-family: var(--f-mono);
     font-size: 0.5rem;
@@ -796,18 +824,7 @@
 
   .critter.hulk .critter__pips i { background: #7FD45F; }
 
-  .critter__reloj {
-    position: absolute;
-    left: 50%; top: -17px;
-    width: 34px; height: 3px;
-    transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.16);
-    opacity: 0;
-    transition: opacity 0.25s var(--ease);
-  }
 
-  .critter__reloj i { display: block; height: 100%; width: calc(var(--resto, 1) * 100%); background: #7FD45F; }
-  .critter.hulk .critter__reloj { opacity: 1; }
 
   .critter__estela rect { fill: currentColor; opacity: 0; transition: opacity 0.15s var(--ease); }
   .critter.pw-embestida .critter__estela rect { opacity: 0.55; animation: estela 0.24s steps(2) infinite; }
@@ -1670,7 +1687,6 @@
     .critter__ghost { width: 30px; }
     .critter__pips { top: -13px; }
     .critter.hulk { --tam: 1.32; }
-    .critter__reloj { top: -13px; width: 24px; }
     .critter.hulk .critter__shadow { width: 28px; }
     .critter__globo { font-size: 0.5rem; padding: 2px 5px; }
     .critter__rendicion { font-size: 0.5rem; max-width: 70%; }
@@ -1721,6 +1737,7 @@
 <!-- ══════ CURSOR ══════ -->
 <div class="cur" id="cur" aria-hidden="true"></div>
 <div class="cur-ring" id="cur-ring" aria-hidden="true"><span class="cur-ring__label" id="cur-label"></span></div>
+<div class="cur-vida" id="cur-vida" aria-hidden="true"><i></i></div>
 
 <div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
 
@@ -1768,7 +1785,6 @@
             <polygon class="fx-hit" points="30,2 54,16 54,44 30,58 6,44 6,16" />
           </svg>
           <span class="critter__pips" id="critter-pips"></span>
-          <span class="critter__reloj"><i></i></span>
           <svg class="critter__svg" viewBox="0 0 32 21" focusable="false" aria-hidden="true">
             <g class="critter__estela">
               <rect x="-7"  y="3"  width="5" height="2" />
@@ -2166,7 +2182,7 @@
   /* puente entre el cursor propio (7) y el bicho (12): el anillo vive en un
      closure, así que en vez de globals se comparte este par de funciones.
      Quedan en null si no hay cursor propio, y el bicho comprueba antes. */
-  var ANILLO = { golpe: null, desvio: null, barrera: null };
+  var ANILLO = { golpe: null, desvio: null, barrera: null, dano: null };
 
   /* ══════════════════════════════════════════════════════
      1 · DATOS
@@ -2457,7 +2473,7 @@
      7 · CURSOR PROPIO + BOTÓN MAGNÉTICO
      ══════════════════════════════════════════════════════ */
   if (!COARSE && !REDUCED) {
-    var cur = $("#cur"), ring = $("#cur-ring"), label = $("#cur-label");
+    var cur = $("#cur"), ring = $("#cur-ring"), label = $("#cur-label"), vidaEl = $("#cur-vida");
     var px = window.innerWidth / 2, py = window.innerHeight / 2;
     var rx2 = px, ry2 = py;
 
@@ -2484,6 +2500,30 @@
     var TOPE = 52;   // más que esto y el cursor se siente perdido, no repelido
     var muro = null; // círculo que el cursor no puede pisar (el campo de fuerza)
 
+    /* La vida del jugador. Se regenera sola al dejar de recibir, y al llegar a
+       cero te tumba unos segundos en vez de terminar la partida: esto es un
+       juguete de un hero, no un roguelike. */
+    var VIDA_MAX = 100, REGEN = 16, TUMBADO = 2600;
+    var vida = VIDA_MAX, ultimoDano = -9999, tumbadoHasta = 0, vidaAnt = -1, vidaT = 0;
+
+    ANILLO.dano = function (n) {
+      var ahora = performance.now();
+      if (ahora < tumbadoHasta || vida <= 0) { return false; }
+      vida = Math.max(0, vida - n);
+      ultimoDano = ahora;
+      vidaEl.classList.add("on");
+      clearTimeout(vidaT);
+      if (vida <= 0) {
+        tumbadoHasta = ahora + TUMBADO;
+        vidaEl.classList.add("ko");
+        return true;          // te tumbó
+      }
+      vidaT = setTimeout(function () {
+        if (vida >= VIDA_MAX) { vidaEl.classList.remove("on"); }
+      }, 4000);
+      return false;
+    };
+
     /* a diferencia de golpe y desvio, esto no empuja: recorta. El punto se
        queda pegado al borde por más que insistas, y por eso se lee como muro. */
     ANILLO.barrera = function (bx, by, br) {
@@ -2500,7 +2540,25 @@
       toy = Math.max(-TOPE, Math.min(TOPE, dy));
     };
 
-    (function ringLoop() {
+    var vidaT0 = performance.now();
+
+    (function ringLoop(ts) {
+      var dt = Math.min(50, (ts || vidaT0) - vidaT0) / 1000;
+      vidaT0 = ts || vidaT0;
+
+      if (performance.now() > tumbadoHasta && vida <= 0) { vida = VIDA_MAX; vidaEl.classList.remove("ko"); }
+      else if (vida > 0 && vida < VIDA_MAX && performance.now() - ultimoDano > 1800) {
+        vida = Math.min(VIDA_MAX, vida + REGEN * dt);
+        if (vida >= VIDA_MAX) { vidaEl.classList.remove("on"); }
+      }
+
+      var vr = Math.round(vida) / VIDA_MAX;
+      if (vr !== vidaAnt) {
+        vidaAnt = vr;
+        vidaEl.style.setProperty("--vida", vr.toFixed(3));
+        vidaEl.classList.toggle("bajo", vr < 0.34);
+      }
+
       var ax = px, ay = py;
 
       if (muro) {
@@ -2523,8 +2581,9 @@
       ox += (tox - ox) * 0.22;
       oy += (toy - oy) * 0.22;
       ring.style.transform = "translate(" + (rx2 + kx + ox).toFixed(1) + "px," + (ry2 + ky + oy).toFixed(1) + "px)";
+      vidaEl.style.transform = "translate(" + ax.toFixed(1) + "px," + ay.toFixed(1) + "px)";
       requestAnimationFrame(ringLoop);
-    })();
+    })(performance.now());
 
     var magnet = $("#magnet");
     if (magnet) {
@@ -2802,7 +2861,6 @@
     if (!lane) { return; }
 
     var sprite = $("#critter-i"), hint = $("#critter-hint"), globo = $("#critter-globo");
-    var reloj = $(".critter__reloj", sprite);
     var pips = $("#critter-pips"), rend = $("#critter-rendicion"), hero = $(".hero");
     if (REDUCED) { lane.classList.add("quieto"); return; }
 
@@ -2855,7 +2913,7 @@
     var mirada = 0, miradaAnt = 0, intentos = 0, ladoAnt = -1;
     var poder = null, poderHasta = 0, ultimoPoder = "", frio = 0;
     var aguante = AGUANTE, furia = 0, furiaAnt = -1, ultimoTajo = 0, enGuardia = false;
-    var hulk = false, yaHulk = false, hulkHasta = 0, temblorT = 0, vecesSinAire = 0;
+    var hulk = false, hulkHasta = 0, temblorT = 0, vecesSinAire = 0, treguaHasta = 0;
     var pcx = null, pcy = null;
     var corriendo = false, visible = false, last = 0;
     var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0, impT = 0, retroT = 0;
@@ -3002,10 +3060,20 @@
 
     /* ── la pelea ──────────────────────────────────────── */
 
+    /* todos los impactos pasan por aquí, así que el daño sale de la fuerza del
+       golpe y no hay que repetirlo en cada arma */
     function empujar(vx, vy, fuerza) {
       if (!ANILLO.golpe) { return; }
       var d = Math.hypot(vx, vy) || 1;
       ANILLO.golpe(vx / d * fuerza, vy / d * fuerza * 0.7);
+      if (ANILLO.dano && ANILLO.dano(fuerza * 0.22)) { tumbarte(); }
+    }
+
+    /* te quedaste sin vida: se relaja, se ríe y te deja recuperarte */
+    function tumbarte() {
+      treguaHasta = performance.now() + 2600;
+      mostrarGlobo("te gané", 2400);
+      decir("te tumbó", "oro", 2000);
     }
 
     /* le acierta al cursor: chispa, empujón y el gesto que corresponda */
@@ -3219,7 +3287,7 @@
        vacíes el aguante ya no cae, se transforma. Una sola vez por visita, y al
        desinflarse sí se queda sin aire: la ventana no se pierde, se retrasa. */
     function bestia() {
-      hulk = true; yaHulk = true;
+      hulk = true;
       hulkHasta = performance.now() + CALMA_HULK;
       lane.classList.add("hulk");
       aguante = AGUANTE_HULK;
@@ -3244,13 +3312,15 @@
       }
       aguante = 0;
       pintarPips(false);
-      sinAire();
+      sinAire(false);
       hasta += 900;    // aguantar a la bestia se paga con una ventana más ancha
     }
 
-    function sinAire() {
+    /* puedeTransformar en false cuando viene de desinflarse: si no, la bestia
+       caería y volvería a transformarse en la misma llamada, para siempre */
+    function sinAire(puedeTransformar) {
       vecesSinAire++;
-      if (vecesSinAire > 1 && !yaHulk) { bestia(); return; }
+      if (puedeTransformar !== false && vecesSinAire > 1) { bestia(); return; }
       apagarPoder();
       modo = "agotado";
       hasta = performance.now() + (2400 - furia * 400);
@@ -3358,10 +3428,7 @@
       var cy = r.top + r.height / 2;
 
       if (poder && ts > poderHasta) { apagarPoder(); enGuardia = false; }
-      if (hulk) {
-        sprite.style.setProperty("--resto", Math.max(0, (hulkHasta - ts) / CALMA_HULK).toFixed(3));
-        if (ts > hulkHasta) { desinflar(); }
-      }
+      if (hulk && ts > hulkHasta) { desinflar(); }
       moverCohetes(r, ts, dt);
 
       if ((modo === "susto" || modo === "esquina") && ts > hasta) {
@@ -3394,7 +3461,7 @@
           dir = dx > 0 ? 1 : -1;              // deja de huir: te encara y avanza
           mirada = 0;
           enGuardia = d < GUARDIA;            // llegado a distancia de golpe, se planta
-          if (d < ALCANCE && ts - ultimoTajo > 640 - furia * 240) { tajo(r, cx, cy, ts); }
+          if (d < ALCANCE && ts > treguaHasta && ts - ultimoTajo > 640 - furia * 240) { tajo(r, cx, cy, ts); }
         } else if (poder && poder.plantado) {
           /* el estado no puede mentir: plantado no es huyendo, y de ese flag
              depende cuánto se perdona al apuntarle */
@@ -3409,7 +3476,7 @@
           }
           /* sólo dispara a lo que tiene cerca: no tiene sentido tirarle a un
              cursor que está al otro lado de la página */
-          if (poder.dispara && d < 280 && ts - ultimoTiro > 460 - furia * 170) { disparar(r, cx, cy, ts); }
+          if (poder.dispara && d < 280 && ts > treguaHasta && ts - ultimoTiro > 460 - furia * 170) { disparar(r, cx, cy, ts); }
           if (poder.cohete && ts > proximoCohete) {
             lanzarCohete(r, cx, cy, ts);
             proximoCohete = ts + 1000 + Math.random() * 1000;
@@ -3420,7 +3487,7 @@
           dir = dx > 0 ? 1 : -1;
           mirada = 0;
           enGuardia = d < GUARDIA;
-          if (d < ALCANCE && ts - ultimoTajo > 520) { tajo(r, cx, cy, ts); }
+          if (d < ALCANCE && ts > treguaHasta && ts - ultimoTajo > 520) { tajo(r, cx, cy, ts); }
         } else if (poder && poder.ciego) {
           mirada = 0;
         } else if (d < RADIO) {

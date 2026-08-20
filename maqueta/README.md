@@ -95,11 +95,14 @@ una CDN externa, que la CSP bloquearía.
   no cae: ruge un "me hiciste enojar", la pantalla tiembla y crece un 40%, verde
   y con los ojos encendidos. **Deja de huir del todo**: te encara y te va a
   buscar, esté donde esté el puntero. Aguanta seis golpes en vez de cuatro, pega
-  más fuerte y cada golpe suyo sacude la pantalla. El reloj sobre su cabeza
-  cuenta desde el último ataque, no desde la transformación: mientras sigas
-  peleando no se calma. Al caer se queda sin aire con la ventana algo más ancha,
-  por haberlo aguantado. Pasa una sola vez por visita, y sólo lo ve quien falla
-  la primera oportunidad.
+  más fuerte y cada golpe suyo sacude la pantalla. Si dejás de insistir siete
+  segundos se le pasa el enfado solo; mientras sigas peleando, no. Al caer se
+  queda sin aire con la ventana algo más ancha, por haberlo aguantado. Y vuelve a
+  transformarse cada vez que dejes escapar una ventana.
+- **Tu vida**: una barrita pegada al puntero. Cada impacto suyo te quita un
+  pedazo, proporcional a la fuerza del golpe, y se regenera sola en cuanto dejás
+  de recibir. Si llega a cero te tumba un par de segundos —"te gané"— y afloja
+  para que te recuperes: es un juguete de un hero, no un roguelike.
 - **Sin aire**: lo que lo desgasta es la pelea, no el poder. Para cuatro golpes
   —las marcas sobre su cabeza los van contando— y al quinto se queda sin aire un
   par de segundos, jadeando y sin defenderse. Esa es la única ventana en la que
@@ -164,9 +167,9 @@ tercios, y no llega al que huye en serio.
 
 El modo bestia: se dispara al vaciarle el aguante por segunda vez, crece x1.38 en
 escritorio y x1.30 en móvil creciendo desde los pies —no despega de la línea—, no
-se sale del carril ni pisa el reloj, persigue al puntero aunque lo alejes al otro
-extremo, cae en seis golpes y al caer deja la ventana para ganarle, que se sigue
-ganando. El enlace de WhatsApp sólo se puede pulsar con el bicho ya atrapado:
+se sale del carril, persigue al puntero aunque lo alejes al otro extremo, cae en
+seis golpes y al caer deja la ventana para ganarle, que se sigue ganando. En una
+partida larga se transformó once veces y tumbó al jugador ocho. El enlace de WhatsApp sólo se puede pulsar con el bicho ya atrapado:
 `elementFromPoint` sobre él devuelve la sección mientras sigue vivo. El temblor sacude `<main>` y no `<body>`:
 body ya trae `overflow-x: hidden` y recorta el desplazamiento. Recortarlo en
 `html` era lo intuitivo, pero tanto `hidden` como `clip` ahí rompen el
