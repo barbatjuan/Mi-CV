@@ -72,9 +72,10 @@ una CDN externa, que la CSP bloquearía.
   la **embestida** te encara, cierra la distancia y se planta a distancia de
   golpe repartiendo tajos que mandan el cursor lejos; el **disparo** saca un
   fusil que apunta de verdad —el cañón sigue al puntero en vertical— y escupe
-  balas que estallan sobre él, con culatazo y fogonazo; la **bazuca** lanza un
-  cohete teledirigido que te persigue hasta cuatro segundos dejando estela y
-  explota si te alcanza —vira más cerrado y afloja el gas cuanto más cerca está,
+  balas que estallan sobre él, con culatazo y fogonazo; la **bazuca** dispara en
+  ráfaga durante cinco segundos, un cohete teledirigido cada uno o dos, hasta
+  tres a la vez en el aire; cada uno te persigue dejando estela y explota si te
+  alcanza —vira más cerrado y afloja el gas cuanto más cerca está,
   así que te pilla si te quedás quieto y lo esquivás si corrés de verdad—; el **campo de fuerza** es un muro
   de verdad —ver abajo— y encima devuelve el click como una onda que viaja hasta
   tu cursor; el **repulsor** te lo aparta mientras te acercás; el **camuflaje**
@@ -151,6 +152,11 @@ el casco no pisa las marcas de aguante ni se sale del carril, y el arma tampoco,
 en escritorio y en móvil. El cohete, medido contra tres formas de mover el ratón:
 acierta al puntero quieto en un cuarto de segundo, al que va a la deriva en dos
 tercios, y no llega al que huye en serio.
+
+La ráfaga de la bazuca: tres lanzamientos en los cinco segundos que dura, con uno
+y dos segundos de separación, tres cohetes en vuelo como mucho y ni un cohete ni
+una nube de humo huérfanos al terminar. Es la defensa más frecuente: 22% de las
+veces.
 
 El globo: las tres frases salen a los 2, 13 y 24 segundos, cambian de lado según
 por dónde ande el bicho, y no vuelven a aparecer después del primer ataque. En

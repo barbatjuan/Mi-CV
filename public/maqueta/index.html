@@ -2766,7 +2766,7 @@
       { id: "espada",    nombre: "espada",          dur: 3200, peso: 6, pelea: true, mult: 1, arma: true },
       { id: "escudo",    nombre: "campo de fuerza", dur: 3200, peso: 5, plantado: true, apunta: true, barrera: true, onda: true },
       { id: "disparo",   nombre: "disparo",         dur: 2600, peso: 5, plantado: true, apunta: true, dispara: true, arma: true },
-      { id: "bazooka",   nombre: "bazuca",          dur: 4800, peso: 3, plantado: true, apunta: true, cohete: true, arma: true },
+      { id: "bazooka",   nombre: "bazuca",          dur: 5000, peso: 7, plantado: true, apunta: true, cohete: true, arma: true },
       { id: "embestida", nombre: "embestida",       dur: 1600, peso: 4, pelea: true, mult: 2.4 },
       { id: "repulsor",  nombre: "repulsor",        dur: 2800, peso: 3, plantado: true, apunta: true, anillo: true },
       { id: "camuflaje", nombre: "camuflaje",       dur: 3200, peso: 3, ciego: true },
@@ -2787,12 +2787,13 @@
     var pcx = null, pcy = null;
     var corriendo = false, visible = false, last = 0;
     var hintT = 0, blinkT = 0, parryT = 0, golpeT = 0, levantarT = 0, pipsT = 0, impT = 0, retroT = 0;
-    var ultimoTiro = 0, globoT = 0, frase = 0, cohete = null;
+    var ultimoTiro = 0, globoT = 0, frase = 0, cohetes = [], proximoCohete = 0;
 
     /* invita a que lo toquen, y deja de insistir en cuanto le hacen caso */
     var FRASES = ["eh, tocame", "a que no me agarrás", "acá estoy, dale"];
-    var VIDA_COHETE = 4200;  // lo que persigue antes de apagarse
+    var VIDA_COHETE = 3800;  // lo que persigue antes de apagarse
     var VEL_COHETE = 250;
+    var MAX_COHETES = 3;     // en ráfaga se acumulan: más de tres es una fiesta
     var GIRO = 0.1;          // cuanto más bajo, más se pasa de largo y más misil parece
     var TOQUE = 20;          // radio de impacto
 
@@ -2972,39 +2973,45 @@
     /* ── la bazuca: un cohete que te persigue ──────────── */
 
     function lanzarCohete(r, cx, cy, ts) {
-      quitarCohete();
+      if (cohetes.length >= MAX_COHETES) { return; }
       var e = document.createElement("span");
       e.className = "critter__cohete";
       lane.appendChild(e);
-      cohete = {
+      cohetes.push({
         el: e,
         x: cx - r.left, y: cy - r.top,
-        vx: dir * VEL_COHETE * 0.55, vy: -70,   // sale hacia arriba y ya se corregirá
+        /* sale hacia arriba y en abanico: si todos salieran igual, la ráfaga
+           parecería un solo cohete parpadeando */
+        vx: dir * VEL_COHETE * 0.55, vy: -70 - Math.random() * 60,
         hasta: ts + VIDA_COHETE, humo: 0
-      };
+      });
       lane.classList.add("retro");
       clearTimeout(retroT);
       retroT = setTimeout(function () { lane.classList.remove("retro"); }, 260);
     }
 
-    function quitarCohete() {
-      if (!cohete) { return; }
-      if (cohete.el.parentNode) { cohete.el.parentNode.removeChild(cohete.el); }
-      cohete = null;
+    function borrarCohete(c) {
+      if (c.el.parentNode) { c.el.parentNode.removeChild(c.el); }
+      var i = cohetes.indexOf(c);
+      if (i > -1) { cohetes.splice(i, 1); }
     }
 
-    function estelaCohete() {
+    function quitarCohetes() {
+      while (cohetes.length) { borrarCohete(cohetes[0]); }
+    }
+
+    function estelaCohete(c) {
       var h = document.createElement("span");
       h.className = "critter__humo";
-      h.style.left = cohete.x.toFixed(0) + "px";
-      h.style.top  = cohete.y.toFixed(0) + "px";
+      h.style.left = c.x.toFixed(0) + "px";
+      h.style.top  = c.y.toFixed(0) + "px";
       lane.appendChild(h);
       setTimeout(function () { if (h.parentNode) { h.parentNode.removeChild(h); } }, 620);
     }
 
-    function explotar(r) {
-      var ex = cohete.x, ey = cohete.y;
-      quitarCohete();
+    function explotar(c, r) {
+      var ex = c.x, ey = c.y;
+      borrarCohete(c);
       for (var i = 0; i < 10; i++) {
         var a = (i / 10) * Math.PI * 2;
         chispa(ex + Math.cos(a) * 15, ey + Math.sin(a) * 13, "critter__spark--oro");
@@ -3013,33 +3020,32 @@
       decir("impacto", "oro", 1400);
     }
 
-    function moverCohete(r, ts, dt) {
-      if (!cohete) { return; }
-      if (pcx === null || ts > cohete.hasta) {
-        if (cohete.el.parentNode) { estelaCohete(); }
-        quitarCohete();
-        return;
+    function moverCohetes(r, ts, dt) {
+      for (var i = cohetes.length - 1; i >= 0; i--) {
+        var c = cohetes[i];
+        if (pcx === null || ts > c.hasta) { estelaCohete(c); borrarCohete(c); continue; }
+
+        var ax = pcx - r.left - c.x, ay = pcy - r.top - c.y;
+        var d = Math.hypot(ax, ay) || 1;
+
+        /* vira hacia el objetivo en vez de apuntar directo: por eso se pasa,
+           describe una curva y vuelve. Un rayo no daría ninguna gracia.
+           Y cierra el giro y afloja el gas al llegar: con un viraje fijo se
+           quedaba orbitando a veinte píxeles sin acertar nunca. */
+        var cerca = d < 110 ? 1 - d / 110 : 0;
+        var vel = VEL_COHETE * (1 - cerca * 0.5);
+        var giro = GIRO * (1 + cerca * 2.4);
+        c.vx += (ax / d * vel - c.vx) * giro;
+        c.vy += (ay / d * vel - c.vy) * giro;
+        c.x += c.vx * dt;
+        c.y += c.vy * dt;
+
+        c.el.style.transform = "translate(" + c.x.toFixed(1) + "px," + c.y.toFixed(1) + "px) rotate(" +
+          (Math.atan2(c.vy, c.vx) * 180 / Math.PI).toFixed(1) + "deg)";
+
+        if (ts - c.humo > 45) { c.humo = ts; estelaCohete(c); }
+        if (d < TOQUE) { explotar(c, r); }
       }
-      var tx = pcx - r.left, ty = pcy - r.top;
-      var ax = tx - cohete.x, ay = ty - cohete.y;
-      var d = Math.hypot(ax, ay) || 1;
-
-      /* vira hacia el objetivo en vez de apuntar directo: por eso se pasa,
-         describe una curva y vuelve. Un rayo no daría ninguna gracia.
-         Y afloja al llegar: a toda velocidad orbitaba sin acertar nunca. */
-      var cerca = d < 110 ? 1 - d / 110 : 0;
-      var vel = VEL_COHETE * (1 - cerca * 0.5);
-      var giro = GIRO * (1 + cerca * 2.4);   // cierra el viraje al llegar: con
-      cohete.vx += (ax / d * vel - cohete.vx) * giro;   // uno fijo se quedaba
-      cohete.vy += (ay / d * vel - cohete.vy) * giro;   // orbitando a 20px
-      cohete.x += cohete.vx * dt;
-      cohete.y += cohete.vy * dt;
-
-      cohete.el.style.transform = "translate(" + cohete.x.toFixed(1) + "px," + cohete.y.toFixed(1) + "px) rotate(" +
-        (Math.atan2(cohete.vy, cohete.vx) * 180 / Math.PI).toFixed(1) + "deg)";
-
-      if (ts - cohete.humo > 45) { cohete.humo = ts; estelaCohete(); }
-      if (d < TOQUE) { explotar(r); }
     }
 
     /* la onda del escudo: sale del bicho, viaja hasta el cursor y lo aparta */
@@ -3094,7 +3100,7 @@
       lane.classList.add("pw-" + p.id);
       if (p.arma) { lane.classList.add("armado"); }
       decir(p.nombre, "oro", p.dur);
-      if (p.cohete) { lanzarCohete(r, cx, r.top + r.height / 2, performance.now()); }
+      if (p.cohete) { proximoCohete = 0; }
       if (p.pelea && pcx !== null) { dir = pcx > cx ? 1 : -1; }
       if (p.id === "parpadeo") { teletransportar(); }
     }
@@ -3104,7 +3110,8 @@
       if (!poder) { return; }
       lane.classList.remove("pw-" + poder.id);
       lane.classList.remove("armado");
-      quitarCohete();
+      /* los cohetes ya lanzados siguen su camino: se apagan solos al cumplir
+         su tiempo, aunque el bicho haya soltado la bazuca */
       if (poder.anillo && ANILLO.desvio) { ANILLO.desvio(0, 0); }
       if (poder.barrera && ANILLO.barrera) { ANILLO.barrera(0, 0, 0); }
       poder = null;
@@ -3139,6 +3146,7 @@
       callar();
       dir = cx > r.left + x + ancho / 2 ? 1 : -1;   // se da vuelta y te encara
       pausa = 0; salto = 0; y = 0;
+      quitarCohetes();
       if (ANILLO.desvio) { ANILLO.desvio(0, 0); }
       if (ANILLO.barrera) { ANILLO.barrera(0, 0, 0); }
       estallido(cx - r.left, Math.max(4, Math.min(r.height - 4, cy - r.top)));
@@ -3221,7 +3229,7 @@
       var cy = r.top + r.height / 2;
 
       if (poder && ts > poderHasta) { apagarPoder(); enGuardia = false; }
-      moverCohete(r, ts, dt);
+      moverCohetes(r, ts, dt);
 
       if ((modo === "susto" || modo === "esquina") && ts > hasta) {
         modo = "paseo";
@@ -3265,6 +3273,10 @@
           /* sólo dispara a lo que tiene cerca: no tiene sentido tirarle a un
              cursor que está al otro lado de la página */
           if (poder.dispara && d < 280 && ts - ultimoTiro > 460 - furia * 170) { disparar(r, cx, cy, ts); }
+          if (poder.cohete && ts > proximoCohete) {
+            lanzarCohete(r, cx, cy, ts);
+            proximoCohete = ts + 1000 + Math.random() * 1000;
+          }
         } else if (d < RADIO) {
           modo = "huida";
           dir = dx > 0 ? -1 : 1;
@@ -3360,7 +3372,7 @@
       firmaAnt = "";
       if (ANILLO.desvio) { ANILLO.desvio(0, 0); }
       if (ANILLO.barrera) { ANILLO.barrera(0, 0, 0); }
-      quitarCohete();
+      quitarCohetes();
     }
 
     if (!COARSE) {
