@@ -1465,11 +1465,54 @@
   /* el producto propio pide más espacio que un encargo */
   .card--lead { grid-column: span 2; }
   .card--lead h3 { font-size: 1.6rem; }
-  .card--lead p { font-size: 0.975rem; max-width: 52ch; }
+
+  /* la pieza insignia ocupa la fila entera */
+  .card--full { grid-column: 1 / -1; }
+
+  /* lead: descripción + ficha de datos en dos columnas, para ocupar el ancho */
+  .card--lead .card__cols {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 14rem);
+    gap: 1.4rem 2.8rem;
+    align-content: start;
+  }
+  .card--lead .card__cols > p { flex: none; font-size: 0.975rem; max-width: 48ch; }
+  .card--full .card__cols { grid-template-columns: minmax(0, 30rem) minmax(0, 1fr); }
+  .card--full .card__cols > p { max-width: none; }
+
+  .card__facts {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+    padding-left: 2.8rem;
+    border-left: 1px solid var(--hair);
+  }
+  .card--full .card__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem 2rem;
+  }
+  .fact { display: flex; flex-direction: column; gap: 0.22rem; }
+  .fact b {
+    font-family: var(--f-mono); font-weight: 400;
+    font-size: 0.57rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--grey-2);
+  }
+  .fact span { font-size: 0.85rem; color: var(--grey); line-height: 1.45; }
 
   @media (max-width: 780px) {
     .card--lead { grid-column: span 1; }
     .card--lead h3 { font-size: 1.3rem; }
+    .card--lead .card__cols,
+    .card--full .card__cols { grid-template-columns: 1fr; gap: 1.2rem; }
+    .card--lead .card__cols > p { max-width: none; }
+    .card--full .card__facts { display: flex; flex-direction: column; }
+    .card__facts {
+      padding-left: 0; border-left: 0;
+      padding-top: 1.1rem; border-top: 1px solid var(--hair);
+    }
   }
 
   .empty {
@@ -2092,9 +2135,9 @@
 
     <div class="filters rv" role="group" aria-label="Filtrar proyectos por tipo de trabajo">
       <button class="filter" data-filter="all" aria-pressed="true">Todos</button>
-      <button class="filter" data-filter="codigo" aria-pressed="false">Código a medida <b>1</b></button>
+      <button class="filter" data-filter="codigo" aria-pressed="false">Código a medida <b>2</b></button>
       <button class="filter" data-filter="ecommerce" aria-pressed="false">E-commerce <b>5</b></button>
-      <button class="filter" data-filter="wordpress" aria-pressed="false">WordPress <b>15</b></button>
+      <button class="filter" data-filter="wordpress" aria-pressed="false">WordPress <b>16</b></button>
       <button class="filter" data-filter="marca" aria-pressed="false">Marca <b>6</b></button>
       <button class="filter" data-filter="ads" aria-pressed="false">Ads &amp; Redes <b>3</b></button>
     </div>
@@ -2209,10 +2252,25 @@
      1 · DATOS
      ══════════════════════════════════════════════════════ */
   var PROYECTOS = [
-    { t: "Capta24", lead: true,
-      d: "Producto propio. Un asistente con IA atiende WhatsApp a cualquier hora, responde y deja el contacto calificado para que el negocio sólo tenga que cerrar. Pensado para comercios locales que pierden consultas fuera del horario de atención. Desarrollado a medida, sin plantillas ni CMS.",
+    { t: "Capta24", lead: true, full: true,
+      d: "Producto propio. Un recepcionista con IA que atiende WhatsApp las 24 horas: responde con la información del propio negocio —catálogo, precios, preguntas frecuentes—, resuelve la consulta y deja el contacto calificado para que sólo haya que cerrar. Pensado para comercios locales que pierden mensajes fuera de hora. Desarrollado a medida, sin plantillas ni CMS.",
       u: "https://capta24.es", g: ["codigo", "ia"],
-      k: ["Desarrollo a medida", "IA", "Claude", "WhatsApp", "Automatización", "SaaS"] },
+      facts: [
+        ["Canal", "WhatsApp · 24/7"],
+        ["Responde con", "RAG sobre la base del negocio"],
+        ["Devuelve", "Contacto calificado, listo para cerrar"],
+        ["Para", "Comercios locales"]
+      ],
+      k: ["Desarrollo a medida", "Node.js", "Express", "DeepSeek", "RAG", "Supabase", "WhatsApp", "React", "Railway", "Claude Code"] },
+    { t: "WordPress Orchestrator", lead: true,
+      d: "Sistema propio para construir sitios WordPress premium con Claude. La IA no trabaja sola: enruta el trabajo entre módulos, pero no se escribe nada en WordPress sin una maqueta estática aprobada, y cada build pasa por un sí explícito. El QA compara el sitio final contra la maqueta. Código abierto; el camino Elementor está probado en producción, el de Divi todavía no.",
+      u: "https://github.com/barbatjuan/wordpress-orchestrator", g: ["codigo", "wordpress", "ia"],
+      facts: [
+        ["Builders", "Elementor probado · Divi en desarrollo"],
+        ["Antes de tocar WordPress", "Maqueta estática aprobada"],
+        ["Cada build", "Confirmación explícita, página por página"]
+      ],
+      k: ["Desarrollo a medida", "IA", "Claude", "WordPress", "Elementor", "Código abierto"] },
     { t: "Ensildent", d: "Clínica dental. Diseño, montaje y SEO on-page, más la producción de video de la portada.",
       u: "https://www.ensildent.com", g: ["wordpress"],
       k: ["WordPress", "Divi", "Yoast SEO", "Photoshop", "Hosting", "Premiere"] },
@@ -2416,7 +2474,7 @@
 
   PROYECTOS.forEach(function (p) {
     var a = document.createElement("a");
-    a.className = p.lead ? "card card--lead" : "card";
+    a.className = "card" + (p.lead ? " card--lead" : "") + (p.full ? " card--full" : "");
     a.href = p.u;
     a.target = "_blank";
     a.rel = "noopener noreferrer";
@@ -2425,14 +2483,25 @@
     a.setAttribute("data-tilt", "4");
     a.setAttribute("data-cursor", "Visitar");
 
-    a.innerHTML =
-      '<div class="card__top">' +
-        "<h3>" + p.t + "</h3>" +
-        '<span class="card__go" aria-hidden="true">↗</span>' +
-      "</div>" +
-      "<p>" + p.d + "</p>" +
-      '<div class="tags">' + p.k.map(function (k) { return '<span class="tag">' + k + "</span>"; }).join("") + "</div>" +
-      '<span class="card__url">' + p.u.replace(/^https?:\/\//, "") + "</span>";
+    var topHtml  = '<div class="card__top"><h3>' + p.t + "</h3>" +
+                   '<span class="card__go" aria-hidden="true">↗</span></div>';
+    var tagsHtml = '<div class="tags">' +
+                   p.k.map(function (k) { return '<span class="tag">' + k + "</span>"; }).join("") + "</div>";
+    var urlHtml  = '<span class="card__url">' + p.u.replace(/^https?:\/\//, "") + "</span>";
+
+    if (p.lead) {
+      var factsHtml = (p.facts || []).map(function (f) {
+        return '<div class="fact"><b>' + f[0] + "</b><span>" + f[1] + "</span></div>";
+      }).join("");
+      a.innerHTML =
+        topHtml +
+        '<div class="card__cols"><p>' + p.d + "</p>" +
+          (factsHtml ? '<div class="card__facts">' + factsHtml + "</div>" : "") +
+        "</div>" +
+        tagsHtml + urlHtml;
+    } else {
+      a.innerHTML = topHtml + "<p>" + p.d + "</p>" + tagsHtml + urlHtml;
+    }
 
     grid.appendChild(a);
   });
